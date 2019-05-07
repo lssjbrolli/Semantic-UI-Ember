@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { htmlSafe } from '@ember/template';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -133,7 +133,7 @@ test('changing class doesnt throw error', function(assert) {
 test('popup unwraps safe string', function(assert) {
   assert.expect(2);
 
-  this.set('html', Ember.String.htmlSafe('<b>Awesome</b>'));
+  this.set('html', htmlSafe('<b>Awesome</b>'));
 
   this.render(hbs`
     {{#ui-popup html=html}}

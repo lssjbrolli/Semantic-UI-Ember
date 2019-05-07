@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import { A } from '@ember/array';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -60,7 +61,7 @@ test('clicking activates title', function(assert) {
 test('dynamically added content is clickable', function(assert) {
   assert.expect(7);
 
-  this.set('panes', Ember.A([]));
+  this.set('panes', A([]));
 
   this.render(hbs`
     {{#ui-accordion class="styled"}}
@@ -91,7 +92,7 @@ test('dynamically added content is clickable', function(assert) {
   assert.equal(this.$('.ui.accordion .title').length, 2);
   assert.equal(this.$('.ui.accordion .content').length, 2);
 
-  Ember.run(() => {
+  run(() => {
     this.get('panes').pushObjects([1,2]);
   });
 

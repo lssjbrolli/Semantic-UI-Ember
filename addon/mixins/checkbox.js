@@ -1,15 +1,16 @@
-import Ember from 'ember';
+import { getOwner } from '@ember/application';
+import Mixin from '@ember/object/mixin';
 import Base from './base';
 
 /*
  * Checkbox Component Mixin
  */
-var CheckboxMixin = Ember.Mixin.create(Base, {
+var CheckboxMixin = Mixin.create(Base, {
   module: 'checkbox',
   classNames: ['ui', 'checkbox'],
 
   willInitSemantic(settings) {
-    let owner = Ember.getOwner(this);
+    let owner = getOwner(this);
     let fastboot = owner.lookup('service:fastboot');
     if (fastboot && fastboot.get('isFastBoot')) {
       return;

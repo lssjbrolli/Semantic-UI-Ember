@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { htmlSafe } from '@ember/template';
+import EmberObject from '@ember/object';
 import BaseMixin from 'semantic-ui-ember/mixins/base';
 import { module, test } from 'qunit';
 
@@ -6,7 +7,7 @@ module('Unit | Mixin | base');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  let BaseObject = Ember.Object.extend(BaseMixin, {
+  let BaseObject = EmberObject.extend(BaseMixin, {
     module: 'test'
   });
   let subject = BaseObject.create();
@@ -16,7 +17,7 @@ test('it works', function(assert) {
 test('values are equal', function(assert) {
   assert.expect(13);
 
-  let BaseObject = Ember.Object.extend(BaseMixin, {
+  let BaseObject = EmberObject.extend(BaseMixin, {
     module: 'test'
   });
   let subject = BaseObject.create();
@@ -27,12 +28,12 @@ test('values are equal', function(assert) {
   assert.notOk(subject.areAttrValuesEqual('', 5, '4'));
 
   assert.ok(subject.areAttrValuesEqual('', 'test', 'test'));
-  assert.ok(subject.areAttrValuesEqual('', 'test', Ember.String.htmlSafe('test')));
-  assert.ok(subject.areAttrValuesEqual('', Ember.String.htmlSafe('test'), 'test'));
-  assert.ok(subject.areAttrValuesEqual('', 5, Ember.String.htmlSafe('5')));
+  assert.ok(subject.areAttrValuesEqual('', 'test', htmlSafe('test')));
+  assert.ok(subject.areAttrValuesEqual('', htmlSafe('test'), 'test'));
+  assert.ok(subject.areAttrValuesEqual('', 5, htmlSafe('5')));
 
-  assert.ok(subject.areAttrValuesEqual('', true, Ember.String.htmlSafe('true')));
-  assert.ok(subject.areAttrValuesEqual('', Ember.String.htmlSafe('true'), true));
+  assert.ok(subject.areAttrValuesEqual('', true, htmlSafe('true')));
+  assert.ok(subject.areAttrValuesEqual('', htmlSafe('true'), true));
   assert.ok(subject.areAttrValuesEqual('', true, true));
   assert.notOk(subject.areAttrValuesEqual('', false, true));
   assert.notOk(subject.areAttrValuesEqual('', true, false));
@@ -41,7 +42,7 @@ test('values are equal', function(assert) {
 test('setting attr unwraps html safe string', function(assert) {
   assert.expect(2);
 
-  let BaseObject = Ember.Object.extend(BaseMixin, {
+  let BaseObject = EmberObject.extend(BaseMixin, {
     module: 'test',
 
     execute(command, value) {
@@ -50,7 +51,7 @@ test('setting attr unwraps html safe string', function(assert) {
   });
   let subject = BaseObject.create();
 
-  let wrapped = Ember.String.htmlSafe('unwrapped');
+  let wrapped = htmlSafe('unwrapped');
 
   assert.notDeepEqual(wrapped, 'unwrapped', 'Unwrapped value isnt equal');
 

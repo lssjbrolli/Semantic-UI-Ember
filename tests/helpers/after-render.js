@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { scheduleOnce } from '@ember/runloop';
+import { Promise } from 'rsvp';
 
 export default function afterRender(promise) {
   return promise.catch(() => {}).finally(() => {
-    return new Ember.RSVP.Promise(function (resolve) {
-      Ember.run.scheduleOnce('afterRender', resolve);
+    return new Promise(function (resolve) {
+      scheduleOnce('afterRender', resolve);
     });
   });
 }

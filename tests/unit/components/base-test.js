@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import BaseMixin from 'semantic-ui-ember/mixins/base';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-let baseComponent = Ember.Component.extend(BaseMixin, {
+let baseComponent = Component.extend(BaseMixin, {
   module: 'test',
 
   initSemanticModule() {
