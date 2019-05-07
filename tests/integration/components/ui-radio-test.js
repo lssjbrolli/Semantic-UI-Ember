@@ -1,7 +1,7 @@
+import { defer, all } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import afterRender from 'dummy/tests/helpers/after-render';
-import Ember from 'ember';
 
 moduleForComponent('ui-radio', 'Integration | Component | ui radio', {
   integration: true
@@ -268,7 +268,7 @@ test('will selected when current promise resolves', function(assert) {
     count++;
   });
 
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
   this.set('frequency', deferred.promise);
   this.render(hbs`
@@ -307,7 +307,7 @@ test('will selected when value promise resolves', function(assert) {
     count++;
   });
 
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
   this.set('frequency', 'biweekly');
   this.set('value2', deferred.promise);
@@ -347,8 +347,8 @@ test('will selected when value promise resolves', function(assert) {
     count++;
   });
 
-  let deferredCurrent = Ember.RSVP.defer();
-  let deferredValue = Ember.RSVP.defer();
+  let deferredCurrent = defer();
+  let deferredValue = defer();
 
   this.set('frequency', deferredCurrent.promise);
   this.set('value3', deferredValue.promise);
@@ -374,7 +374,7 @@ test('will selected when value promise resolves', function(assert) {
   deferredCurrent.resolve('daily');
   deferredValue.resolve('daily');
 
-  return afterRender(Ember.RSVP.all([deferredCurrent.promise, deferredValue.promise])).then(() => {
+  return afterRender(all([deferredCurrent.promise, deferredValue.promise])).then(() => {
     assert.equal(this.$('.ui.radio.checked').length, 1);
     assert.ok(this.$(this.$('.ui.radio')[2]).hasClass('checked'));
     assert.equal(count, 0, 'onChange should not have been called');
@@ -412,7 +412,7 @@ test('will update properly if a static value is replaced for a promise on value'
   assert.equal(this.$('.ui.radio').length, 3);
   assert.ok(this.$(this.$('.ui.radio')[1]).hasClass('checked'));
 
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
   this.set('value2', deferred.promise);
 
@@ -459,7 +459,7 @@ test('will update properly if a static value is replaced for a promise on curren
   assert.equal(this.$('.ui.radio').length, 3);
   assert.ok(this.$(this.$('.ui.radio')[1]).hasClass('checked'));
 
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
   this.set('current', deferred.promise);
 

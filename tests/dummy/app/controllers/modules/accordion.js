@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   total_sections: 0,
 
-  sections: Ember.computed('total_sections', function() {
+  sections: computed('total_sections', function() {
     let sections = [];
     let count = this.get('total_sections');
     while (count) {

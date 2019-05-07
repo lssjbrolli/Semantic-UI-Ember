@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import Checkbox from '../mixins/checkbox';
 import layout from '../templates/components/ui-checkbox';
 
-export default Ember.Component.extend(Checkbox, {
+export default Component.extend(Checkbox, {
   layout,
   type: 'checkbox',
   ignorableAttrs: ['checked', 'label', 'disabled'],

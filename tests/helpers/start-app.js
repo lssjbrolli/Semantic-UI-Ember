@@ -1,11 +1,12 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import { assign } from '@ember/polyfills';
 import Application from '../../app';
 import config from '../../config/environment';
 
 export default function startApp(attrs) {
-  const attributes = Ember.assign({}, config.APP, attrs);
+  const attributes = assign({}, config.APP, attrs);
 
-  Ember.run(() => {
+  run(() => {
     const application = Application.create(attributes);
     application.setupForTesting();
     application.injectTestHelpers();

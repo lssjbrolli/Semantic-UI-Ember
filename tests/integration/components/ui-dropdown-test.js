@@ -1,4 +1,9 @@
-import Ember from 'ember';
+import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
+import ObjectProxy from '@ember/object/proxy';
+import { defer } from 'rsvp';
+import { begin, end } from '@ember/runloop';
+import EmberObject from '@ember/object';
+import { A } from '@ember/array';
 import $ from 'jquery';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
@@ -251,7 +256,7 @@ test('it renders and clears the value if it changes and isnt found', function(as
     count++;
   });
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     { id: 2, name: "Patrick Bateman" }
   ]));
@@ -302,7 +307,7 @@ test('it renders from a mapper', function(assert) {
     count++;
   });
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     { id: 2, name: "Patrick Bateman" }
   ]));
@@ -335,7 +340,7 @@ test('it renders from a mapper and preselects the right value', function(assert)
     count++;
   });
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     { id: 2, name: "Patrick Bateman" }
   ]));
@@ -369,7 +374,7 @@ test('it renders from a mapper and selects the right value if late', function(as
     count++;
   });
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     { id: 2, name: "Patrick Bateman" }
   ]));
@@ -404,7 +409,7 @@ test('it renders from a mapper and clears the value if it changes and isnt found
     count++;
   });
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     { id: 2, name: "Patrick Bateman" }
   ]));
@@ -451,7 +456,7 @@ test('it renders from a mapper and clears the value if it changes and isnt found
     count++;
   });
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     { id: 2, name: "Patrick Bateman" }
   ]));
@@ -466,7 +471,7 @@ test('it renders from a mapper and clears the value if it changes and isnt found
     {{/ui-dropdown}}
   `);
 
-  let selected = Ember.Object.create({ sub: this.get('people').objectAt(1) });
+  let selected = EmberObject.create({ sub: this.get('people').objectAt(1) });
 
   assert.equal(this.$('.item').length, 2, "Right number of items");
   assert.equal(this.get('selected.sub'), undefined, "Nothing is selected");
@@ -495,7 +500,7 @@ test('it renders from a mapper and binds to value', function(assert) {
     count++;
   });
 
-  this.set('numbers', Ember.A([
+  this.set('numbers', A([
     1,
     2
   ]));
@@ -537,7 +542,7 @@ test('The correct number of items are pre selected on selected array', function(
     count++;
   });
 
-  this.set('numbers', Ember.A([
+  this.set('numbers', A([
     '1',
     '2',
     '3',
@@ -573,7 +578,7 @@ test('The correct number of items are pre selected on selected item', function(a
     count++;
   });
 
-  this.set('numbers', Ember.A([
+  this.set('numbers', A([
     '1',
     '2',
     '3',
@@ -608,7 +613,7 @@ test('The correct number of items are pre selected on selected object array', fu
     count++;
   });
 
-  let numbers = Ember.A([
+  let numbers = A([
     { item: 1, name: 'One' },
     { item: 2, name: 'Two' },
     { item: 3, name: 'Three' },
@@ -646,7 +651,7 @@ test('The correct number of items are pre selected on selected object item', fun
     count++;
   });
 
-  let numbers = Ember.A([
+  let numbers = A([
     { item: 1, name: 'One' },
     { item: 2, name: 'Two' },
     { item: 3, name: 'Three' },
@@ -683,7 +688,7 @@ test('The correct number of items get selected when clicked', function(assert) {
     count++;
   });
 
-  this.set('numbers', Ember.A([
+  this.set('numbers', A([
     '1',
     '2',
     '3',
@@ -725,7 +730,7 @@ test('The correct number of items get selected when clicked', function(assert) {
     count++;
   });
 
-  let numbers = Ember.A([
+  let numbers = A([
     { item: 1, name: 'One' },
     { item: 2, name: 'Two' },
     { item: 3, name: 'Three' },
@@ -769,7 +774,7 @@ test('The correct number of items get selected when array is modified', function
     count++;
   });
 
-  this.set('numbers', Ember.A([
+  this.set('numbers', A([
     '1',
     '2',
     '3',
@@ -796,11 +801,11 @@ test('The correct number of items get selected when array is modified', function
   assert.ok(this.$('.item[data-id=2]').hasClass('active'));
   assert.equal(this.get('selected').join(','), ['2'].join(','));
 
-  Ember.run.begin();
+  begin();
   this.set('selected', ['2', '4']);
   // Have to clear the queue to ensure that property change gets notified
   // Doesn't clear in time on tests occasionally
-  Ember.run.end();
+  end();
 
   assert.ok(this.$('.item[data-id=4]').hasClass('active'));
   assert.equal(this.get('selected').join(','), ['2', '4'].join(','));
@@ -817,7 +822,7 @@ test('The correct number of items get selected when array bindings is modified',
     count++;
   });
 
-  let numbers = Ember.A([
+  let numbers = A([
     { item: 1, name: 'One' },
     { item: 2, name: 'Two' },
     { item: 3, name: 'Three' },
@@ -861,7 +866,7 @@ test('it renders and selects the correct item after promise resolves', function(
     count++;
   });
 
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
   this.set('selected', deferred.promise);
 
@@ -898,7 +903,7 @@ test('it renders and selects the correct item from resolved promise', function(a
     count++;
   });
 
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
   deferred.resolve('Patrick Bateman');
 
@@ -931,14 +936,14 @@ test('it renders from a mapper with a promise', function(assert) {
     count++;
   });
 
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
-  let ObjectPromiseProxy = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin);
+  let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
   let proxy = ObjectPromiseProxy.create({
     promise: deferred.promise
   });
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     proxy
   ]));
@@ -977,9 +982,9 @@ test('it renders from a mapper with a promise already completed', function(asser
     count++;
   });
 
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
-  let ObjectPromiseProxy = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin);
+  let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
   let proxy = ObjectPromiseProxy.create({
     promise: deferred.promise
   });
@@ -987,7 +992,7 @@ test('it renders from a mapper with a promise already completed', function(asser
   let deferredValue = { id: 2, name: "Patrick Bateman" };
   deferred.resolve(deferredValue);
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     proxy
   ]));
@@ -1023,15 +1028,15 @@ test('it renders from a mapper with a promise and select with a promise, select 
     count++;
   });
 
-  let deferredMap = Ember.RSVP.defer();
-  let deferredSelect = Ember.RSVP.defer();
+  let deferredMap = defer();
+  let deferredSelect = defer();
 
-  let ObjectPromiseProxy = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin);
+  let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
   let proxy = ObjectPromiseProxy.create({
     promise: deferredMap.promise
   });
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     proxy
   ]));
@@ -1080,15 +1085,15 @@ test('it renders from a mapper with a promise and select with a promise, mapper 
     count++;
   });
 
-  let deferredMap = Ember.RSVP.defer();
-  let deferredSelect = Ember.RSVP.defer();
+  let deferredMap = defer();
+  let deferredSelect = defer();
 
-  let ObjectPromiseProxy = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin);
+  let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
   let proxy = ObjectPromiseProxy.create({
     promise: deferredMap.promise
   });
 
-  this.set('people', Ember.A([
+  this.set('people', A([
     { id: 1, name: "Sherlock Homes" },
     proxy
   ]));

@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   categories: [
     'Clothing',
     'Home',
@@ -20,7 +21,7 @@ export default Ember.Controller.extend({
   selected_type: 5.5,
 
   gender: 0,
-  genders: Ember.A([
+  genders: A([
     { id: 1, text: 'Male' },
     { id: 0, text: 'Female' }
   ]),
@@ -36,6 +37,6 @@ export default Ember.Controller.extend({
   init() {
     this._super(...arguments);
     this.set('gender2', this.get('genders.firstObject'));
-    this.set('country2', Ember.A([]).pushObjects(this.get('countries')));
+    this.set('country2', A([]).pushObjects(this.get('countries')));
   }
 });

@@ -1,7 +1,10 @@
+import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
+import ObjectProxy from '@ember/object/proxy';
+import { later } from '@ember/runloop';
+import { defer, all } from 'rsvp';
 import { test, moduleForComponent } from 'ember-qunit';
 import afterRender from 'dummy/tests/helpers/after-render';
 import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
 
 moduleForComponent('ui-accordion', 'Integration | Helper | map value', {
   integration: true
@@ -21,7 +24,7 @@ test('renders value passed in on non-promise', function (assert) {
 });
 
 test('when unresolved renders is passed in, null is rendered', function (assert) {
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
   this.set('value', deferred.promise);
   this.set('mapper', function(value) { return value; });
@@ -42,9 +45,9 @@ test('when unresolved renders is passed in, null is rendered', function (assert)
 });
 
 test('when unresolved renders is passed in, null is rendered', function (assert) {
-  let deferred1 = Ember.RSVP.defer();
-  let deferred2 = Ember.RSVP.defer();
-  let deferred3 = Ember.RSVP.defer();
+  let deferred1 = defer();
+  let deferred2 = defer();
+  let deferred3 = defer();
 
   this.set('value', deferred3.promise);
   this.set('mapper', function(value) { return value; });
@@ -59,19 +62,19 @@ test('when unresolved renders is passed in, null is rendered', function (assert)
 
   deferred1.resolve('number 1');
 
-  Ember.run.later(deferred2, 'resolve', 'number 2', 200);
-  Ember.run.later(deferred3, 'resolve', 'number 3', 500);
+  later(deferred2, 'resolve', 'number 2', 200);
+  later(deferred3, 'resolve', 'number 3', 500);
 
   this.set('value', deferred2.promise);
   this.set('value', deferred3.promise);
 
-  return afterRender(Ember.RSVP.all([deferred2.promise, deferred3.promise])).then(() => {
+  return afterRender(all([deferred2.promise, deferred3.promise])).then(() => {
     assert.equal(this.$('.item').attr('data-value').trim(), 'number 3', 'data value is updated to correct value');
   });
 });
 
 test('renders null until the promise is rejected', function (assert) {
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
   this.set('value', deferred.promise);
   this.set('mapper', function(value) { return value; });
@@ -91,8 +94,8 @@ test('renders null until the promise is rejected', function (assert) {
 });
 
 test('changing the promise changes the eventually rendered value', function (assert) {
-  let deferred1 = Ember.RSVP.defer();
-  let deferred2 = Ember.RSVP.defer();
+  let deferred1 = defer();
+  let deferred2 = defer();
 
   this.set('value', deferred1.promise);
   this.set('mapper', function(value) { return value; });
@@ -117,7 +120,7 @@ test('changing the promise changes the eventually rendered value', function (ass
 });
 
 test('switching from promise to non-promise correctly ignores promise resolution', function (assert) {
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
 
   this.set('value', deferred.promise);
   this.set('mapper', function(value) { return value; });
@@ -137,8 +140,8 @@ test('switching from promise to non-promise correctly ignores promise resolution
 });
 
 test('promises that get wrapped by RSVP.Promise.resolve still work correctly', function(assert) {
-  let deferred = Ember.RSVP.defer();
-  let ObjectPromiseProxy = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin);
+  let deferred = defer();
+  let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
   let proxy = ObjectPromiseProxy.create({
     promise: deferred.promise
   });
@@ -159,7 +162,7 @@ test('promises that get wrapped by RSVP.Promise.resolve still work correctly', f
 test('renders previously fullfilled promise right away', function (assert) {
   const text = 'yass!';
 
-  let deferred = Ember.RSVP.defer();
+  let deferred = defer();
   deferred.resolve(text);
 
   this.set('value', deferred.promise);

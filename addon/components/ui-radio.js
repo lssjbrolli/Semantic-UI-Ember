@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import { isBlank } from '@ember/utils';
+import Component from '@ember/component';
 import Checkbox from '../mixins/checkbox';
 import isPromise from 'ember-promise-utils/utils/is-promise';
 import isFulfilled from 'ember-promise-utils/utils/is-fulfilled';
@@ -6,7 +8,7 @@ import getPromiseContent from 'ember-promise-utils/utils/get-promise-content';
 import PromiseResolver from 'ember-promise-utils/mixins/promise-resolver';
 import layout from '../templates/components/ui-radio';
 
-export default Ember.Component.extend(Checkbox, PromiseResolver, {
+export default Component.extend(Checkbox, PromiseResolver, {
   layout,
   type: 'radio',
   classNames: ['radio'],
@@ -15,9 +17,10 @@ export default Ember.Component.extend(Checkbox, PromiseResolver, {
   init() {
     this._super(...arguments);
 
-    if (Ember.isBlank(this.get('name'))) {
+    if (isBlank(this.get('name'))) {
       this.set('name', 'default');
-      Ember.Logger.warn("The required component parameter of 'name' was not passed into the ui-radio component");
+      // eslint-disable-next-line no-console
+      console.log("The required component parameter of 'name' was not passed into the ui-radio component");
     }
   },
 
@@ -49,7 +52,7 @@ export default Ember.Component.extend(Checkbox, PromiseResolver, {
       // for the hash to resolve each time
       if (isPromise(value)) {
         if (!isFulfilled(value)) {
-          return this.resolvePromise(Ember.RSVP.hash({ value, current }), this._checkValueAndCurrent);
+          return this.resolvePromise(hash({ value, current }), this._checkValueAndCurrent);
         } else {
           value = getPromiseContent(value);
         }
@@ -57,7 +60,7 @@ export default Ember.Component.extend(Checkbox, PromiseResolver, {
 
       if (isPromise(current)) {
         if (!isFulfilled(current)) {
-          return this.resolvePromise(Ember.RSVP.hash({ value, current }), this._checkValueAndCurrent);
+          return this.resolvePromise(hash({ value, current }), this._checkValueAndCurrent);
         } else {
           current = getPromiseContent(current);
         }
