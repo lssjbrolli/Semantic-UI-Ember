@@ -8,12 +8,13 @@ module.exports = {
       legacyDecorators: true
     }
   },
-  extends: "eslint:recommended",
+  plugins: ["ember"],
+  extends: ["eslint:recommended", "plugin:ember/octane"],
   env: {
     browser: true
   },
   rules: {
-    "ember/no-jquery": "error"
+    // "ember/no-jquery": "error"
   },
   overrides: [
     // node files
