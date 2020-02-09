@@ -3,6 +3,6 @@
 
 module.exports = function(environment, appConfig) {
   return {
-    SEMANTIC_UI_VERSION: '2.2'
+    SEMANTIC_UI_VERSION: '2.4'
   };
 };

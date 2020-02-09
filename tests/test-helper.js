@@ -1,9 +1,11 @@
-import $ from 'jquery';
-import resolver from './helpers/resolver';
-import { setResolver } from '@ember/test-helpers';
-import { start } from 'ember-cli-qunit';
+import Application from '../app';
+import config from '../config/environment';
+import { setApplication } from '@ember/test-helpers';
+import { start } from 'ember-qunit';
 
-setResolver(resolver);
+import $ from 'jquery';
+
+setApplication(Application.create(config.APP));
 
 $.fn.modal.settings.context = "#ember-testing";
 
