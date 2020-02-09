@@ -11,9 +11,10 @@
 This is the official Ember library for the Semantic-UI modules.
 
 ### Support
-The NodeJS and EmberJS versions respective tags are _tested_ on. It might work with versions not listed as well 
 
-#### 3.0 
+The NodeJS and EmberJS versions respective tags are _tested_ on. It might work with versions not listed as well
+
+#### 3.0
 
 ![](https://img.shields.io/badge/nodejs-6-brightgreen.svg)
 ![](https://img.shields.io/badge/nodejs-8-brightgreen.svg)
@@ -24,32 +25,32 @@ The NodeJS and EmberJS versions respective tags are _tested_ on. It might work w
 ![](https://img.shields.io/badge/ember--fastboot-1.0-4969B2.svg)
 
 #### 2.1
+
 ![](https://img.shields.io/badge/nodejs-6-brightgreen.svg)
 ![](https://img.shields.io/badge/ember-2.16-orange.svg)
 ![](https://img.shields.io/badge/ember-2.18-orange.svg)
 ![](https://img.shields.io/badge/ember--fastboot-1.0-4969B2.svg)
 
 #### 2.0
+
 ![](https://img.shields.io/badge/nodejs-6-brightgreen.svg)
 ![](https://img.shields.io/badge/ember-1.13-orange.svg)
 ![](https://img.shields.io/badge/ember-2.4-orange.svg)
 ![](https://img.shields.io/badge/ember-2.8-orange.svg)
 
-
 # Installation
 
 ### v3
 
-Install this through Ember CLI. We support Ember 2.12 LTS through 3.x 
+Install this through Ember CLI. We support Ember 2.12 LTS through 3.x
 
 ```
 ember install semantic-ui-ember
 ```
 
-
 ### v2.1
 
-Install this add-on through Ember CLI. We support Ember versions 2.x and above 
+Install this add-on through Ember CLI. We support Ember versions 2.x and above
 
 _NOTE: This is a `bower`-less install_
 
@@ -59,13 +60,11 @@ ember install semantic-ui-ember@2.1
 
 That's it.
 
-
 ### v2.0 and below only
 
-Install this add-on through Ember CLI. We support Ember versions 1.13 latest - 2.X.  
+Install this add-on through Ember CLI. We support Ember versions 1.13 latest - 2.X.
 
 _NOTE: Ember 2.x only **without** fastboot is supported_
-
 
 ```
 ember install semantic-ui-ember@2.0
