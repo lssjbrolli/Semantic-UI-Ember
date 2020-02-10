@@ -1,6 +1,8 @@
 import Component from '@ember/component';
 import BaseMixin from 'semantic-ui-ember/mixins/base';
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 let baseComponent = Component.extend(BaseMixin, {
@@ -19,20 +21,21 @@ let baseComponent = Component.extend(BaseMixin, {
   }
 });
 
-moduleForComponent('base-component', 'Unit | Component | base component', {
-  integration: true,
-  beforeEach() {
-    this.register('component:base-component', baseComponent);
-  }
-});
+module('Unit | Component | base component', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders and has right properties', function(assert) {
-  assert.expect(3);
+  hooks.beforeEach(function() {
+    this.owner.register('component:base-component', baseComponent);
+  });
 
-  this.render(hbs`
-    {{base-component class="base-component" title="semantic ui ember" tabindex=5 autofocus=true}}`);
+  test('it renders and has right properties', async function(assert) {
+    assert.expect(3);
 
-  assert.equal(this.$('.base-component').attr('title'), "semantic ui ember");
-  assert.equal(this.$('.base-component').attr('tabindex'), "5");
-  assert.equal(this.$('.base-component').attr('autofocus'), "autofocus");
+    await render(hbs`
+      {{base-component class="base-component" title="semantic ui ember" tabindex=5 autofocus=true}}`);
+
+    assert.equal(this.$('.base-component').attr('title'), "semantic ui ember");
+    assert.equal(this.$('.base-component').attr('tabindex'), "5");
+    assert.equal(this.$('.base-component').attr('autofocus'), "autofocus");
+  });
 });

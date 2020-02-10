@@ -1,26 +1,28 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('ui-sidebar', 'Integration | Component | ui sidebar', {
-  integration: true
-});
+module('Integration | Component | ui sidebar', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders as sub context', function(assert) {
-  assert.expect(2);
+  test('it renders as sub context', async function(assert) {
+    assert.expect(2);
 
-  this.render(hbs`
-    <div class="component context">
-      {{#ui-sidebar context=".component.context"}}
-        <a class="item">1</a>
-        <a class="item">2</a>
-        <a class="item">3</a>
-      {{/ui-sidebar}}
-      <div class="pusher">
-        Main Content here
+    await render(hbs`
+      <div class="component context">
+        {{#ui-sidebar context=".component.context"}}
+          <a class="item">1</a>
+          <a class="item">2</a>
+          <a class="item">3</a>
+        {{/ui-sidebar}}
+        <div class="pusher">
+          Main Content here
+        </div>
       </div>
-    </div>
-  `);
+    `);
 
-  assert.equal(this.$('.ui.sidebar').length, 1);
-  assert.equal(this.$('.ui.sidebar a').length, 3);
+    assert.equal(this.$('.ui.sidebar').length, 1);
+    assert.equal(this.$('.ui.sidebar a').length, 3);
+  });
 });
