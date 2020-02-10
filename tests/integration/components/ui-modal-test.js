@@ -1,151 +1,158 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('ui-modal', 'Integration | Component | ui modal', {
-  integration: true
-});
+module('Integration | Component | ui modal', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  assert.expect(1);
-
-  this.render(hbs`
-    {{ui-modal name='profile'}}
-  `);
-
-  assert.equal(this.$('.ui.modal').length, 1);
-});
-
-test('it will show if triggered', function(assert) {
-  assert.expect(3);
-
-  let done = assert.async();
-
-  this.on('openModal', () => {
-    this.$('.ui.modal').modal('show', () => {
-      assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after showing");
-      done();
-    });
+  hooks.beforeEach(function() {
+    this.actions = {};
+    this.send = (actionName, ...args) => this.actions[actionName].apply(this, args);
   });
 
-  this.render(hbs`
-    <div class="ui button" {{action 'openModal' 'profile'}}>
-      Open
-    </div>
+  test('it renders', async function(assert) {
+    assert.expect(1);
 
-    {{ui-modal name='profile'}}
-  `);
+    await render(hbs`
+      {{ui-modal name='profile'}}
+    `);
 
-  assert.equal(this.$('.ui.modal').length, 1, ".ui.modal exists");
-  assert.equal(this.$('.ui.modal.visible').length, 0, ".ui.modal is not visible");
-
-  this.$('.ui.button').click();
-});
-
-test('it will send approve back to controller and hide', function(assert) {
-  assert.expect(3);
-
-  let done = assert.async();
-
-  this.on('openModal', () => {
-    this.$('.ui.modal').modal('show', () => {
-      assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after showing");
-      this.$('.ui.modal .ui.positive.button').click();
-    });
+    assert.equal(this.$('.ui.modal').length, 1);
   });
 
-  this.on('approve', function(element, component) {
-    var name = component.get('name');
-    assert.equal('profile', name, 'approve is called');
-    setTimeout(() => {
-      assert.equal(this.$('.ui.modal.visible').length, 0, ".ui.modal is not visible after clicking");
-      done();
-    }, 1000);
-    return true;
-  });
+  test('it will show if triggered', async function(assert) {
+    assert.expect(3);
 
-  this.render(hbs`
-    <div class="ui open button" {{action 'openModal' 'profile'}}>
-      Open
-    </div>
+    let done = assert.async();
 
-    {{#ui-modal name='profile' onApprove=(action 'approve')}}
-      <div class="actions">
-        <div class="ui negative button">No</div>
-        <div class="ui positive button">Yes</div>
+    this.actions.openModal = () => {
+      this.$('.ui.modal').modal('show', () => {
+        assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after showing");
+        done();
+      });
+    };
+
+    await render(hbs`
+      <div class="ui button" {{action 'openModal' 'profile'}}>
+        Open
       </div>
-    {{/ui-modal}}
-  `);
 
-  this.$('.ui.open.button').click();
-});
+      {{ui-modal name='profile'}}
+    `);
 
-test('it will send approve back to controller and skip the hide', function(assert) {
-  assert.expect(3);
+    assert.equal(this.$('.ui.modal').length, 1, ".ui.modal exists");
+    assert.equal(this.$('.ui.modal.visible').length, 0, ".ui.modal is not visible");
 
-  let done = assert.async();
-
-  this.on('openModal', () => {
-    this.$('.ui.modal').modal('show', () => {
-      assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after showing");
-      this.$('.ui.modal .ui.positive.button').click();
-    });
+    this.$('.ui.button').click();
   });
 
-  this.on('approve', function(element, component) {
-    var name = component.get('name');
-    assert.equal('profile', name, 'approve is called');
-    setTimeout(() => {
-      assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after clicking");
+  test('it will send approve back to controller and hide', async function(assert) {
+    assert.expect(3);
+
+    let done = assert.async();
+
+    this.actions.openModal = () => {
+      this.$('.ui.modal').modal('show', () => {
+        assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after showing");
+        this.$('.ui.modal .ui.positive.button').click();
+      });
+    };
+
+    this.actions.approve = function(element, component) {
+      var name = component.get('name');
+      assert.equal('profile', name, 'approve is called');
+      setTimeout(() => {
+        assert.equal(this.$('.ui.modal.visible').length, 0, ".ui.modal is not visible after clicking");
+        done();
+      }, 1000);
+      return true;
+    };
+
+    await render(hbs`
+      <div class="ui open button" {{action 'openModal' 'profile'}}>
+        Open
+      </div>
+
+      {{#ui-modal name='profile' onApprove=(action 'approve')}}
+        <div class="actions">
+          <div class="ui negative button">No</div>
+          <div class="ui positive button">Yes</div>
+        </div>
+      {{/ui-modal}}
+    `);
+
+    this.$('.ui.open.button').click();
+  });
+
+  test('it will send approve back to controller and skip the hide', async function(assert) {
+    assert.expect(3);
+
+    let done = assert.async();
+
+    this.actions.openModal = () => {
+      this.$('.ui.modal').modal('show', () => {
+        assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after showing");
+        this.$('.ui.modal .ui.positive.button').click();
+      });
+    };
+
+    this.actions.approve = function(element, component) {
+      var name = component.get('name');
+      assert.equal('profile', name, 'approve is called');
+      setTimeout(() => {
+        assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after clicking");
+        done();
+      }, 1000);
+      return false;
+    };
+
+    await render(hbs`
+      <div class="ui open button" {{action 'openModal' 'profile'}}>
+        Open
+      </div>
+
+      {{#ui-modal name='profile' onApprove=(action 'approve')}}
+        <div class="actions">
+          <div class="ui negative button">No</div>
+          <div class="ui positive button">Yes</div>
+        </div>
+      {{/ui-modal}}
+    `);
+
+    this.$('.ui.open.button').click();
+  });
+
+  test('it will send deny back to controller', async function(assert) {
+    assert.expect(1);
+
+    let done = assert.async();
+
+    this.actions.openModal = () => {
+      this.$('.ui.modal').modal('show', () => {
+        this.$('.ui.modal.negative').click();
+      });
+    };
+
+    this.actions.deny = function(element, component) {
+      var name = component.get('name');
+      assert.equal('profile', name);
       done();
-    }, 1000);
-    return false;
-  });
+    };
 
-  this.render(hbs`
-    <div class="ui open button" {{action 'openModal' 'profile'}}>
-      Open
-    </div>
-
-    {{#ui-modal name='profile' onApprove=(action 'approve')}}
-      <div class="actions">
-        <div class="ui negative button">No</div>
-        <div class="ui positive button">Yes</div>
+    await render(hbs`
+      <div class="ui button" {{action 'openModal' 'profile'}}>
+        Open
       </div>
-    {{/ui-modal}}
-  `);
 
-  this.$('.ui.open.button').click();
-});
+      {{#ui-modal name='profile' onDeny=(action 'deny')}}
+        <div class="actions">
+          <div class="ui negative button">No</div>
+          <div class="ui positive button">Yes</div>
+        </div>
+      {{/ui-modal}}
+    `);
 
-test('it will send deny back to controller', function(assert) {
-  assert.expect(1);
-
-  let done = assert.async();
-
-  this.on('openModal', () => {
-    this.$('.ui.modal').modal('show', () => {
-      this.$('.ui.modal.negative').click();
-    });
+    this.$('.ui.button').click();
   });
-
-  this.on('deny', function(element, component) {
-    var name = component.get('name');
-    assert.equal('profile', name);
-    done();
-  });
-
-  this.render(hbs`
-    <div class="ui button" {{action 'openModal' 'profile'}}>
-      Open
-    </div>
-
-    {{#ui-modal name='profile' onDeny=(action 'deny')}}
-      <div class="actions">
-        <div class="ui negative button">No</div>
-        <div class="ui positive button">Yes</div>
-      </div>
-    {{/ui-modal}}
-  `);
-
-  this.$('.ui.button').click();
 });
