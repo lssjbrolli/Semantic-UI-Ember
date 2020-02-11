@@ -1,12 +1,12 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render, focus, findAll, fillIn } from "@ember/test-helpers";
+import hbs from "htmlbars-inline-precompile";
 
-module('Integration | Component | ui search', function(hooks) {
+module("Integration | Component | ui search", function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
+  test("it renders", async function(assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -16,19 +16,16 @@ module('Integration | Component | ui search', function(hooks) {
       {{/ui-search}}
     `);
 
-    assert.equal(this.$('.ui.search').length, 1);
+    assert.equal(findAll(".ui.search").length, 1);
   });
 
-  test('searching content works', async function(assert) {
+  test("searching content works", async function(assert) {
     assert.expect(5);
 
-    this.set('commonPasswords', [
-      { title: "bobby" },
-      { title: "12345" }
-    ]);
+    this.set("commonPasswords", [{ title: "bobby" }, { title: "12345" }]);
 
-    this.set('query', null);
-    this.set('selected', null);
+    this.set("query", null);
+    this.set("selected", null);
 
     await render(hbs`
       {{#ui-search source=commonPasswords onSearchQuery=(action (mut query)) onSelect=(action (mut selected))}}
@@ -37,25 +34,25 @@ module('Integration | Component | ui search', function(hooks) {
       {{/ui-search}}
     `);
 
-    assert.equal(this.$('.ui.search').length, 1);
-    assert.equal(this.get('query'), null);
-    assert.equal(this.get('selected'), null);
+    assert.equal(findAll(".ui.search").length, 1);
+    assert.equal(this.query, null);
+    assert.equal(this.selected, null);
 
-    this.$('input').focus();
-    this.$('input').val('123');
-    this.$('.ui.search').search('query');
+    await focus("input");
+    await fillIn("input", "123");
+    this.$(".ui.search").search("query");
 
-    assert.equal(this.get('query'), "123");
+    assert.equal(this.query, "123");
 
-    this.$('.ui.search').search('show results');
+    this.$(".ui.search").search("show results");
 
     let done = assert.async();
 
     setTimeout(() => {
-      this.$('.result').addClass('active');
-      this.$('input').trigger(window.jQuery.Event('keydown', { which: 13 }));
+      this.$(".result").addClass("active");
+      this.$("input").trigger(window.jQuery.Event("keydown", { which: 13 }));
 
-      assert.equal(this.get('selected.title'), "12345");
+      assert.equal(this.get("selected.title"), "12345");
       done();
     }, 500);
   });

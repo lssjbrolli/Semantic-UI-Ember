@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, find, findAll } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | ui embed', function(hooks) {
@@ -13,8 +13,8 @@ module('Integration | Component | ui embed', function(hooks) {
       {{ui-embed data-source="youtube" data-id="pfdu_gTry8E"}}
     `);
 
-    assert.equal(this.$('.ui.embed .embed iframe').length, 1);
-    let src = this.$('.ui.embed .embed iframe').attr('src');
+    assert.equal(findAll('.ui.embed .embed iframe').length, 1);
+    let src = find('.ui.embed .embed iframe').getAttribute('src');
     assert.ok(src.indexOf('youtube.com') >= 0);
   });
 
@@ -25,8 +25,8 @@ module('Integration | Component | ui embed', function(hooks) {
       {{ui-embed data-url="https://www.youtube.com/embed/pfdu_gTry8E"}}
     `);
 
-    assert.equal(this.$('.ui.embed .embed iframe').length, 1);
-    let src = this.$('.ui.embed .embed iframe').attr('src');
+    assert.equal(findAll('.ui.embed .embed iframe').length, 1);
+    let src = find('.ui.embed .embed iframe').getAttribute('src');
     assert.ok(src.indexOf('youtube.com') >= 0);
   });
 
@@ -37,8 +37,8 @@ module('Integration | Component | ui embed', function(hooks) {
       {{ui-embed url="https://www.youtube.com/embed/pfdu_gTry8E"}}
     `);
 
-    assert.equal(this.$('.ui.embed .embed iframe').length, 1);
-    let src = this.$('.ui.embed .embed iframe').attr('src');
+    assert.equal(findAll('.ui.embed .embed iframe').length, 1);
+    let src = find('.ui.embed .embed iframe').getAttribute('src');
     assert.ok(src.indexOf('youtube.com') >= 0);
   });
 });

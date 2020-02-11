@@ -1,14 +1,14 @@
-import { run } from '@ember/runloop';
-import { A } from '@ember/array';
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { run } from "@ember/runloop";
+import { A } from "@ember/array";
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render, click, findAll } from "@ember/test-helpers";
+import hbs from "htmlbars-inline-precompile";
 
-module('Integration | Component | ui accordion', function(hooks) {
+module("Integration | Component | ui accordion", function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
+  test("it renders", async function(assert) {
     assert.expect(2);
 
     await render(hbs`
@@ -29,11 +29,11 @@ module('Integration | Component | ui accordion', function(hooks) {
     `);
 
     // Test default state
-    assert.equal(this.$('.ui.accordion').length, 1);
-    assert.equal(this.$('.ui.accordion .active').length, 0);
+    assert.equal(findAll(".ui.accordion").length, 1);
+    assert.equal(findAll(".ui.accordion .active").length, 0);
   });
 
-  test('clicking activates title', async function(assert) {
+  test("clicking activates title", async function(assert) {
     assert.expect(2);
 
     await render(hbs`
@@ -54,15 +54,15 @@ module('Integration | Component | ui accordion', function(hooks) {
     `);
 
     // Test clicking activates accordion
-    this.$('.ui.accordion [data-id=title-2]').click();
-    assert.equal(this.$('.ui.accordion [data-id=title-2].active').length, 1);
-    assert.equal(this.$('.ui.accordion .active').length, 1);
+    await click(".ui.accordion [data-id=title-2]");
+    assert.equal(findAll(".ui.accordion [data-id=title-2].active").length, 1);
+    assert.equal(findAll(".ui.accordion .active").length, 1);
   });
 
-  test('dynamically added content is clickable', async function(assert) {
+  test("dynamically added content is clickable", async function(assert) {
     assert.expect(7);
 
-    this.set('panes', A([]));
+    this.set("panes", A([]));
 
     await render(hbs`
       {{#ui-accordion class="styled"}}
@@ -89,24 +89,27 @@ module('Integration | Component | ui accordion', function(hooks) {
       {{/ui-accordion}}
     `);
 
-    assert.equal(this.$('.ui.accordion').length, 1);
-    assert.equal(this.$('.ui.accordion .title').length, 2);
-    assert.equal(this.$('.ui.accordion .content').length, 2);
+    assert.equal(findAll(".ui.accordion").length, 1);
+    assert.equal(findAll(".ui.accordion .title").length, 2);
+    assert.equal(findAll(".ui.accordion .content").length, 2);
 
     run(() => {
-      this.get('panes').pushObjects([1,2]);
+      this.panes.pushObjects([1, 2]);
     });
 
-    assert.equal(this.$('.ui.accordion .title').length, 4);
-    assert.equal(this.$('.ui.accordion .content').length, 4);
+    assert.equal(findAll(".ui.accordion .title").length, 4);
+    assert.equal(findAll(".ui.accordion .content").length, 4);
 
     // Test clicking activates accordion
-    this.$('.ui.accordion [data-id=extra-title-1]').click();
-    assert.equal(this.$('.ui.accordion [data-id=extra-title-1].active').length, 1);
-    assert.equal(this.$('.ui.accordion .active').length, 1);
+    await click(".ui.accordion [data-id=extra-title-1]");
+    assert.equal(
+      findAll(".ui.accordion [data-id=extra-title-1].active").length,
+      1
+    );
+    assert.equal(findAll(".ui.accordion .active").length, 1);
   });
 
-  test('exclusive false allows more than one active title', async function(assert) {
+  test("exclusive false allows more than one active title", async function(assert) {
     assert.expect(4);
 
     await render(hbs`
@@ -127,16 +130,16 @@ module('Integration | Component | ui accordion', function(hooks) {
     `);
 
     // Test clicking activates accordion
-    this.$('.ui.accordion [data-id=title-2]').click();
-    assert.equal(this.$('.ui.accordion [data-id=title-2].active').length, 1);
-    assert.equal(this.$('.ui.accordion .active').length, 1);
+    await click(".ui.accordion [data-id=title-2]");
+    assert.equal(findAll(".ui.accordion [data-id=title-2].active").length, 1);
+    assert.equal(findAll(".ui.accordion .active").length, 1);
 
-    this.$('.ui.accordion [data-id=title-1]').click();
-    assert.equal(this.$('.ui.accordion [data-id=title-1].active').length, 1);
-    assert.equal(this.$('.ui.accordion .active').length, 2);
+    await click(".ui.accordion [data-id=title-1]");
+    assert.equal(findAll(".ui.accordion [data-id=title-1].active").length, 1);
+    assert.equal(findAll(".ui.accordion .active").length, 2);
   });
 
-  test('collapsible false allows doesnt allow active to close', async function(assert) {
+  test("collapsible false allows doesnt allow active to close", async function(assert) {
     assert.expect(4);
 
     await render(hbs`
@@ -156,17 +159,17 @@ module('Integration | Component | ui accordion', function(hooks) {
       {{/ui-accordion}}
     `);
 
-    assert.equal(this.$('.ui.accordion .active').length, 0);
+    assert.equal(findAll(".ui.accordion .active").length, 0);
     // Test clicking activates accordion
-    this.$('.ui.accordion [data-id=title-2]').click();
-    assert.equal(this.$('.ui.accordion [data-id=title-2].active').length, 1);
-    assert.equal(this.$('.ui.accordion .active').length, 1);
+    await click(".ui.accordion [data-id=title-2]");
+    assert.equal(findAll(".ui.accordion [data-id=title-2].active").length, 1);
+    assert.equal(findAll(".ui.accordion .active").length, 1);
 
-    this.$('.ui.accordion [data-id=title-2]').click();
-    assert.equal(this.$('.ui.accordion .active').length, 1);
+    await click(".ui.accordion [data-id=title-2]");
+    assert.equal(findAll(".ui.accordion .active").length, 1);
   });
 
-  test('composable action closes open tab', async function(assert) {
+  test("composable action closes open tab", async function(assert) {
     assert.expect(4);
 
     await render(hbs`
@@ -188,18 +191,18 @@ module('Integration | Component | ui accordion', function(hooks) {
       {{/ui-accordion}}
     `);
 
-    assert.equal(this.$('.ui.accordion .active').length, 0);
+    assert.equal(findAll(".ui.accordion .active").length, 0);
     // Test clicking activates accordion
-    this.$('.ui.accordion [data-id=title-2]').click();
-    assert.equal(this.$('.ui.accordion [data-id=title-2].active').length, 1);
-    assert.equal(this.$('.ui.accordion .active').length, 1);
+    await click(".ui.accordion [data-id=title-2]");
+    assert.equal(findAll(".ui.accordion [data-id=title-2].active").length, 1);
+    assert.equal(findAll(".ui.accordion .active").length, 1);
 
-    this.$('.ui.accordion [data-id=content-2-button]').click();
+    await click(".ui.accordion [data-id=content-2-button]");
 
     let done = assert.async();
 
     setTimeout(() => {
-      assert.equal(this.$('.ui.accordion .active').length, 0);
+      assert.equal(findAll(".ui.accordion .active").length, 0);
       done();
     }, 500);
   });

@@ -1,12 +1,12 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render, findAll } from "@ember/test-helpers";
+import hbs from "htmlbars-inline-precompile";
 
-module('Integration | Component | ui sticky', function(hooks) {
+module("Integration | Component | ui sticky", function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
+  test("it renders", async function(assert) {
     assert.expect(3);
 
     await render(hbs`
@@ -15,8 +15,8 @@ module('Integration | Component | ui sticky', function(hooks) {
       {{/ui-sticky}}
     `);
 
-    assert.equal(this.$('.ui.sticky').length, 1);
-    assert.ok(this.$('.ui.sticky').css('width') !== undefined);
-    assert.ok(this.$('.ui.sticky').css('height') !== undefined);
+    assert.equal(findAll(".ui.sticky").length, 1);
+    assert.ok(find(".ui.sticky").style.width !== undefined);
+    assert.ok(find(".ui.sticky").style.height !== undefined);
   });
 });

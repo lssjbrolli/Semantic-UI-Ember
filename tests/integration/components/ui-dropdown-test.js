@@ -1,29 +1,27 @@
-import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
-import ObjectProxy from '@ember/object/proxy';
-import { defer } from 'rsvp';
-import { begin, end } from '@ember/runloop';
-import EmberObject from '@ember/object';
-import { A } from '@ember/array';
-import $ from 'jquery';
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render, settled } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
-import afterRender from 'dummy/tests/helpers/after-render';
+import PromiseProxyMixin from "@ember/object/promise-proxy-mixin";
+import ObjectProxy from "@ember/object/proxy";
+import { defer } from "rsvp";
+import { begin, end } from "@ember/runloop";
+import { A } from "@ember/array";
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render, settled, click, find, findAll } from "@ember/test-helpers";
+import hbs from "htmlbars-inline-precompile";
+import afterRender from "dummy/tests/helpers/after-render";
 
-module('Integration | Component | ui dropdown', function(hooks) {
+module("Integration | Component | ui dropdown", function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders from an array', async function(assert) {
+  test("it renders from an array", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('people', [ "Sherlock Homes", "Patrick Bateman" ]);
+    this.set("people", ["Sherlock Homes", "Patrick Bateman"]);
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed)}}
         <div class='menu'>
@@ -34,28 +32,62 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2);
-    assert.equal(this.get('selected'), undefined);
+    assert.equal(findAll(".item").length, 2);
+    assert.equal(this.selected, undefined);
 
-    this.$(".menu .item[data-value='Sherlock Homes']").click();
-    assert.equal(this.get('selected'), 'Sherlock Homes');
-    assert.equal(count, 1, 'onChange should have been called only once');
+    await click(".menu .item[data-value='Sherlock Homes']");
+    assert.equal(this.selected, "Sherlock Homes");
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test('it renders from an object array', async function(assert) {
+  test("it renders from an object array", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('people', [
+    this.set("people", [
       { id: 1, name: "Sherlock Homes" },
       { id: 2, name: "Patrick Bateman" }
     ]);
 
+    await render(hbs`
+      {{#ui-dropdown selected=selected onChange=(action changed)}}
+        <div class='menu'>
+        <p> mega test </p>
+        {{#each people as |person|}}
+          <div class='item' data-value={{person.id}}>{{person.name}}</div>
+        {{/each}}
+        </div>
+      {{/ui-dropdown}}
+    `);
+
+    assert.equal(findAll(".item").length, 2);
+    assert.equal(this.selected, undefined);
+
+    await click(".menu .item[data-value='1']");
+    assert.equal(this.selected, 1);
+    assert.equal(count, 1, "onChange should have been called only once");
+  });
+
+  test("it renders with an option selected", async function(assert) {
+    assert.expect(4);
+
+    let count = 0;
+    this.set("changed", value => {
+      this.set("selected", value);
+      count++;
+    });
+
+    this.set("people", [
+      { id: 1, name: "Sherlock Homes" },
+      { id: 2, name: "Patrick Bateman" }
+    ]);
+
+    this.set("selected", 2);
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed)}}
         <div class='menu'>
@@ -66,57 +98,24 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2);
-    assert.equal(this.get('selected'), undefined);
+    assert.equal(findAll(".item").length, 2);
+    assert.equal(this.selected, 2);
 
-    this.$(".menu .item[data-value=1]").click();
-    assert.equal(this.get('selected'), 1);
-    assert.equal(count, 1, 'onChange should have been called only once');
+    await click(".menu .item[data-value='1']");
+    assert.equal(this.selected, 1);
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test('it renders with an option selected', async function(assert) {
+  test("it renders multiple", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('people', [
-      { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
-    ]);
-
-    this.set('selected', 2);
-    await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed)}}
-        <div class='menu'>
-        {{#each people as |person|}}
-          <div class='item' data-value={{person.id}}>{{person.name}}</div>
-        {{/each}}
-        </div>
-      {{/ui-dropdown}}
-    `);
-
-    assert.equal(this.$('.item').length, 2);
-    assert.equal(this.get('selected'), 2);
-
-    this.$(".menu .item[data-value=1]").click();
-    assert.equal(this.get('selected'), 1);
-    assert.equal(count, 1, 'onChange should have been called only once');
-  });
-
-  test('it renders multiple', async function(assert) {
-    assert.expect(4);
-
-    let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
-      count++;
-    });
-
-    this.set('people', [
+    this.set("people", [
       { id: 1, name: "Sherlock Homes" },
       { id: 2, name: "Patrick Bateman" }
     ]);
@@ -131,26 +130,26 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2);
-    assert.equal(this.get('selected'), undefined);
+    assert.equal(findAll(".item").length, 2);
+    assert.equal(this.selected, undefined);
 
-    this.$(".menu .item[data-value=1]").click();
-    this.$(".menu .item[data-value=2]").click();
-    assert.equal(this.get('selected'), '1,2');
-    assert.equal(count, 2, 'onChange should have been called only once');
+    await click(".menu .item[data-value='1']");
+    await click(".menu .item[data-value='2']");
+    assert.equal(this.selected, "1,2");
+    assert.equal(count, 2, "onChange should have been called only once");
   });
 
-  test('it sets the value from the binding', async function(assert) {
+  test("it sets the value from the binding", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('people_id', 2);
-    this.set('people', [
+    this.set("people_id", 2);
+    this.set("people", [
       { id: 1, name: "Sherlock Homes" },
       { id: 2, name: "Patrick Bateman" }
     ]);
@@ -167,23 +166,23 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2);
-    assert.equal(this.$('.item.selected').length, 1);
-    assert.equal(this.$('.item.selected').data('value'), 2);
-    assert.equal(count, 0, 'onChange should have not been called');
+    assert.equal(findAll(".item").length, 2);
+    assert.equal(findAll(".item.selected").length, 1);
+    assert.equal(find(".item.selected").dataset.value, 2);
+    assert.equal(count, 0, "onChange should have not been called");
   });
 
-  test('it updates the value if updated from the binding', async function(assert) {
+  test("it updates the value if updated from the binding", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('people_id', 2);
-    this.set('people', [
+    this.set("people_id", 2);
+    this.set("people", [
       { id: 1, name: "Sherlock Homes" },
       { id: 2, name: "Patrick Bateman" }
     ]);
@@ -200,27 +199,27 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2);
+    assert.equal(findAll(".item").length, 2);
 
-    this.set('people_id', 1);
-    assert.equal(this.$('.item.selected').data('value'), 1);
+    this.set("people_id", 1);
+    assert.equal(find(".item.selected").dataset.value, 1);
 
-    $(this.$('.item')[0]).click();
-    assert.equal(this.get('people_id'), 1);
-    assert.equal(count, 1, 'onChange should have been called only once');
+    await click(".item");
+    assert.equal(this.people_id, 1);
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test('it can set the selected value without binding for full DDAU', async function(assert) {
+  test("it can set the selected value without binding for full DDAU", async function(assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('people_id', value);
+    this.set("changed", value => {
+      this.set("people_id", value);
       count++;
     });
 
-    this.set('people_id', 2);
-    this.set('people', [
+    this.set("people_id", 2);
+    this.set("people", [
       { id: 1, name: "Sherlock Homes" },
       { id: 2, name: "Patrick Bateman" }
     ]);
@@ -238,28 +237,31 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2);
-    assert.equal(this.$('.item.selected').length, 0);
+    assert.equal(findAll(".item").length, 2);
+    assert.equal(findAll(".item.selected").length, 0);
 
-    $(this.$('.item')[0]).click();
-    assert.equal(this.$('.item.selected').data('value'), 1);
-    assert.equal(this.get('people_id'), 1);
-    assert.equal(count, 1, 'onChange should have been called only once');
+    await click(find(".item"));
+    assert.equal(find(".item.selected").dataset.value, 1);
+    assert.equal(this.people_id, 1);
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test('it renders and clears the value if it changes and isnt found', async function(assert) {
+  test("it renders and clears the value if it changes and isnt found", async function(assert) {
     assert.expect(11);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected.id', value);
+    this.set("changed", value => {
+      this.set("selected.id", value);
       count++;
     });
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
-    ]));
+    this.set(
+      "people",
+      A([
+        { id: 1, name: "Sherlock Homes" },
+        { id: 2, name: "Patrick Bateman" }
+      ])
+    );
 
     await render(hbs`
       {{#ui-dropdown selected=selected.id onChange=(action changed)}}
@@ -273,44 +275,58 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.get('selected'), undefined, "Nothing is selected");
-    assert.equal(this.$('.ui.dropdown > .text').text(), '', "Default text isn't blank");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(this.selected, undefined, "Nothing is selected");
+    assert.equal(
+      find(".ui.dropdown > .text").textContent,
+      "",
+      "Default text isn't blank"
+    );
 
-    this.set('selected', this.get('people').objectAt(1));
-    assert.equal(this.$('.item.active').text(), "Patrick Bateman");
-    assert.equal(this.$('.ui.dropdown > .text').text(), 'Patrick Bateman', "Default text isn't correct");
+    this.set("selected", this.people.objectAt(1));
+    assert.equal(find(".item.active").textContent, "Patrick Bateman");
+    assert.equal(
+      find(".ui.dropdown > .text").textContent,
+      "Patrick Bateman",
+      "Default text isn't correct"
+    );
 
-    this.$(".menu .item[data-value=1]").click();
-    assert.equal(this.get('selected.id'), "1", "Sherlock has been selected");
+    await click(".menu .item[data-value='1']");
+    assert.equal(this.selected.id, "1", "Sherlock has been selected");
 
     // Now clear the property
-    this.set('selected', null);
+    this.set("selected", null);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0);
-    assert.equal(this.$('.ui.dropdown > .text').text(), '', "Default text isn't blank");
-    assert.equal(this.get('selected'), undefined, "Nothing is selected");
-    assert.equal(count, 1, 'onChange should have been called only once');
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(findAll(".item.active").length, 0);
+    assert.equal(
+      find(".ui.dropdown > .text").textContent,
+      "",
+      "Default text isn't blank"
+    );
+    assert.equal(this.selected, undefined, "Nothing is selected");
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-
-  ///
-  // Object mapping
-  ///
-  test('it renders from a mapper', async function(assert) {
+  // ///
+  // // Object mapping
+  // ///
+  test("it renders from a mapper", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
-    ]));
+    this.set(
+      "people",
+      A([
+        { id: 1, name: "Sherlock Homes" },
+        { id: 2, name: "Patrick Bateman" }
+      ])
+    );
 
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
@@ -322,30 +338,32 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.get('selected'), undefined, "Nothing is selected");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(this.selected, undefined, "Nothing is selected");
 
-    this.$(".menu .item[data-id=1]").click();
-    assert.equal(this.get('selected.id'), "1", "Sherlock has been selected");
-    assert.equal(count, 1, 'onChange should have been called only once');
+    await click(".menu .item[data-id='1']");
+    assert.equal(this.selected.id, "1", "Sherlock has been selected");
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-
-  test('it renders from a mapper and preselects the right value', async function(assert) {
+  test("it renders from a mapper and preselects the right value", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
-    ]));
+    this.set(
+      "people",
+      A([
+        { id: 1, name: "Sherlock Homes" },
+        { id: 2, name: "Patrick Bateman" }
+      ])
+    );
 
-    this.set('selected', this.get('people').objectAt(1));
+    this.set("selected", this.people.objectAt(1));
 
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
@@ -357,27 +375,30 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.get('selected.id'), "2", "Patrick has been selected");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(this.selected.id, "2", "Patrick has been selected");
 
-    this.$(".menu .item[data-id=1]").click();
-    assert.equal(this.get('selected.id'), "1", "Sherlock has been selected");
-    assert.equal(count, 1, 'onChange should have been called only once');
+    await click(".menu .item[data-id='1']");
+    assert.equal(this.selected.id, "1", "Sherlock has been selected");
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test('it renders from a mapper and selects the right value if late', async function(assert) {
+  test("it renders from a mapper and selects the right value if late", async function(assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
-    ]));
+    this.set(
+      "people",
+      A([
+        { id: 1, name: "Sherlock Homes" },
+        { id: 2, name: "Patrick Bateman" }
+      ])
+    );
 
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
@@ -389,30 +410,33 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.get('selected'), undefined, "Nothing is selected");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(this.selected, undefined, "Nothing is selected");
 
-    this.set('selected', this.get('people').objectAt(1));
-    assert.equal(this.$('.item.active').text(), "Patrick Bateman");
+    this.set("selected", this.people.objectAt(1));
+    assert.equal(find(".item.active").textContent, "Patrick Bateman");
 
-    this.$(".menu .item[data-id=1]").click();
-    assert.equal(this.get('selected.id'), "1", "Sherlock has been selected");
-    assert.equal(count, 1, 'onChange should have been called only once');
+    await click(".menu .item[data-id='1']");
+    assert.equal(this.selected.id, "1", "Sherlock has been selected");
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test('it renders from a mapper and clears the value if it changes and isnt found', async function(assert) {
+  test("it renders from a mapper and clears the value if it changes and isnt found", async function(assert) {
     assert.expect(11);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
-    ]));
+    this.set(
+      "people",
+      A([
+        { id: 1, name: "Sherlock Homes" },
+        { id: 2, name: "Patrick Bateman" }
+      ])
+    );
 
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
@@ -426,40 +450,55 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.get('selected'), undefined, "Nothing is selected");
-    assert.equal(this.$('.ui.dropdown > .text').text(), '', "Default text isn't blank");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(this.selected, undefined, "Nothing is selected");
+    assert.equal(
+      find(".ui.dropdown > .text").textContent,
+      "",
+      "Default text isn't blank"
+    );
 
-    this.set('selected', this.get('people').objectAt(1));
-    assert.equal(this.$('.item.active').text(), "Patrick Bateman");
-    assert.equal(this.$('.ui.dropdown > .text').text(), 'Patrick Bateman', "Default text isn't correct");
+    this.set("selected", this.people.objectAt(1));
+    assert.equal(find(".item.active").textContent, "Patrick Bateman");
+    assert.equal(
+      find(".ui.dropdown > .text").textContent,
+      "Patrick Bateman",
+      "Default text isn't correct"
+    );
 
-    this.$(".menu .item[data-id=1]").click();
-    assert.equal(this.get('selected.id'), "1", "Sherlock has been selected");
+    await click(".menu .item[data-id='1']");
+    assert.equal(this.selected.id, "1", "Sherlock has been selected");
 
     // Now clear the property
-    this.set('selected', null);
+    this.set("selected", null);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0);
-    assert.equal(this.$('.ui.dropdown > .text').text(), '', "Default text isn't blank");
-    assert.equal(this.get('selected'), undefined, "Nothing is selected");
-    assert.equal(count, 1, 'onChange should have been called only once');
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(findAll(".item.active").length, 0);
+    assert.equal(
+      find(".ui.dropdown > .text").textContent,
+      "",
+      "Default text isn't blank"
+    );
+    assert.equal(this.selected, undefined, "Nothing is selected");
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test('it renders from a mapper and clears the value if it changes and isnt found on sub property', async function(assert) {
+  test("it renders from a mapper and clears the value if it changes and isnt found on sub property", async function(assert) {
     assert.expect(8);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected.sub', value);
+    this.set("changed", value => {
+      this.set("selected.sub", value);
       count++;
     });
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
-    ]));
+    this.set(
+      "people",
+      A([
+        { id: 1, name: "Sherlock Homes" },
+        { id: 2, name: "Patrick Bateman" }
+      ])
+    );
 
     await render(hbs`
       {{#ui-dropdown selected=selected.sub onChange=(action changed) as |execute mapper|}}
@@ -471,39 +510,36 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    let selected = EmberObject.create({ sub: this.get('people').objectAt(1) });
+    let selected = { sub: this.people.objectAt(1) };
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.get('selected.sub'), undefined, "Nothing is selected");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(this.selected?.sub, undefined, "Nothing is selected");
 
-    this.set('selected', selected);
-    assert.equal(this.$('.item.active').text(), "Patrick Bateman");
+    this.set("selected", selected);
+    assert.equal(find(".item.active").textContent, "Patrick Bateman");
 
-    this.$(".menu .item[data-id=1]").click();
-    assert.equal(this.get('selected.sub.id'), "1", "Sherlock has been selected");
+    await click(".menu .item[data-id='1']");
+    assert.equal(this.selected.sub.id, "1", "Sherlock has been selected");
 
     // Now clear the property
-    this.set('selected.sub', null);
+    this.set("selected.sub", null);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0);
-    assert.equal(this.get('selected.sub'), undefined, "Nothing is selected");
-    assert.equal(count, 1, 'onChange should have been called only once');
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(findAll(".item.active").length, 0);
+    assert.equal(this.selected.sub, undefined, "Nothing is selected");
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test('it renders from a mapper and binds to value', async function(assert) {
+  test("it renders from a mapper and binds to value", async function(assert) {
     assert.expect(8);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('numbers', A([
-      1,
-      2
-    ]));
+    this.set("numbers", A([1, 2]));
 
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
@@ -515,42 +551,36 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.get('selected'), undefined, "Nothing is selected");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(this.selected, undefined, "Nothing is selected");
 
-    this.set('selected', 2);
-    assert.equal(this.$('.item.active').text(), "2");
+    this.set("selected", 2);
+    assert.equal(find(".item.active").textContent, "2");
 
-    this.$(".menu .item[data-id=1]").click();
-    assert.equal(this.get('selected'), 1, "Sherlock has been selected");
+    await click(".menu .item[data-id='1']");
+    assert.equal(this.selected, 1, "Sherlock has been selected");
 
     // Now clear the property
-    this.set('selected', null);
+    this.set("selected", null);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0);
-    assert.equal(this.get('selected'), null, "Nothing is selected");
-    assert.equal(count, 1, 'onChange should have been called only once');
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(findAll(".item.active").length, 0);
+    assert.equal(this.selected, null, "Nothing is selected");
+    assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test('The correct number of items are pre selected on selected array', async function(assert) {
+  test("The correct number of items are pre selected on selected array", async function(assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('numbers', A([
-      '1',
-      '2',
-      '3',
-      '4',
-      '5'
-    ]));
+    this.set("numbers", A(["1", "2", "3", "4", "5"]));
 
-    this.set('selected', ['2', '4']);
+    this.set("selected", ["2", "4"]);
 
     await render(hbs`
       {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
@@ -562,31 +592,25 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 5, "Right number of items");
-    assert.equal(this.$('.item.active').length, 2, "Pre selected count");
-    assert.ok(this.$('.item[data-id=2]').hasClass('active'));
-    assert.ok(this.$('.item[data-id=4]').hasClass('active'));
-    assert.equal(count, 0, 'onChange should not have been called');
+    assert.equal(findAll(".item").length, 5, "Right number of items");
+    assert.equal(findAll(".item.active").length, 2, "Pre selected count");
+    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.equal(count, 0, "onChange should not have been called");
   });
 
-  test('The correct number of items are pre selected on selected item', async function(assert) {
+  test("The correct number of items are pre selected on selected item", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('numbers', A([
-      '1',
-      '2',
-      '3',
-      '4',
-      '5'
-    ]));
+    this.set("numbers", A(["1", "2", "3", "4", "5"]));
 
-    this.set('selected', '2');
+    this.set("selected", "2");
 
     await render(hbs`
       {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
@@ -598,32 +622,32 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 5, "Right number of items");
-    assert.equal(this.$('.item.active').length, 1, "Pre selected count");
-    assert.ok(this.$('.item[data-id=2]').hasClass('active'));
-    assert.equal(count, 0, 'onChange should not have been called');
+    assert.equal(findAll(".item").length, 5, "Right number of items");
+    assert.equal(findAll(".item.active").length, 1, "Pre selected count");
+    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.equal(count, 0, "onChange should not have been called");
   });
 
-  test('The correct number of items are pre selected on selected object array', async function(assert) {
+  test("The correct number of items are pre selected on selected object array", async function(assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
     let numbers = A([
-      { item: 1, name: 'One' },
-      { item: 2, name: 'Two' },
-      { item: 3, name: 'Three' },
-      { item: 4, name: 'Four' },
-      { item: 5, name: 'Five' }
+      { item: 1, name: "One" },
+      { item: 2, name: "Two" },
+      { item: 3, name: "Three" },
+      { item: 4, name: "Four" },
+      { item: 5, name: "Five" }
     ]);
 
-    this.set('numbers', numbers);
+    this.set("numbers", numbers);
 
-    this.set('selected', [numbers[1], numbers[3]]);
+    this.set("selected", [numbers[1], numbers[3]]);
 
     await render(hbs`
       {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
@@ -635,33 +659,33 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 5, "Right number of items");
-    assert.equal(this.$('.item.active').length, 2, "Pre selected count");
-    assert.ok(this.$('.item[data-id=2]').hasClass('active'));
-    assert.ok(this.$('.item[data-id=4]').hasClass('active'));
-    assert.equal(count, 0, 'onChange should not have been called');
+    assert.equal(findAll(".item").length, 5, "Right number of items");
+    assert.equal(findAll(".item.active").length, 2, "Pre selected count");
+    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.equal(count, 0, "onChange should not have been called");
   });
 
-  test('The correct number of items are pre selected on selected object item', async function(assert) {
+  test("The correct number of items are pre selected on selected object item", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
     let numbers = A([
-      { item: 1, name: 'One' },
-      { item: 2, name: 'Two' },
-      { item: 3, name: 'Three' },
-      { item: 4, name: 'Four' },
-      { item: 5, name: 'Five' }
+      { item: 1, name: "One" },
+      { item: 2, name: "Two" },
+      { item: 3, name: "Three" },
+      { item: 4, name: "Four" },
+      { item: 5, name: "Five" }
     ]);
 
-    this.set('numbers', numbers);
+    this.set("numbers", numbers);
 
-    this.set('selected', numbers[1]);
+    this.set("selected", numbers[1]);
 
     await render(hbs`
       {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
@@ -673,30 +697,24 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 5, "Right number of items");
-    assert.equal(this.$('.item.active').length, 1, "Pre selected count");
-    assert.ok(this.$('.item[data-id=2]').hasClass('active'));
-    assert.equal(count, 0, 'onChange should not have been called');
+    assert.equal(findAll(".item").length, 5, "Right number of items");
+    assert.equal(findAll(".item.active").length, 1, "Pre selected count");
+    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.equal(count, 0, "onChange should not have been called");
   });
 
-  test('The correct number of items get selected when clicked', async function(assert) {
+  test("The correct number of items get selected when clicked", async function(assert) {
     assert.expect(7);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('numbers', A([
-      '1',
-      '2',
-      '3',
-      '4',
-      '5'
-    ]));
+    this.set("numbers", A(["1", "2", "3", "4", "5"]));
 
-    this.set('selected', []);
+    this.set("selected", []);
 
     await render(hbs`
       {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
@@ -708,39 +726,39 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 5, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0, "Pre selected count");
-    this.$('.item[data-id=2]').click();
-    assert.ok(this.$('.item[data-id=2]').hasClass('active'));
-    assert.equal(this.get('selected').join(','), ['2'].join(','));
+    assert.equal(findAll(".item").length, 5, "Right number of items");
+    assert.equal(findAll(".item.active").length, 0, "Pre selected count");
+    await click(".item[data-id='2']");
+    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.equal(this.selected.join(","), ["2"].join(","));
 
-    this.$('.item[data-id=4]').click();
-    assert.ok(this.$('.item[data-id=4]').hasClass('active'));
-    assert.equal(this.get('selected').join(','), ['2', '4'].join(','));
-    assert.equal(count, 2, 'onChange should not have been called');
+    await click(".item[data-id='4']");
+    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.equal(this.selected.join(","), ["2", "4"].join(","));
+    assert.equal(count, 2, "onChange should not have been called");
   });
 
   // clicking binded items updates collection
-  test('The correct number of items get selected when clicked', async function(assert) {
+  test("The correct number of items get selected when clicked", async function(assert) {
     assert.expect(7);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
     let numbers = A([
-      { item: 1, name: 'One' },
-      { item: 2, name: 'Two' },
-      { item: 3, name: 'Three' },
-      { item: 4, name: 'Four' },
-      { item: 5, name: 'Five' }
+      { item: 1, name: "One" },
+      { item: 2, name: "Two" },
+      { item: 3, name: "Three" },
+      { item: 4, name: "Four" },
+      { item: 5, name: "Five" }
     ]);
 
-    this.set('numbers', numbers);
+    this.set("numbers", numbers);
 
-    this.set('selected', []);
+    this.set("selected", []);
 
     await render(hbs`
       {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
@@ -752,37 +770,31 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 5, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0, "Pre selected count");
-    this.$('.item[data-id=2]').click();
-    assert.ok(this.$('.item[data-id=2]').hasClass('active'));
-    assert.equal(this.get('selected').join(','), [numbers[1]].join(','));
+    assert.equal(findAll(".item").length, 5, "Right number of items");
+    assert.equal(findAll(".item.active").length, 0, "Pre selected count");
+    await click(".item[data-id='2']");
+    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.equal(this.selected.join(","), [numbers[1]].join(","));
 
-    this.$('.item[data-id=4]').click();
-    assert.ok(this.$('.item[data-id=4]').hasClass('active'));
-    assert.equal(this.get('selected').join(','), [numbers[1], numbers[3]].join(','));
-    assert.equal(count, 2, 'onChange should not have been called');
+    await click(".item[data-id='4']");
+    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.equal(this.selected.join(","), [numbers[1], numbers[3]].join(","));
+    assert.equal(count, 2, "onChange should not have been called");
   });
-  // setting binded items, updates collection
+  // // setting binded items, updates collection
 
-  test('The correct number of items get selected when array is modified', async function(assert) {
+  test("The correct number of items get selected when array is modified", async function(assert) {
     assert.expect(7);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
-    this.set('numbers', A([
-      '1',
-      '2',
-      '3',
-      '4',
-      '5'
-    ]));
+    this.set("numbers", A(["1", "2", "3", "4", "5"]));
 
-    this.set('selected', []);
+    this.set("selected", []);
 
     await render(hbs`
       {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
@@ -794,45 +806,45 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 5, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0, "Pre selected count");
-    this.set('selected', ['2']);
+    assert.equal(findAll(".item").length, 5, "Right number of items");
+    assert.equal(findAll(".item.active").length, 0, "Pre selected count");
+    this.set("selected", ["2"]);
 
-    assert.ok(this.$('.item[data-id=2]').hasClass('active'));
-    assert.equal(this.get('selected').join(','), ['2'].join(','));
+    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.equal(this.selected.join(","), ["2"].join(","));
 
     begin();
-    this.set('selected', ['2', '4']);
+    this.set("selected", ["2", "4"]);
     // Have to clear the queue to ensure that property change gets notified
     // Doesn't clear in time on tests occasionally
     end();
 
-    assert.ok(this.$('.item[data-id=4]').hasClass('active'));
-    assert.equal(this.get('selected').join(','), ['2', '4'].join(','));
-    assert.equal(count, 0, 'onChange should not have been called');
+    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.equal(this.selected.join(","), ["2", "4"].join(","));
+    assert.equal(count, 0, "onChange should not have been called");
   });
 
-  // clicking binded items updates collection
-  test('The correct number of items get selected when array bindings is modified', async function(assert) {
+  // // clicking binded items updates collection
+  test("The correct number of items get selected when array bindings is modified", async function(assert) {
     assert.expect(7);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
     let numbers = A([
-      { item: 1, name: 'One' },
-      { item: 2, name: 'Two' },
-      { item: 3, name: 'Three' },
-      { item: 4, name: 'Four' },
-      { item: 5, name: 'Five' }
+      { item: 1, name: "One" },
+      { item: 2, name: "Two" },
+      { item: 3, name: "Three" },
+      { item: 4, name: "Four" },
+      { item: 5, name: "Five" }
     ]);
 
-    this.set('numbers', numbers);
+    this.set("numbers", numbers);
 
-    this.set('selected', []);
+    this.set("selected", []);
 
     await render(hbs`
       {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
@@ -844,33 +856,33 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 5, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0, "Pre selected count");
-    this.set('selected', [numbers[1]]);
-    assert.ok(this.$('.item[data-id=2]').hasClass('active'));
-    assert.equal(this.get('selected').join(','), [numbers[1]].join(','));
+    assert.equal(findAll(".item").length, 5, "Right number of items");
+    assert.equal(findAll(".item.active").length, 0, "Pre selected count");
+    this.set("selected", [numbers[1]]);
+    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.equal(this.selected.join(","), [numbers[1]].join(","));
 
-    this.set('selected', [numbers[1], numbers[3]]);
-    assert.ok(this.$('.item[data-id=4]').hasClass('active'));
-    assert.equal(this.get('selected').join(','), [numbers[1], numbers[3]].join(','));
-    assert.equal(count, 0, 'onChange should not have been called');
+    this.set("selected", [numbers[1], numbers[3]]);
+    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.equal(this.selected.join(","), [numbers[1], numbers[3]].join(","));
+    assert.equal(count, 0, "onChange should not have been called");
   });
 
-  // Add selected deferred test
-  test('it renders and selects the correct item after promise resolves', async function(assert) {
+  // // Add selected deferred test
+  test("it renders and selects the correct item after promise resolves", async function(assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
     let deferred = defer();
 
-    this.set('selected', deferred.promise);
+    this.set("selected", deferred.promise);
 
-    this.set('people', [ "Sherlock Homes", "Patrick Bateman" ]);
+    this.set("people", ["Sherlock Homes", "Patrick Bateman"]);
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed)}}
         <div class='menu'>
@@ -881,35 +893,35 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2);
-    assert.equal(this.$('.item.active').length, 0);
+    assert.equal(findAll(".item").length, 2);
+    assert.equal(findAll(".item.active").length, 0);
 
-    deferred.resolve('Patrick Bateman');
+    deferred.resolve("Patrick Bateman");
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(this.$('.item.active').length, 1);
-      assert.equal(this.$('.item.active').text(), 'Patrick Bateman');
-      assert.equal(count, 0, 'onChange should not have been called');
+      assert.equal(findAll(".item.active").length, 1);
+      assert.equal(find(".item.active").textContent, "Patrick Bateman");
+      assert.equal(count, 0, "onChange should not have been called");
     });
   });
 
-  // Add selected deferred test
-  test('it renders and selects the correct item from resolved promise', async function(assert) {
+  // // Add selected deferred test
+  test("it renders and selects the correct item from resolved promise", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
     let deferred = defer();
 
-    deferred.resolve('Patrick Bateman');
+    deferred.resolve("Patrick Bateman");
 
-    this.set('selected', deferred.promise);
+    this.set("selected", deferred.promise);
 
-    this.set('people', [ "Sherlock Homes", "Patrick Bateman" ]);
+    this.set("people", ["Sherlock Homes", "Patrick Bateman"]);
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed)}}
         <div class='menu'>
@@ -920,19 +932,19 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2);
-    assert.equal(this.$('.item.active').length, 1);
-    assert.equal(this.$('.item.active').text(), 'Patrick Bateman');
-    assert.equal(count, 0, 'onChange should not have been called');
+    assert.equal(findAll(".item").length, 2);
+    assert.equal(findAll(".item.active").length, 1);
+    assert.equal(find(".item.active").textContent, "Patrick Bateman");
+    assert.equal(count, 0, "onChange should not have been called");
   });
 
-  // Add map-value promise deferred binding test
-  test('it renders from a mapper with a promise', async function(assert) {
+  // // Add map-value promise deferred binding test
+  test("it renders from a mapper with a promise", async function(assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
@@ -943,12 +955,9 @@ module('Integration | Component | ui dropdown', function(hooks) {
       promise: deferred.promise
     });
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      proxy
-    ]));
+    this.set("people", A([{ id: 1, name: "Sherlock Homes" }, proxy]));
 
-    this.set('selected', 'Patrick Bateman');
+    this.set("selected", "Patrick Bateman");
 
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
@@ -960,25 +969,29 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0, "Right number of items active");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(
+      findAll(".item.active").length,
+      0,
+      "Right number of items active"
+    );
 
     let deferredValue = { id: 2, name: "Patrick Bateman" };
     deferred.resolve(deferredValue);
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(this.$('.item.active').length, 1);
-      assert.equal(this.$('.item.active').text(), 'Patrick Bateman');
-      assert.equal(count, 0, 'onChange should not have been called');
+      assert.equal(findAll(".item.active").length, 1);
+      assert.equal(find(".item.active").textContent, "Patrick Bateman");
+      assert.equal(count, 0, "onChange should not have been called");
     });
   });
 
-  test('it renders from a mapper with a promise already completed', async function(assert) {
+  test("it renders from a mapper with a promise already completed", async function(assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
@@ -992,12 +1005,9 @@ module('Integration | Component | ui dropdown', function(hooks) {
     let deferredValue = { id: 2, name: "Patrick Bateman" };
     deferred.resolve(deferredValue);
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      proxy
-    ]));
+    this.set("people", A([{ id: 1, name: "Sherlock Homes" }, proxy]));
 
-    this.set('selected', 'Patrick Bateman');
+    this.set("selected", "Patrick Bateman");
 
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
@@ -1009,22 +1019,26 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
     return afterRender(deferred.promise).then(() => {
       return settled().then(() => {
-        assert.equal(this.$('.item.active').length, 1, "Right number of items active");
-        assert.equal(this.$('.item.active').text(), 'Patrick Bateman');
-        assert.equal(count, 0, 'onChange should not have been called');
+        assert.equal(
+          findAll(".item.active").length,
+          1,
+          "Right number of items active"
+        );
+        assert.equal(find(".item.active").textContent, "Patrick Bateman");
+        assert.equal(count, 0, "onChange should not have been called");
       });
     });
   });
 
-  test('it renders from a mapper with a promise and select with a promise, select resolving first', async function(assert) {
+  test("it renders from a mapper with a promise and select with a promise, select resolving first", async function(assert) {
     assert.expect(6);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
@@ -1036,12 +1050,9 @@ module('Integration | Component | ui dropdown', function(hooks) {
       promise: deferredMap.promise
     });
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      proxy
-    ]));
+    this.set("people", A([{ id: 1, name: "Sherlock Homes" }, proxy]));
 
-    this.set('selected', deferredSelect.promise);
+    this.set("selected", deferredSelect.promise);
 
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
@@ -1053,35 +1064,49 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0, "Right number of items active");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(
+      findAll(".item.active").length,
+      0,
+      "Right number of items active"
+    );
 
-    deferredSelect.resolve('Patrick Bateman');
+    deferredSelect.resolve("Patrick Bateman");
 
-    return afterRender(deferredSelect.promise).then(() => {
-      return settled().then(() => {
-        assert.equal(this.$('.item.active').length, 0, "Right number of items active");
+    return afterRender(deferredSelect.promise)
+      .then(() => {
+        return settled().then(() => {
+          assert.equal(
+            findAll(".item.active").length,
+            0,
+            "Right number of items active"
+          );
 
-        let deferredValue = { id: 2, name: "Patrick Bateman" };
-        deferredMap.resolve(deferredValue);
+          let deferredValue = { id: 2, name: "Patrick Bateman" };
+          deferredMap.resolve(deferredValue);
 
-        return afterRender(deferredMap.promise);
+          return afterRender(deferredMap.promise);
+        });
+      })
+      .then(() => {
+        return settled().then(() => {
+          assert.equal(
+            findAll(".item.active").length,
+            1,
+            "Right number of items active"
+          );
+          assert.equal(find(".item.active").textContent, "Patrick Bateman");
+          assert.equal(count, 0, "onChange should not have been called");
+        });
       });
-    }).then(() => {
-      return settled().then(() => {
-        assert.equal(this.$('.item.active').length, 1, "Right number of items active");
-        assert.equal(this.$('.item.active').text(), 'Patrick Bateman');
-        assert.equal(count, 0, 'onChange should not have been called');
-      });
-    });
   });
 
-  test('it renders from a mapper with a promise and select with a promise, mapper resolving first', async function(assert) {
+  test("it renders from a mapper with a promise and select with a promise, mapper resolving first", async function(assert) {
     assert.expect(6);
 
     let count = 0;
-    this.set('changed', (value) => {
-      this.set('selected', value);
+    this.set("changed", value => {
+      this.set("selected", value);
       count++;
     });
 
@@ -1093,12 +1118,9 @@ module('Integration | Component | ui dropdown', function(hooks) {
       promise: deferredMap.promise
     });
 
-    this.set('people', A([
-      { id: 1, name: "Sherlock Homes" },
-      proxy
-    ]));
+    this.set("people", A([{ id: 1, name: "Sherlock Homes" }, proxy]));
 
-    this.set('selected', deferredSelect.promise);
+    this.set("selected", deferredSelect.promise);
 
     await render(hbs`
       {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
@@ -1110,22 +1132,36 @@ module('Integration | Component | ui dropdown', function(hooks) {
       {{/ui-dropdown}}
     `);
 
-    assert.equal(this.$('.item').length, 2, "Right number of items");
-    assert.equal(this.$('.item.active').length, 0, "Right number of items active");
+    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.equal(
+      findAll(".item.active").length,
+      0,
+      "Right number of items active"
+    );
 
     let deferredValue = { id: 2, name: "Patrick Bateman" };
     deferredMap.resolve(deferredValue);
 
-    return afterRender(deferredMap.promise).then(() => {
-      assert.equal(this.$('.item.active').length, 0, "Right number of items active");
+    return afterRender(deferredMap.promise)
+      .then(() => {
+        assert.equal(
+          findAll(".item.active").length,
+          0,
+          "Right number of items active"
+        );
 
-      deferredSelect.resolve('Patrick Bateman');
+        deferredSelect.resolve("Patrick Bateman");
 
-      return afterRender(deferredSelect.promise);
-    }).then(() => {
-      assert.equal(this.$('.item.active').length, 1, "Right number of items active");
-      assert.equal(this.$('.item.active').text(), 'Patrick Bateman');
-      assert.equal(count, 0, 'onChange should not have been called');
-    });
+        return afterRender(deferredSelect.promise);
+      })
+      .then(() => {
+        assert.equal(
+          findAll(".item.active").length,
+          1,
+          "Right number of items active"
+        );
+        assert.equal(find(".item.active").textContent, "Patrick Bateman");
+        assert.equal(count, 0, "onChange should not have been called");
+      });
   });
 });

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, findAll } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | ui shape', function(hooks) {
@@ -15,6 +15,6 @@ module('Integration | Component | ui shape', function(hooks) {
       {{/ui-shape}}
     `);
 
-    assert.equal(this.$('.ui.shape').length, 1);
+    assert.equal(findAll('.ui.shape').length, 1);
   });
 });
