@@ -1,12 +1,12 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render, click, find, findAll } from "@ember/test-helpers";
+import hbs from "htmlbars-inline-precompile";
 
-module('Integration | Component | ui nag', function(hooks) {
+module("Integration | Component | ui nag", function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
+  test("it renders", async function(assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -18,10 +18,10 @@ module('Integration | Component | ui nag', function(hooks) {
       {{/ui-nag}}
     `);
 
-    assert.equal(this.$('.ui.nag').length, 1);
+    assert.equal(findAll(".ui.nag").length, 1);
   });
 
-  test('it will only show once', async function(assert) {
+  test("it will only show once", async function(assert) {
     assert.expect(4);
 
     await render(hbs`
@@ -33,18 +33,18 @@ module('Integration | Component | ui nag', function(hooks) {
       {{/ui-nag}}
     `);
 
-    assert.equal(this.$('.ui.nag').length, 1);
-    this.$('.ui.nag').nag('clear');
-    this.$('.ui.nag').nag('show');
-    assert.equal(this.$('.ui.nag').css('display'), 'block');
-    this.$('.ui.nag .close').click();
+    assert.equal(findAll(".ui.nag").length, 1);
+    this.$(".ui.nag").nag("clear");
+    this.$(".ui.nag").nag("show");
+    assert.equal(find(".ui.nag").style.display, "block");
+    await click(".ui.nag .close");
 
     let done = assert.async();
 
     setTimeout(() => {
-      assert.equal(this.$('.ui.nag').css('display'), 'none');
-      this.$('.ui.nag').nag('show');
-      assert.equal(this.$('.ui.nag').css('display'), 'block');
+      assert.equal(find(".ui.nag").style.display, "none");
+      this.$(".ui.nag").nag("show");
+      assert.equal(find(".ui.nag").style.display, "block");
 
       done();
     }, 1000);

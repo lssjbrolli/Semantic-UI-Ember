@@ -4,7 +4,7 @@ import { later } from '@ember/runloop';
 import { defer, all } from 'rsvp';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, find, findAll } from '@ember/test-helpers';
 import afterRender from 'dummy/tests/helpers/after-render';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -20,8 +20,8 @@ module('Integration | Helper | map value', function(hooks) {
       <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
     `);
 
-    assert.equal(this.$('.item').attr('data-value'), '42');
-    assert.equal(this.$('.item').text().trim(), 'Forty Two');
+    assert.equal(find('.item').getAttribute('data-value'), '42');
+    assert.equal(find('.item').textContent.trim(), 'Forty Two');
   });
 
   test('when unresolved renders is passed in, null is rendered', async function(assert) {
@@ -35,13 +35,13 @@ module('Integration | Helper | map value', function(hooks) {
       <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
     `);
 
-    assert.equal(this.$('.item').attr('data-value'), undefined);
-    assert.equal(this.$('.item').text().trim(), 'Forty Two');
+    assert.equal(find('.item').getAttribute('data-value'), undefined);
+    assert.equal(find('.item').textContent.trim(), 'Forty Two');
 
     deferred.resolve('LIFE');
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(this.$('.item').attr('data-value').trim(), 'LIFE', 'data value is updated to correct value');
+      assert.equal(find('.item').getAttribute('data-value').trim(), 'LIFE', 'data value is updated to correct value');
     });
   });
 
@@ -58,8 +58,8 @@ module('Integration | Helper | map value', function(hooks) {
       <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
     `);
 
-    assert.equal(this.$('.item').attr('data-value'), undefined);
-    assert.equal(this.$('.item').text().trim(), 'Forty Two');
+    assert.equal(find('.item').getAttribute('data-value'), undefined);
+    assert.equal(find('.item').textContent.trim(), 'Forty Two');
 
     deferred1.resolve('number 1');
 
@@ -70,7 +70,7 @@ module('Integration | Helper | map value', function(hooks) {
     this.set('value', deferred3.promise);
 
     return afterRender(all([deferred2.promise, deferred3.promise])).then(() => {
-      assert.equal(this.$('.item').attr('data-value').trim(), 'number 3', 'data value is updated to correct value');
+      assert.equal(find('.item').getAttribute('data-value').trim(), 'number 3', 'data value is updated to correct value');
     });
   });
 
@@ -85,12 +85,12 @@ module('Integration | Helper | map value', function(hooks) {
       <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
     `);
 
-    assert.equal(this.$('.item').attr('data-value'), undefined);
+    assert.equal(find('.item').getAttribute('data-value'), undefined);
 
     deferred.reject(new Error('oops'));
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(this.$('.item').attr('data-value'), undefined, 'value of re-render does not reveal reason for rejection');
+      assert.equal(find('.item').getAttribute('data-value'), undefined, 'value of re-render does not reveal reason for rejection');
     });
   });
 
@@ -116,7 +116,7 @@ module('Integration | Helper | map value', function(hooks) {
       this.set('value', deferred2.promise);
       return afterRender(deferred2.promise);
     }).then(() => {
-      assert.equal(this.$('.item').attr('data-value'), deferred2Text, 'value updates when the promise changes');
+      assert.equal(find('.item').getAttribute('data-value'), deferred2Text, 'value updates when the promise changes');
     });
   });
 
@@ -132,11 +132,11 @@ module('Integration | Helper | map value', function(hooks) {
     `);
 
     this.set('value', 'iAmConstant');
-    assert.equal(this.$('.item').attr('data-value'), 'iAmConstant');
+    assert.equal(find('.item').getAttribute('data-value'), 'iAmConstant');
     deferred.resolve('promiseFinished');
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(this.$('.item').attr('data-value'), 'iAmConstant', 'ignores a promise that has been replaced');
+      assert.equal(find('.item').getAttribute('data-value'), 'iAmConstant', 'ignores a promise that has been replaced');
     });
   });
 
@@ -156,7 +156,7 @@ module('Integration | Helper | map value', function(hooks) {
     `);
     deferred.resolve('hasAValue');
     return afterRender(deferred.promise).then(() => {
-      assert.equal(this.$('.item').attr('data-value'), 'hasAValue');
+      assert.equal(find('.item').getAttribute('data-value'), 'hasAValue');
     });
   });
 
@@ -174,11 +174,11 @@ module('Integration | Helper | map value', function(hooks) {
       <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
     `);
 
-    assert.equal(this.$('.item').length, 1);
-    assert.equal(this.$('.item').attr('data-value'), text);
+    assert.equal(findAll('.item').length, 1);
+    assert.equal(find('.item').getAttribute('data-value'), text);
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(this.$('.item').attr('data-value'), text, 're-renders when the promise is resolved');
+      assert.equal(find('.item').getAttribute('data-value'), text, 're-renders when the promise is resolved');
     });
   });
 });

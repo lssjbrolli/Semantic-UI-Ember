@@ -1,34 +1,40 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render, click, findAll } from "@ember/test-helpers";
+import hbs from "htmlbars-inline-precompile";
+import $ from "jquery";
 
-module('Integration | Component | ui modal', function(hooks) {
+module("Integration | Component | ui modal", function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function() {
     this.actions = {};
-    this.send = (actionName, ...args) => this.actions[actionName].apply(this, args);
+    this.send = (actionName, ...args) =>
+      this.actions[actionName].apply(this, args);
   });
 
-  test('it renders', async function(assert) {
+  test("it renders", async function(assert) {
     assert.expect(1);
 
     await render(hbs`
       {{ui-modal name='profile'}}
     `);
 
-    assert.equal(this.$('.ui.modal').length, 1);
+    assert.equal(findAll(".ui.modal").length, 1);
   });
 
-  test('it will show if triggered', async function(assert) {
+  test("it will show if triggered", async function(assert) {
     assert.expect(3);
 
     let done = assert.async();
 
     this.actions.openModal = () => {
-      this.$('.ui.modal').modal('show', () => {
-        assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after showing");
+      $(".ui.modal").modal("show", () => {
+        assert.equal(
+          findAll(".ui.modal.visible").length,
+          1,
+          ".ui.modal is visible after showing"
+        );
         done();
       });
     };
@@ -41,29 +47,41 @@ module('Integration | Component | ui modal', function(hooks) {
       {{ui-modal name='profile'}}
     `);
 
-    assert.equal(this.$('.ui.modal').length, 1, ".ui.modal exists");
-    assert.equal(this.$('.ui.modal.visible').length, 0, ".ui.modal is not visible");
+    assert.equal(findAll(".ui.modal").length, 1, ".ui.modal exists");
+    assert.equal(
+      findAll(".ui.modal.visible").length,
+      0,
+      ".ui.modal is not visible"
+    );
 
-    this.$('.ui.button').click();
+    await click(".ui.button");
   });
 
-  test('it will send approve back to controller and hide', async function(assert) {
+  test("it will send approve back to controller and hide", async function(assert) {
     assert.expect(3);
 
     let done = assert.async();
 
     this.actions.openModal = () => {
-      this.$('.ui.modal').modal('show', () => {
-        assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after showing");
-        this.$('.ui.modal .ui.positive.button').click();
+      $(".ui.modal").modal("show", async () => {
+        assert.equal(
+          findAll(".ui.modal.visible").length,
+          1,
+          ".ui.modal is visible after showing"
+        );
+        await click(".ui.modal .ui.positive.button");
       });
     };
 
     this.actions.approve = function(element, component) {
-      var name = component.get('name');
-      assert.equal('profile', name, 'approve is called');
+      var name = component.get("name");
+      assert.equal("profile", name, "approve is called");
       setTimeout(() => {
-        assert.equal(this.$('.ui.modal.visible').length, 0, ".ui.modal is not visible after clicking");
+        assert.equal(
+          findAll(".ui.modal.visible").length,
+          0,
+          ".ui.modal is not visible after clicking"
+        );
         done();
       }, 1000);
       return true;
@@ -82,26 +100,34 @@ module('Integration | Component | ui modal', function(hooks) {
       {{/ui-modal}}
     `);
 
-    this.$('.ui.open.button').click();
+    await click(".ui.open.button");
   });
 
-  test('it will send approve back to controller and skip the hide', async function(assert) {
+  test("it will send approve back to controller and skip the hide", async function(assert) {
     assert.expect(3);
 
     let done = assert.async();
 
     this.actions.openModal = () => {
-      this.$('.ui.modal').modal('show', () => {
-        assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after showing");
-        this.$('.ui.modal .ui.positive.button').click();
+      $(".ui.modal").modal("show", async () => {
+        assert.equal(
+          findAll(".ui.modal.visible").length,
+          1,
+          ".ui.modal is visible after showing"
+        );
+        await click(".ui.modal .ui.positive.button");
       });
     };
 
     this.actions.approve = function(element, component) {
-      var name = component.get('name');
-      assert.equal('profile', name, 'approve is called');
+      var name = component.get("name");
+      assert.equal("profile", name, "approve is called");
       setTimeout(() => {
-        assert.equal(this.$('.ui.modal.visible').length, 1, ".ui.modal is visible after clicking");
+        assert.equal(
+          findAll(".ui.modal.visible").length,
+          1,
+          ".ui.modal is visible after clicking"
+        );
         done();
       }, 1000);
       return false;
@@ -120,23 +146,23 @@ module('Integration | Component | ui modal', function(hooks) {
       {{/ui-modal}}
     `);
 
-    this.$('.ui.open.button').click();
+    await click(".ui.open.button");
   });
 
-  test('it will send deny back to controller', async function(assert) {
+  test("it will send deny back to controller", async function(assert) {
     assert.expect(1);
 
     let done = assert.async();
 
     this.actions.openModal = () => {
-      this.$('.ui.modal').modal('show', () => {
-        this.$('.ui.modal.negative').click();
+      $(".ui.modal").modal("show", async () => {
+        await click(".ui.negative.button");
       });
     };
 
     this.actions.deny = function(element, component) {
-      var name = component.get('name');
-      assert.equal('profile', name);
+      var name = component.get("name");
+      assert.equal("profile", name);
       done();
     };
 
@@ -153,6 +179,6 @@ module('Integration | Component | ui modal', function(hooks) {
       {{/ui-modal}}
     `);
 
-    this.$('.ui.button').click();
+    await click(".ui.button");
   });
 });

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, findAll } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | ui sidebar', function(hooks) {
@@ -22,7 +22,7 @@ module('Integration | Component | ui sidebar', function(hooks) {
       </div>
     `);
 
-    assert.equal(this.$('.ui.sidebar').length, 1);
-    assert.equal(this.$('.ui.sidebar a').length, 3);
+    assert.equal(findAll('.ui.sidebar').length, 1);
+    assert.equal(findAll('.ui.sidebar a').length, 3);
   });
 });
