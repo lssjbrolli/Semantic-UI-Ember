@@ -1,15 +1,12 @@
-import Component from '@ember/component';
+import Component from "@glimmer/component";
+import { tracked } from "@glimmer/tracking";
+import { action } from "@ember/object";
 
-export default Component.extend({
-  showing: false,
+export default class extends Component {
+  @tracked showing = false;
 
-  actions: {
-    toggle() {
-      this.toggleProperty("showing");
-    },
-    setCopyCode(code) {
-      this.$('[data-clipboard-text]').attr('data-clipboard-text', code);
-    }
+  @action
+  toggle() {
+    this.showing = !this.showing;
   }
-
-});
+}

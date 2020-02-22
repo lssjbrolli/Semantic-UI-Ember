@@ -2,15 +2,18 @@
   <div class="toc">
     <div class="ui vertical inverted sidebar menu left overlay visible">
       <div class="item">
-        {{#link-to 'modules.index' class='ui logo icon image'}}
-          <img src="http://semantic-ui.com/images/logo.png">
-        {{/link-to}}
-        <a href="/"><b>UI Ember Docs</b></a>
+        <LinkTo @route="modules.index" class="ui logo icon image">
+          <img src="http://semantic-ui.com/images/logo.png" />
+        </LinkTo>
+        <a href="/">
+          <b>
+            UI Ember Docs
+          </b>
+        </a>
       </div>
-      {{partial "menu"}}
+      <Menu />
     </div>
   </div>
-
   <div class="article">
     {{outlet}}
   </div>

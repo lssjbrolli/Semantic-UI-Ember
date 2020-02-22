@@ -1,0 +1,9 @@
+<div class="html {{if @showing "ui top attached segment"}}">
+  {{yield}}
+  <div class="ui top attached label">
+    Example
+    <CopyButton @clipboardText="" @success={{this.copied}} @error={{this.copyError}}>
+      {{ui-popup tagName="i" class="copy link icon" content=copyMessage variation="inverted"}}
+    </CopyButton>
+  </div>
+</div>
