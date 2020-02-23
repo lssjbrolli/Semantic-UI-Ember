@@ -1,0 +1,79 @@
+{{! BEGIN-SNIPPET accordion.simple  }}
+<UiAccordion class="styled">
+  <div class="title">
+    Semantic UI
+  </div>
+  <div class="content">
+    Accordion Component
+  </div>
+  <div class="title">
+    Accordion Two
+  </div>
+  <div class="content">
+    Content Two
+  </div>
+</UiAccordion>
+{{! END-SNIPPET }}
+{{! BEGIN-SNIPPET accordion.execute  }}
+<UiAccordion as |execute|>
+  <div class="title">
+    <i class="dropdown icon"></i>
+    Semantic UI
+  </div>
+  <div class="content">
+    Accordion Component
+    <div class="ui basic segment">
+      <div class="ui tiny header">
+        Example using composable actions from within accordion
+      </div>
+      <div class="ui button">
+        Close
+      </div>
+      <div class="ui button">
+        Open two
+      </div>
+    </div>
+  </div>
+  <div class="title">
+    <i class="dropdown icon"></i>
+    Accordion Two
+  </div>
+  <div class="content">
+    Content Two
+  </div>
+</UiAccordion>
+{{! END-SNIPPET }}
+{{! BEGIN-SNIPPET accordion.dynamic  }}
+<UiAccordion class="styled" as |execute|>
+  <div class="title">
+    Semantic UI
+  </div>
+  <div class="content">
+    Accordion Component
+  </div>
+  <div class="title">
+    Accordion Two
+  </div>
+  <div class="content">
+    Content Two
+  </div>
+  {{#each sections as |section|}}
+    <div class="title">
+      Accordion Extra
+      {{section}}
+    </div>
+    <div class="content">
+      Content Extra
+      {{section}}
+    </div>
+  {{/each}}
+</UiAccordion>
+<div class="ui basic segment">
+  <div class="ui button" {{on "click" (fn this.change_sections 1)}}>
+    Add Extra Section
+  </div>
+  <div class="ui button {{unless this.total_sections "disabled"}}" {{on "click" (fn this.change_sections -1)}}>
+    Remove Extra Section
+  </div>
+</div>
+{{! END-SNIPPET }}

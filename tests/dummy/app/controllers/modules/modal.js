@@ -1,20 +1,22 @@
-import Controller from '@ember/controller';
-import $ from 'jquery';
+import Controller from "@ember/controller";
+import { action } from "@ember/object";
+import $ from "jquery";
 
-export default Controller.extend({
-  actions: {
-    openModal: function(name) {
-      $('.ui.' + name + '.modal').modal('show');
-    },
-
-    approveModal: function(element, component) {
-      alert('approve ' + component.get('name'));
-      return false;
-    },
-
-    denyModal: function(element, component) {
-      alert('deny ' + component.get('name'));
-      return true;
-    }
+export default class extends Controller {
+  @action
+  openModal(name) {
+    $(".ui." + name + ".modal").modal("show");
   }
-});
+
+  @action
+  approveModal(element, component) {
+    alert("approve " + component.get("name"));
+    return false;
+  }
+
+  @action
+  denyModal(element, component) {
+    alert("deny " + component.get("name"));
+    return true;
+  }
+}

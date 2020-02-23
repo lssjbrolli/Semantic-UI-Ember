@@ -11,11 +11,23 @@ export default class extends Component {
   @action
   copied() {
     this.copyMessage = "Copied to Clipboard";
-    later(this, () => (this.copyMessage = copyMessage), 1000);
+    later(
+      this,
+      () => {
+        this.copyMessage = copyMessage;
+      },
+      1000
+    );
   }
   @action
   copyError() {
     this.copyMessage = "There was an error copying to Clipboard";
-    later(this, () => (this.copyMessage = copyMessage), 1000);
+    later(
+      this,
+      () => {
+        this.copyMessage = copyMessage;
+      },
+      1000
+    );
   }
 }

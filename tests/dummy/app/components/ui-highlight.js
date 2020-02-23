@@ -1,26 +1,16 @@
 import Component from "@glimmer/component";
 import hljs from "highlightjs";
 
-let escapeHtml = html => {
-  return (
-    html
-      // .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;")
-  );
-};
 export default class extends Component {
-  highlight(elem) {
-    let data = elem.querySelector("script");
-    let escaped = escapeHtml(data.innerHTML);
-    elem.innerHTML = escaped;
+  language = this.args.type || this.args.snippet.language;
 
-    // if (copyCode) {
-    //   copyCode(data.innerHTML);
-    // }
+  highlight(e, [snippet, language, code]) {
+    let lang = language ? language : snippet.language;
+    if (code) {
+      code(snippet.source);
+    }
+    let codeHighlight = hljs.highlight(lang, snippet.source);
 
-    hljs.highlightBlock(elem);
+    e.innerHTML = codeHighlight.value;
   }
 }
