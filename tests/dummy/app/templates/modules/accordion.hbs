@@ -16,16 +16,32 @@
         section and Semantic UI's module specific external documentation links below.
       </p>
       <div class="ui four item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/accordion.html" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/accordion.html"
+          target="_blank"
+        >
           Definition
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/accordion.html#/examples" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/accordion.html#/examples"
+          target="_blank"
+        >
           Examples
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/accordion.html#/usage" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/accordion.html#/usage"
+          target="_blank"
+        >
           Usage
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/accordion.html#/settings" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/accordion.html#/settings"
+          target="_blank"
+        >
           Settings
         </a>
       </div>
@@ -33,43 +49,22 @@
   </div>
 </div>
 <div class="ui main container">
-  <UiExample @header="Simple Example" @subHeader="Styled Accordion" as |showing |>
-    <UiHtml @showing={{showing}} >
-      <UiAccordion class="styled">
-        <div class="title">
-          Semantic UI
-        </div>
-        <div class="content">
-          Accordion Component
-        </div>
-        <div class="title">
-          Accordion Two
-        </div>
-        <div class="content">
-          Content Two
-        </div>
-      </UiAccordion>
+  <UiExample
+    @header="Simple Example"
+    @subHeader="Styled Accordion" as |showing|
+  >
+    <UiHtml @showing={{showing}}>
+      <p>
+        test
+      </p>
+      <UiAccordion />
     </UiHtml>
-    <UiAnnotation @type="htmlbars" @showing={{showing}} >
-      <script type="text/plain">
-        <UiAccordion class="styled">
-          <div class="title">
-            Semantic UI
-          </div>
-          <div class="content">
-            Accordion Component
-          </div>
-          <div class="title">
-            Accordion Two
-          </div>
-          <div class="content">
-            Content Two
-          </div>
-        </UiAccordion>
-      </script>
-    </UiAnnotation>
+    <UiAnnotation @showing={{showing}} @snippet="accordion.simple.hbs" />
   </UiExample>
-  <UiExample @header="Execute Example" @subHeader="Using the execute composable action" as |showing |>
+  {{!-- <UiExample
+    @header="Execute Example"
+    @subHeader="Using the execute composable action" as |showing|
+  >
     <UiHtml @showing={{showing}}>
       <UiAccordion as |execute|>
         <div class="title">
@@ -99,40 +94,13 @@
         </div>
       </UiAccordion>
     </UiHtml>
-    <UiAnnotation @type="htmlbars" @showing={{showing}}>
-      <script type="text/plain">
-        <UiAccordion as |execute|>
-          <div class="title">
-            <i class="dropdown icon"></i>
-            Semantic UI
-          </div>
-          <div class="content">
-            Accordion Component
-            <div class="ui basic segment">
-              <div class="ui tiny header">
-                Example using composable actions from within accordion
-              </div>
-              <div class="ui button">
-                Close
-              </div>
-              <div class="ui button">
-                Open two
-              </div>
-            </div>
-          </div>
-          <div class="title">
-            <i class="dropdown icon"></i>
-            Accordion Two
-          </div>
-          <div class="content">
-            Content Two
-          </div>
-        </UiAccordion>
-      </script>
-    </UiAnnotation>
+    <UiAnnotation @showing={{showing}} @snippet="accordion.execute.hbs" />
   </UiExample>
-  <UiExample @header="Dynamic Example" @subHeader="Adding new sections" as |showing setCopyCode|>
-    <UiHtml @showing={{showing}}>
+  <UiExample
+    @header="Dynamic Example"
+    @subHeader="Adding new sections" as |showing setCode code|
+  >
+    <UiHtml @showing={{showing}} @code={{code}}>
       <UiAccordion class="styled" as |execute|>
         <div class="title">
           Semantic UI
@@ -161,46 +129,14 @@
         <div class="ui button" {{on "click" (fn this.change_sections 1)}}>
           Add Extra Section
         </div>
-        <div class="ui button {{unless this.total_sections "disabled"}}" {{on "click" (fn this.change_sections -1)}}>
+        <div
+          class="ui button {{unless this.total_sections "disabled"}}"
+          {{on "click" (fn this.change_sections -1)}}
+        >
           Remove Extra Section
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation @type="htmlbars" @showing={{showing}} @setCopyCode={{setCopyCode}}>
-      <script type="text/plain">
-        <UiAccordion class="styled" as |execute|>
-          <div class="title">
-            Semantic UI
-          </div>
-          <div class="content">
-            Accordion Component
-          </div>
-          <div class="title">
-            Accordion Two
-          </div>
-          <div class="content">
-            Content Two
-          </div>
-          \{{#each sections as |section|}}
-            <div class="title">
-              Accordion Extra
-              \{{section}}
-            </div>
-            <div class="content">
-              Content Extra
-              \{{section}}
-            </div>
-          \{{/each}}
-        </UiAccordion>
-        <div class="ui basic segment">
-          <div class="ui button" \{{on "click" (fn this.change_sections 1)}}>
-            Add Extra Section
-          </div>
-          <div class="ui button {{unless this.total_sections "disabled"}}" \{{on "click" (fn this.change_sections -1)}}>
-            Remove Extra Section
-          </div>
-        </div>
-      </script>
-    </UiAnnotation>
-  </UiExample>
+    <UiAnnotation @showing={{showing}} @snippet="accordion.dynamic.hbs" />
+  </UiExample> --}}
 </div>

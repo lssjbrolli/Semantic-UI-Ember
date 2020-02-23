@@ -1,18 +1,18 @@
 /* global alert */
-import UiModal from 'semantic-ui-ember/components/ui-modal';
+import UiModal from "semantic-ui-ember/components/ui-modal";
 
 export default UiModal.extend({
-  name: 'inbox',
-  classNames: [ 'inbox' ],
+  name: "inbox",
+  classNames: ["inbox"],
 
   actions: {
     yes: function() {
-      alert('yes');
-      this.execute('hide');
+      alert("yes");
+      this.execute("hide");
     },
 
     no: function() {
-      alert('no');
+      alert("no");
     }
   }
 });

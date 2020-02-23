@@ -1,111 +1,88 @@
 <div class="ui masthead vertical segment">
   <div class="ui container">
     <div class="introduction">
-
       <h1 class="ui header">
         Checkbox
-
         <div class="sub header">
           A checkbox allows a user to toggle a binary value
         </div>
       </h1>
-
       <div class="ui hidden divider"></div>
-
       <p>
-        For additional documentation on how to configure this module, please refer to the {{#link-to 'modules.index'}}Getting Started{{/link-to}} section and Semantic UI's module specific external documentation links below.
+        For additional documentation on how to configure this module, please refer to the
+        <LinkTo @route="modules.index">
+          Getting Started
+        </LinkTo>
+        section and Semantic UI's module specific external documentation links below.
       </p>
-
       <div class="ui four item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html" target="_blank">Definition</a>
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/examples" target="_blank">Examples</a>
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/usage" target="_blank">Usage</a>
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/settings" target="_blank">Settings</a>
+        <a class="item" href="http://semantic-ui.com/modules/checkbox.html" target="_blank">
+          Definition
+        </a>
+        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/examples" target="_blank">
+          Examples
+        </a>
+        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/usage" target="_blank">
+          Usage
+        </a>
+        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/settings" target="_blank">
+          Settings
+        </a>
       </div>
-
     </div>
-
   </div>
 </div>
-
 <div class="ui main container">
-
   <div class="ui yellow message">
     There are API module differences for checkbox.
   </div>
-
-  {{#ui-annotation showing=true type="javascript"}}
-Original: onChange()
-Modified: onChange(checked [Boolean])
-
-// Description:
-//  The onChange event has been modify to include a checked boolean so that properties
-//  can be mutated directly on the event instead of having to wire up both onChecked
-//  and onUnchecked to mutate the checked variable
-  {{/ui-annotation}}
-
+  <UiAnnotation @showing={{true}} @snippet="checkbox.warning.hbs" />
   <div class="ui divider"></div>
-
-  {{#ui-example
-    header="Simple Example"
-    subHeader="Basic Checkbox"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
-      {{ui-checkbox label="Click Me" checked=checked onChange=(action (mut checked))}}
-      - {{if checked "Checked" "Not Checked"}}
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-\{{ui-checkbox label="Click Me" checked=checked onChange=(action (mut checked))}}
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
-  {{#ui-example
-    header="Simple Example Prechecked"
-    subHeader="Variable is already true"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
-      {{ui-checkbox class="toggle" label="I start checked!" checked=pre_checked onChange=(action (mut pre_checked))}}
-      - {{if pre_checked "Checked" "Not Checked"}}
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-\{{ui-checkbox class="toggle" label="I start checked!" checked=pre_checked onChange=(action (mut pre_checked))}}
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
-  {{#ui-example
-    header="Disabled Checkbox"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
-      {{ui-checkbox label="Disabled checkbox (checked binding)" checked=disabled_checked disabled=true onChange=(action (mut disabled_checked))}}
-      - {{if disabled_checked "Checked" "Not Checked"}}
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-\{{ui-checkbox label="Disabled checkbox (checked binding)" checked=disabled_checked disabled=true onChange=(action (mut disabled_checked))}}
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
-  {{#ui-example
-    header="Read-only Checkbox"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
-      {{ui-checkbox label="Readonly checkbox (checked binding)" checked=readonly_checked readonly=true onChange=(action (mut readonly_checked))}}
-      - {{if readonly_checked "Checked" "Not Checked"}}
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-\{{ui-checkbox label="Readonly checkbox (checked binding)" checked=readonly_checked readonly=true onChange=(action (mut readonly_checked))}}
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
+  <UiExample @header="Simple Example" @subHeader="Basic Checkbox" as |showing setCode code|>
+    <UiHtml @showing={{showing}} @code={{code}}>
+      <UiCheckbox @label="Click Me" @checked={{this.checked}} @onChange={{fn (mut this.checked)}} />
+      -
+      {{if this.checked "Checked" "Not Checked"}}
+    </UiHtml>
+    <UiAnnotation @showing={{showing}} @snippet="checkbox.simple.hbs" />
+  </UiExample>
+  <UiExample @header="Simple Example Prechecked" @subHeader="Variable is already true" as |showing setCode code|>
+    <UiHtml @showing={{showing}} @code={{code}}>
+      <UiCheckbox
+        class="toggle"
+        @label="I start checked!"
+        @checked={{this.pre_checked}}
+        @onChange={{fn (mut this.pre_checked)}}
+      />
+      -
+      {{if pre_checked "Checked" "Not Checked"}}
+    </UiHtml>
+    <UiAnnotation @showing={{showing}} @snippet="checkbox.simple.pre_checked.hbs" />
+  </UiExample>
+  <UiExample @header="Disabled Checkbox" as |showing setCode code|>
+    <UiHtml @showing={{showing}}>
+      <UiCheckbox
+        @label="Disabled checkbox (checked binding)"
+        @checked={{this.disabled_checked}}
+        @disabled={{true}}
+        @onChange={{fn (mut this.disabled_checked)}}
+      />
+      -
+      {{if this.disabled_checked "Checked" "Not Checked"}}
+    </UiHtml>
+    <UiAnnotation @showing={{showing}} @snippet="checkbox.disabled.hbs" />
+  </UiExample>
+  <UiExample @header="Read-only Checkbox" as |showing setCode code|>
+    <UiHtml @showing={{showing}}>
+      <UiCheckbox
+        @label="Readonly checkbox (checked binding)"
+        @checked={{this.readonly_checked}}
+        @readonly={{true}}
+        @onChange={{fn (mut this.readonly_checked)}}
+      />
+      -
+      {{if this.readonly_checked "Checked" "Not Checked"}}
+    </UiHtml>
+    <UiAnnotation @showing={{showing}} @snippet="checkbox.readOnly.hbs" />
+  </UiExample>
 </div>
