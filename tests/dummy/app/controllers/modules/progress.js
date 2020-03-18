@@ -1,6 +1,6 @@
-import Controller from '@ember/controller';
+import Controller from "@ember/controller";
 
-export default Controller.extend({
-  progressOne: 40,
-  progressTwo: 15
-});
+export default class extends Controller {
+  progressOne = 40;
+  progressTwo = 15;
+}

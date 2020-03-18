@@ -26,10 +26,10 @@
       <div class="ui tiny header">
         Example using composable actions from within accordion
       </div>
-      <div class="ui button">
+      <div class="ui button" {{on "click" (fn execute "close" 0)}}>
         Close
       </div>
-      <div class="ui button">
+      <div class="ui button" {{on "click" (fn execute "open" 1)}}>
         Open two
       </div>
     </div>
@@ -72,7 +72,10 @@
   <div class="ui button" {{on "click" (fn this.change_sections 1)}}>
     Add Extra Section
   </div>
-  <div class="ui button {{unless this.total_sections "disabled"}}" {{on "click" (fn this.change_sections -1)}}>
+  <div
+    class="ui button {{unless this.total_sections "disabled"}}"
+    {{on "click" (fn this.change_sections -1)}}
+  >
     Remove Extra Section
   </div>
 </div>

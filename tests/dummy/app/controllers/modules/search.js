@@ -1,7 +1,7 @@
-import Controller from '@ember/controller';
+import Controller from "@ember/controller";
 
-export default Controller.extend({
-  commonPasswords: [
+export default class extends Controller {
+  commonPasswords = [
     { title: "password" },
     { title: "123456" },
     { title: "12345678" },
@@ -22,5 +22,5 @@ export default Controller.extend({
     { title: "master" },
     { title: "jennifer" },
     { title: "111111" }
-  ]
-});
+  ];
+}

@@ -1,18 +1,21 @@
+/* eslint-disable ember/no-jquery */
+/* eslint-disable ember/no-attrs-in-components */
+/* eslint-disable ember/no-new-mixins */
 /* eslint-disable no-console */
-import { getOwner } from '@ember/application';
-import { isHTMLSafe } from '@ember/template';
-import { bind } from '@ember/runloop';
-import { camelize } from '@ember/string';
-import { get } from '@ember/object';
-import { A } from '@ember/array';
-import { isBlank, isPresent, isEqual } from '@ember/utils';
-import Mixin from '@ember/object/mixin';
-import Semantic from '../semantic';
-import $ from "jquery"
+import { getOwner } from "@ember/application";
+import { isHTMLSafe } from "@ember/template";
+import { bind } from "@ember/runloop";
+import { camelize } from "@ember/string";
+import { get } from "@ember/object";
+import { A } from "@ember/array";
+import { isBlank, isPresent, isEqual } from "@ember/utils";
+import Mixin from "@ember/object/mixin";
+import Semantic from "../semantic";
+import $ from "jquery";
 
-const EMBER_ATTRS = ['class', 'classNameBindings', 'classNames', 'tagName'];
-const HTML_ATTRS = ['id', 'name', 'readonly', 'autofocus', 'tabindex', 'title'];
-const CUSTOM_ATTRS = ['onElement'];
+const EMBER_ATTRS = ["class", "classNameBindings", "classNames", "tagName"];
+const HTML_ATTRS = ["id", "name", "readonly", "autofocus", "tabindex", "title"];
+const CUSTOM_ATTRS = ["onElement"];
 
 Semantic.BaseMixin = Mixin.create({
   /// Internal Variables
@@ -21,23 +24,19 @@ Semantic.BaseMixin = Mixin.create({
   _settableAttrs: null,
   _ignorableAttrs: null,
 
-  attributeBindings: [
-    'autofocus',
-    'tabindex',
-    'title'
-  ],
+  attributeBindings: ["autofocus", "tabindex", "title"],
 
   /// EMBER HOOKS
   init() {
     this._super(...arguments);
 
     if (isBlank(this.getSemanticModuleName())) {
-      return console.log('A module was not declared on semantic extended type');
+      return console.log("A module was not declared on semantic extended type");
     }
-    this.set('_initialized', false);
-    this.set('_bindableAttrs', A());
-    this.set('_settableAttrs', A());
-    this.set('_ignorableAttrs', this.getSemanticIgnorableAttrs());
+    this.set("_initialized", false);
+    this.set("_bindableAttrs", A());
+    this.set("_settableAttrs", A());
+    this.set("_ignorableAttrs", this.getSemanticIgnorableAttrs());
   },
 
   didInsertElement() {
@@ -45,39 +44,42 @@ Semantic.BaseMixin = Mixin.create({
     this.initSemanticModule();
 
     // Get the modules settable and gettable properties.
-    let settableProperties = A(Object.keys(this.execute('internal', 'set')));
-    let gettableProperties = A(Object.keys(this.execute('internal', 'get')));
+    let settableProperties = A(Object.keys(this.execute("internal", "set")));
+    let gettableProperties = A(Object.keys(this.execute("internal", "get")));
 
-    for (let key in this.get('attrs')) {
+    for (let key in this.attrs) {
       // If it has a settable and gettable attribute, then its bindable
-      if (settableProperties.includes(key) && gettableProperties.includes(key)) {
-        this.get('_bindableAttrs').addObject(key);
+      if (
+        settableProperties.includes(key) &&
+        gettableProperties.includes(key)
+      ) {
+        this._bindableAttrs.addObject(key);
       } else if (settableProperties.includes(key)) {
         // otherwise, its settable only
-        this.get('_settableAttrs').addObject(key);
+        this._settableAttrs.addObject(key);
       }
     }
     this.didInitSemantic();
-    this.set('_initialized', true);
+    this.set("_initialized", true);
   },
 
   willDestroyElement() {
     this._super(...arguments);
-    this.execute('destroy');
+    this.execute("destroy");
   },
 
   didUpdateAttrs() {
     this._super(...arguments);
-    for (let i = 0; i < this.get('_bindableAttrs').length; i++) {
-      let bindableAttr = this.get('_bindableAttrs')[i];
+    for (let i = 0; i < this._bindableAttrs.length; i++) {
+      let bindableAttr = this._bindableAttrs[i];
       let attrValue = this._getAttrValue(bindableAttr);
       let moduleValue = this.getSemanticAttr(bindableAttr);
       if (!this.areAttrValuesEqual(bindableAttr, attrValue, moduleValue)) {
         this.setSemanticAttr(bindableAttr, attrValue);
       }
     }
-    for (let i = 0; i < this.get('_settableAttrs').length; i++) {
-      let settableAttr = this.get('_settableAttrs')[i];
+    for (let i = 0; i < this._settableAttrs.length; i++) {
+      let settableAttr = this._settableAttrs[i];
       let attrValue = this._getAttrValue(settableAttr);
       this.setSemanticAttr(settableAttr, attrValue);
     }
@@ -86,8 +88,8 @@ Semantic.BaseMixin = Mixin.create({
   /// Semantic Hooks
   getSemanticIgnorableAttrs() {
     let ignorableAttrs = [];
-    if (isPresent(this.get('ignorableAttrs'))) {
-      ignorableAttrs = ignorableAttrs.concat(this.get('ignorableAttrs'));
+    if (isPresent(this.ignorableAttrs)) {
+      ignorableAttrs = ignorableAttrs.concat(this.ignorableAttrs);
     }
     ignorableAttrs = ignorableAttrs.concat(EMBER_ATTRS);
     ignorableAttrs = ignorableAttrs.concat(HTML_ATTRS);
@@ -96,14 +98,15 @@ Semantic.BaseMixin = Mixin.create({
   },
 
   getSemanticScope() {
-    if (isPresent(this.get('onElement'))) {
-      return this.$(this.get('onElement'));
+    if (isPresent(this.onElement)) {
+      return $(this.onElement);
     }
-    return this.$();
+
+    return $(this.element);
   },
 
   getSemanticModuleName() {
-    return this.get('module');
+    return this.module;
   },
 
   getSemanticModule() {
@@ -113,7 +116,7 @@ Semantic.BaseMixin = Mixin.create({
     let selector = this.getSemanticScope();
     if (selector != null) {
       let module = selector[this.getSemanticModuleName()];
-      if (typeof module === 'function') {
+      if (typeof module === "function") {
         return module;
       }
     }
@@ -127,8 +130,8 @@ Semantic.BaseMixin = Mixin.create({
     let moduleName = this.getSemanticModuleName();
     return $.fn[moduleName];
   },
-
-  willInitSemantic(settings) { // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  willInitSemantic(settings) {
     // Use this method to modify the settings object on inherited components, before module initialization
   },
 
@@ -140,7 +143,9 @@ Semantic.BaseMixin = Mixin.create({
     if (module) {
       module.call(this.getSemanticScope(), this._settings());
     } else {
-      console.log(`The Semantic UI module ${this.getSemanticModuleName()} was not found and did not initialize`);
+      console.log(
+        `The Semantic UI module ${this.getSemanticModuleName()} was not found and did not initialize`
+      );
     }
   },
 
@@ -157,9 +162,12 @@ Semantic.BaseMixin = Mixin.create({
   },
 
   areAttrValuesEqual(attrName, attrValue, moduleValue) {
-    return attrValue === moduleValue ||
-           this._stringCompareIfPossible(attrValue) === this._stringCompareIfPossible(moduleValue) ||
-           isEqual(attrValue, moduleValue);
+    return (
+      attrValue === moduleValue ||
+      this._stringCompareIfPossible(attrValue) ===
+        this._stringCompareIfPossible(moduleValue) ||
+      isEqual(attrValue, moduleValue)
+    );
   },
 
   // Semantic Helper Methods
@@ -171,7 +179,9 @@ Semantic.BaseMixin = Mixin.create({
     if (module) {
       return module.apply(this.getSemanticScope(), arguments);
     }
-    console.log("The execute method was called, but the Semantic-UI module didn't exist.");
+    console.log(
+      "The execute method was called, but the Semantic-UI module didn't exist."
+    );
   },
 
   actions: {
@@ -189,10 +199,10 @@ Semantic.BaseMixin = Mixin.create({
     }
 
     // if its a mutable object, get the actual value
-    if (typeof value === 'object') {
+    if (typeof value === "object") {
       let objectKeys = A(Object.keys(value));
-      if (objectKeys.any((objectkey) => objectkey.indexOf('MUTABLE_CELL') >= 0)) {
-        value = get(value, 'value');
+      if (objectKeys.any(objectkey => objectkey.indexOf("MUTABLE_CELL") >= 0)) {
+        value = get(value, "value");
       }
     }
 
@@ -214,11 +224,14 @@ Semantic.BaseMixin = Mixin.create({
       verbose: Semantic.UI_VERBOSE
     };
 
-    for (let key in this.get('attrs')) {
+    for (let key in this.attrs) {
       let value = this._getAttrValue(key);
 
       if (!this._hasOwnProperty(moduleGlobal.settings, key)) {
-        if (!this.get('_ignorableAttrs').includes(key) && !this.get('_ignorableAttrs').includes(camelize(key))) {
+        if (
+          !this._ignorableAttrs.includes(key) &&
+          !this._ignorableAttrs.includes(camelize(key))
+        ) {
           // TODO: Add better ember keys here
           // Ember.Logger.debug(`You passed in the property '${key}', but a setting doesn't exist on the Semantic UI module: ${moduleName}`);
         }
@@ -236,10 +249,13 @@ Semantic.BaseMixin = Mixin.create({
     // Late bind any functions over to use the right scope
     for (let key in custom) {
       let value = custom[key];
-      if (typeof value === 'function') {
-        custom[key] = bind(this, this._updateFunctionWithParameters(key, value));
+      if (typeof value === "function") {
+        custom[key] = bind(
+          this,
+          this._updateFunctionWithParameters(key, value)
+        );
       }
-      if (typeof value === 'object') {
+      if (typeof value === "object") {
         if (isHTMLSafe(value)) {
           custom[key] = this._unwrapHTMLSafe(value);
         }
@@ -255,7 +271,7 @@ Semantic.BaseMixin = Mixin.create({
       // always add component instance as the last parameter incase they need access to it
       args.push(this);
 
-      if (this.get('_initialized')) {
+      if (this._initialized) {
         return fn.apply(this, args);
       }
     };
@@ -282,9 +298,9 @@ Semantic.BaseMixin = Mixin.create({
   },
 
   _setAttrBindable(attrName) {
-    if (this.get('_settableAttrs').includes(attrName)) {
-      this.get('_settableAttrs').removeObject(attrName);
-      this.get('_bindableAttrs').addObject(attrName);
+    if (this._settableAttrs.includes(attrName)) {
+      this._settableAttrs.removeObject(attrName);
+      this._bindableAttrs.addObject(attrName);
     }
   },
 
@@ -297,7 +313,10 @@ Semantic.BaseMixin = Mixin.create({
 
   _hasOwnProperty(object, property) {
     if (object) {
-      if (object.hasOwnProperty && typeof object.hasOwnProperty === "function") {
+      if (
+        object.hasOwnProperty &&
+        typeof object.hasOwnProperty === "function"
+      ) {
         return object.hasOwnProperty(property);
       }
       // Ember 2.9 returns an EmptyObject, which doesn't have hasOwnProperty
@@ -309,8 +328,8 @@ Semantic.BaseMixin = Mixin.create({
 
   _isFastBoot() {
     let owner = getOwner(this);
-    let fastboot = owner.lookup('service:fastboot');
-    return fastboot && fastboot.get('isFastBoot');
+    let fastboot = owner.lookup("service:fastboot");
+    return fastboot && fastboot.get("isFastBoot");
   }
 });
 

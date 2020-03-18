@@ -1,14 +1,14 @@
-import Component from '@ember/component';
-import Base from '../mixins/base';
-import layout from '../templates/components/ui-modal';
+/* eslint-disable ember/no-classic-components */
+/* eslint-disable ember/require-tagless-components */
+import Component from "@ember/component";
+import Base from "../mixins/base";
 
-export default Component.extend(Base, {
-  layout,
-  module: 'modal',
-  classNames: ['ui', 'modal'],
+export default class UiModalComponent extends Component.extend(Base) {
+  module = "modal";
+  classNames = ["ui", "modal"];
 
   willInitSemantic(settings) {
-    this._super(...arguments);
+    super.willInitSemantic(...arguments);
     if (settings.detachable == null) {
       settings.detachable = false;
     }
@@ -16,4 +16,4 @@ export default Component.extend(Base, {
       settings.observeChanges = true;
     }
   }
-});
+}

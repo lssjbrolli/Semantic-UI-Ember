@@ -1,15 +1,16 @@
-import Component from '@ember/component';
-import Checkbox from '../mixins/checkbox';
-import layout from '../templates/components/ui-checkbox';
+/* eslint-disable ember/no-attrs-in-components */
+/* eslint-disable ember/no-classic-components */
+/* eslint-disable ember/require-tagless-components */
+import Component from "@ember/component";
+import Checkbox from "../mixins/checkbox";
 
-export default Component.extend(Checkbox, {
-  layout,
-  type: 'checkbox',
-  ignorableAttrs: ['checked', 'label', 'disabled'],
+export default class UiCheckboxComponent extends Component.extend(Checkbox) {
+  type = "checkbox";
+  ignorableAttrs = ["checked", "label", "disabled"];
 
   // Internal wrapper for onchange, to pass through checked
   _onChange() {
-    let checked = this.execute('is checked');
+    let checked = this.execute("is checked");
     return this.attrs.onChange(checked, this);
   }
-});
+}

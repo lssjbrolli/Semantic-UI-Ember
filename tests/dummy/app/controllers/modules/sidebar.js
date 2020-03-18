@@ -1,10 +1,11 @@
-/* global $ */
-import Controller from '@ember/controller';
+/* eslint-disable ember/no-jquery */
+import Controller from "@ember/controller";
+import { action } from "@ember/object";
+import $ from "jquery";
 
-export default Controller.extend({
-  actions: {
-    toggle: function(id) {
-      $(`#${id}`).sidebar('toggle');
-    }
+export default class extends Controller {
+  @action
+  toggle(id) {
+    $(`#${id}`).sidebar("toggle");
   }
-});
+}

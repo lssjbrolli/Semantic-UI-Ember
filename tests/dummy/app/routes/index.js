@@ -1,9 +1,7 @@
-import Route from '@ember/routing/route';
+import Route from "@ember/routing/route";
 
-export default Route.extend({
-
+export default class extends Route {
   redirect() {
-    this.replaceWith('modules.index');
+    this.replaceWith("modules.index");
   }
-
-});
+}

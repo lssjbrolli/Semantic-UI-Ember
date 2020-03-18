@@ -1,75 +1,81 @@
 <div class="ui masthead vertical segment">
   <div class="ui container">
     <div class="introduction">
-
       <h1 class="ui header">
         Progress
-
         <div class="sub header">
           A progress bar shows the progression of a task
         </div>
       </h1>
-
       <div class="ui hidden divider"></div>
-
       <p>
-        For additional documentation on how to configure this module, please refer to the {{#link-to 'modules.index'}}Getting Started{{/link-to}} section and Semantic UI's module specific external documentation links below.
+        For additional documentation on how to configure this module, please refer to the
+        {{#link-to "modules.index"}}
+          Getting Started
+        {{/link-to}}
+        section and Semantic UI's module specific external documentation links below.
       </p>
-
       <div class="ui three item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/progress.html" target="_blank">Definition</a>
-        {{!-- <a class="item" href="http://semantic-ui.com/modules/progress.html#/examples" target="_blank">Examples</a> --}}
-        <a class="item" href="http://semantic-ui.com/modules/progress.html#/usage" target="_blank">Usage</a>
-        <a class="item" href="http://semantic-ui.com/modules/progress.html#/settings" target="_blank">Settings</a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/progress.html"
+          target="_blank"
+        >
+          Definition
+        </a>
+        {{! <a class="item" href="http://semantic-ui.com/modules/progress.html#/examples" target="_blank">Examples</a> }}
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/progress.html#/usage"
+          target="_blank"
+        >
+          Usage
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/progress.html#/settings"
+          target="_blank"
+        >
+          Settings
+        </a>
       </div>
-
     </div>
-
   </div>
 </div>
-
 <div class="ui main container">
-
-  {{#ui-example
-    header="Simple Example"
-    subHeader="Percent Progress"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
-      {{#ui-progress percent=progressOne class="teal indicating"}}
+  <UiExample
+    @header="Simple Example"
+    @subHeader="Percent Progress" as |showing|
+  >
+    <UiHtml @showing={{showing}}>
+      <UiProgress
+        @options={{hash autoSuccess=false debug=true}}
+        @percent={{this.progressOne}}
+        @total="100"
+        class="indicating" as |behavior|
+      >
         <div class="bar"></div>
-        <div class="label">Completed {{input value=progressOne type="range" min=0 max=100}}</div>
-      {{/ui-progress}}
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-\{{#ui-progress percent=progressOne class="teal indicating"}}
-  <div class="bar"></div>
-  <div class="label">Completed \{{input value=progressOne type="range" min=0 max=100}}</div>
-\{{/ui-progress}}
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
-  {{#ui-example
-    header="Simple Example"
-    subHeader="Value Progress"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
+        <div class="label">
+          Completed
+          <Input
+            @value={{this.progressOne}}
+            @type="range"
+            @min="0"
+            @max="100"
+          />
+        </div>
+      </UiProgress>
+    </UiHtml>
+  </UiExample>
+  <UiExample @header="Simple Example" @subHeader="Value Progress" as |showing|>
+    <UiHtml @showing={{showing}}>
       {{#ui-progress value=progressTwo progress=progressTwo total=30}}
         <div class="bar"></div>
-        <div class="label">Uploaded {{input value=progressTwo type="range" min=0 max=30}}</div>
+        <div class="label">
+          Uploaded
+          {{input value=progressTwo type="range" min=0 max=30}}
+        </div>
       {{/ui-progress}}
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-\{{#ui-progress value=progressTwo progress=progressTwo total=30}}
-  <div class="bar"></div>
-  <div class="label">Uploaded \{{input value=progressTwo type="range" min=0 max=30}}</div>
-\{{/ui-progress}}
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
+    </UiHtml>
+  </UiExample>
 </div>

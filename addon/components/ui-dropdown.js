@@ -1,90 +1,97 @@
-import { isArray } from '@ember/array';
-import { isEmpty, isBlank } from '@ember/utils';
-import { get } from '@ember/object';
-import { scheduleOnce } from '@ember/runloop';
-import { guidFor } from '@ember/object/internals';
-import Component from '@ember/component';
-import Base from '../mixins/base';
-import PromiseResolver from 'ember-promise-utils/mixins/promise-resolver';
-import layout from '../templates/components/ui-dropdown';
+/* eslint-disable ember/no-attrs-in-components */
+/* eslint-disable ember/require-tagless-components */
+/* eslint-disable ember/no-classic-components */
+import { isArray } from "@ember/array";
+import { isEmpty, isBlank } from "@ember/utils";
+import { action } from "@ember/object";
+import { scheduleOnce } from "@ember/runloop";
+import { guidFor } from "@ember/object/internals";
+import Component from "@ember/component";
+import Base from "../mixins/base";
+import PromiseResolver from "ember-promise-utils/mixins/promise-resolver";
 
 const _proxyCallback = function(callbackName) {
   return function(value, text, $element) {
-    return this.get(`attrs.${callbackName}`)(this._getObjectOrValue(value), text, $element, this);
+    return this.attrs[callbackName](
+      this._getObjectOrValue(value),
+      text,
+      $element,
+      this
+    );
   };
 };
 
-export default Component.extend(Base, PromiseResolver, {
-  layout,
-  module: 'dropdown',
-  classNames: ['ui', 'dropdown'],
-  ignorableAttrs: ['selected'],
-  objectMap: null,
+export default class UiDropdownComponent extends Component.extend(
+  Base,
+  PromiseResolver
+) {
+  module = "dropdown";
+  classNames = ["ui", "dropdown"];
+  ignorableAttrs = ["selected"];
+  objectMap = null;
 
-  init() {
-    this._super(...arguments);
-    this.set('objectMap', {});
-  },
+  constructor() {
+    super(...arguments);
+    this.objectMap = {};
+  }
 
   willDestroyElement() {
-    this._super(...arguments);
-    this.set('objectMap', null);
-  },
+    super.willDestroyElement(...arguments);
+    this.objectMap = null;
+  }
 
   // Semantic Hooks
   willInitSemantic(settings) {
-    this._super(...arguments);
+    super.willInitSemantic(...arguments);
     if (settings.onChange) {
-      settings.onChange = this.get('_onChange');
+      settings.onChange = this._onChange;
     }
     if (settings.onAdd) {
-      settings.onAdd = this.get('_onAdd');
+      settings.onAdd = this._onAdd;
     }
     if (settings.onRemove) {
-      settings.onRemove = this.get('_onRemove');
+      settings.onRemove = this._onRemove;
     }
-  },
+  }
 
   didInitSemantic() {
-    this._super(...arguments);
+    super.didInitSemantic(...arguments);
     // We want to handle this outside of the standard process
-    this.get('_settableAttrs').removeObject('selected');
+    this._settableAttrs.removeObject("selected");
     // We need to ensure the internal value is set to '',
     // otherwise when we get the value later it is undefined
     // and semantic returns the module instead of the actual value
-    this.execute('clear');
+    this.execute("clear");
     this._inspectSelected();
-  },
-
+  }
   didUpdateAttrs() {
-    this._super(...arguments);
+    super.didUpdateAttrs(...arguments);
     this._inspectSelected();
-  },
+  }
 
-  actions: {
-    mapping(object) {
-      let guid = guidFor(object);
-      if (!this._hasOwnProperty(this.get('objectMap'), guid)) {
-        this.get('objectMap')[guid] = object;
-      }
-      scheduleOnce('afterRender', this, this._inspectSelected);
-      return guid;
+  @action
+  mapping(object) {
+    let guid = guidFor(object);
+    if (!this._hasOwnProperty(this.objectMap, guid)) {
+      this.objectMap[guid] = object;
     }
-  },
+    scheduleOnce("afterRender", this, this._inspectSelected);
+    return guid;
+  }
 
   // Method proxies
   _onChange(value, text, $element) {
     // Semantic calls the events on any 'set {action}'
     // Because of that we want to ignore calls when we are
     // Specifically setting the value
-    if (this.get('_isSettingSelect')) {
+    if (this._isSettingSelect) {
       return;
     }
     let returnValue;
-    if (this.execute('is multiple')) {
-      let values = this.execute('get values');
+    if (this.execute("is multiple")) {
+      let values = this.execute("get values");
       returnValue = [];
-      for (let i = 0; i < get(values, 'length'); i++) {
+      for (let i = 0; i < values.length; i++) {
         let item = this._atIndex(values, i);
         returnValue.push(this._getObjectOrValue(item));
       }
@@ -93,47 +100,47 @@ export default Component.extend(Base, PromiseResolver, {
     }
 
     return this.attrs.onChange(returnValue, text, $element, this);
-  },
-  _onAdd: _proxyCallback('onAdd'),
-  _onRemove: _proxyCallback('onRemove'),
+  }
+  _onAdd = _proxyCallback("onAdd");
+  _onRemove = _proxyCallback("onRemove");
 
   // Private methods
   _atIndex(collection, index) {
-    if (typeof collection.objectAt === 'function') {
+    if (typeof collection.objectAt === "function") {
       return collection.objectAt(index);
     }
     return collection[index];
-  },
+  }
 
   _getObjectOrValue(value) {
-    if (this._hasOwnProperty(this.get('objectMap'), value)) {
-      return this.get('objectMap')[value];
+    if (this._hasOwnProperty(this.objectMap, value)) {
+      return this.objectMap[value];
     }
     if (isEmpty(value)) {
       return null;
     }
     return value;
-  },
+  }
 
   _inspectSelected() {
-    let selected = this.get('selected');
+    let selected = this.selected;
     return this.resolvePromise(selected, this._checkSelected);
-  },
+  }
 
   _checkSelected(selectedValue) {
-    let isMultiple = this.execute('is multiple');
+    let isMultiple = this.execute("is multiple");
     let moduleSelected = this._getCurrentSelected(isMultiple);
 
     if (!this._areSelectedEqual(selectedValue, moduleSelected, isMultiple)) {
-      this.set('_isSettingSelect', true);
+      this._isSettingSelect = true;
       this._setCurrentSelected(selectedValue, moduleSelected, isMultiple);
-      this.set('_isSettingSelect', false);
+      this._isSettingSelect = false;
     }
-  },
+  }
 
   _getCurrentSelected(isMultiple) {
     if (isMultiple) {
-      let keys = this.execute('get values');
+      let keys = this.execute("get values");
       let returnValues = [];
       for (let i = 0; i < keys.length; i++) {
         let key = this._atIndex(keys, i);
@@ -142,14 +149,14 @@ export default Component.extend(Base, PromiseResolver, {
       return returnValues;
     }
 
-    let key = this.execute('get value');
+    let key = this.execute("get value");
     return this._getObjectOrValue(key);
-  },
+  }
 
   _setCurrentSelected(selectedValue, moduleSelected, isMultiple) {
     if (isBlank(selectedValue)) {
       if (!isBlank(moduleSelected)) {
-        this.execute('clear');
+        this.execute("clear");
       }
       return;
     }
@@ -158,21 +165,23 @@ export default Component.extend(Base, PromiseResolver, {
       let keys = [];
       if (!isMultiple) {
         // eslint-disable-next-line no-console
-        console.log("Selected is an array of values, but the dropdown doesn't have the class 'multiple'");
+        console.log(
+          "Selected is an array of values, but the dropdown doesn't have the class 'multiple'"
+        );
         return;
       }
 
-      for (let i = 0; i < get(selectedValue, 'length'); i++) {
+      for (let i = 0; i < selectedValue.length; i++) {
         let item = this._atIndex(selectedValue, i);
         keys.push(this._getObjectKeyByValue(item));
       }
 
-      return this.execute('set exactly', keys);
+      return this.execute("set exactly", keys);
     }
 
     let key = this._getObjectKeyByValue(selectedValue);
-    return this.execute('set selected', key);
-  },
+    return this.execute("set selected", key);
+  }
 
   _areSelectedEqual(selectedValue, moduleValue, isMultiple) {
     if (isMultiple) {
@@ -186,17 +195,17 @@ export default Component.extend(Base, PromiseResolver, {
       }
 
       if (isArray(selectedValue)) {
-        if (get(selectedValue, 'length') !== get(moduleValue, 'length')) {
+        if (selectedValue.length !== moduleValue.length) {
           return false;
         }
 
         // Loop through the collections and see if they are equal
-        for (let i = 0; i < get(selectedValue, 'length'); i++) {
+        for (let i = 0; i < selectedValue.length; i++) {
           let value = this._atIndex(selectedValue, i);
           let equal = false;
-          for (let j = 0; j < get(moduleValue, 'length'); j++) {
+          for (let j = 0; j < moduleValue.length; j++) {
             let module = this._atIndex(moduleValue, j);
-            if (this.areAttrValuesEqual('selected', value, module)) {
+            if (this.areAttrValuesEqual("selected", value, module)) {
               equal = true;
               break;
             }
@@ -211,31 +220,30 @@ export default Component.extend(Base, PromiseResolver, {
       // otherwise, just try to see one of the values in the module equals the attr value
       // The use case is the selected value is a single value to start, then the module value is an array
       else if (isArray(moduleValue)) {
-        for (let i = 0; i < get(moduleValue, 'length'); i++) {
+        for (let i = 0; i < moduleValue.length; i++) {
           let item = this._atIndex(moduleValue, i);
-          if (this.areAttrValuesEqual('selected', selectedValue, item)) {
+          if (this.areAttrValuesEqual("selected", selectedValue, item)) {
             return true; // We found a match, just looking for one
           }
         }
         return false;
       }
     }
-    return this.areAttrValuesEqual('selected', selectedValue, moduleValue);
-  },
+    return this.areAttrValuesEqual("selected", selectedValue, moduleValue);
+  }
 
   _getObjectKeyByValue(value) {
     // Since semantic is always binding to strings, we must return a string
     // Either through the object mapping or directly stringed value
-    let objectMap = this.get('objectMap');
+    let objectMap = this.objectMap;
     for (let key in objectMap) {
       if (objectMap[key] === value) {
         return key;
       }
     }
     if (value == null) {
-      return '';
+      return "";
     }
     return value.toString();
   }
-
-});
+}

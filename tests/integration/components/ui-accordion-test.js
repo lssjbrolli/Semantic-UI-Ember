@@ -3,7 +3,7 @@ import { A } from "@ember/array";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 import { render, click, findAll } from "@ember/test-helpers";
-import hbs from "htmlbars-inline-precompile";
+import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui accordion", function(hooks) {
   setupRenderingTest(hooks);
@@ -12,7 +12,7 @@ module("Integration | Component | ui accordion", function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-      {{#ui-accordion class="styled"}}
+      <UiAccordion class="styled">
         <div class="title" data-id="title-1">
           Semantic UI
         </div>
@@ -25,7 +25,7 @@ module("Integration | Component | ui accordion", function(hooks) {
         <div class="content" data-id="content-2">
           Content Two
         </div>
-      {{/ui-accordion}}
+      </UiAccordion>
     `);
 
     // Test default state
@@ -37,7 +37,7 @@ module("Integration | Component | ui accordion", function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-      {{#ui-accordion class="styled"}}
+    <UiAccordion class="styled">
         <div class="title" data-id="title-1">
           Semantic UI
         </div>
@@ -50,7 +50,7 @@ module("Integration | Component | ui accordion", function(hooks) {
         <div class="content" data-id="content-2">
           Content Two
         </div>
-      {{/ui-accordion}}
+        </UiAccordion>
     `);
 
     // Test clicking activates accordion
@@ -62,10 +62,10 @@ module("Integration | Component | ui accordion", function(hooks) {
   test("dynamically added content is clickable", async function(assert) {
     assert.expect(7);
 
-    this.set("panes", A([]));
+    this.panes = A([]);
 
     await render(hbs`
-      {{#ui-accordion class="styled"}}
+      <UiAccordion class="styled">
         <div class="title" data-id="title-1">
           Semantic UI
         </div>
@@ -78,7 +78,7 @@ module("Integration | Component | ui accordion", function(hooks) {
         <div class="content" data-id="content-2">
           Content Two
         </div>
-        {{#each panes as |pane|}}
+        {{#each this.panes as |pane|}}
         <div class="title" data-id="extra-title-{{pane}}">
           Extra Section {{pane}}
         </div>
@@ -86,7 +86,7 @@ module("Integration | Component | ui accordion", function(hooks) {
           Extra Content {{pane}}
         </div>
         {{/each}}
-      {{/ui-accordion}}
+        </UiAccordion>
     `);
 
     assert.equal(findAll(".ui.accordion").length, 1);
@@ -113,7 +113,7 @@ module("Integration | Component | ui accordion", function(hooks) {
     assert.expect(4);
 
     await render(hbs`
-      {{#ui-accordion class="styled" exclusive=false}}
+      <UiAccordion class="styled" @exclusive={{false}} >
         <div class="title" data-id="title-1">
           Semantic UI
         </div>
@@ -126,7 +126,7 @@ module("Integration | Component | ui accordion", function(hooks) {
         <div class="content" data-id="content-2">
           Content Two
         </div>
-      {{/ui-accordion}}
+        </UiAccordion>
     `);
 
     // Test clicking activates accordion
@@ -143,7 +143,7 @@ module("Integration | Component | ui accordion", function(hooks) {
     assert.expect(4);
 
     await render(hbs`
-      {{#ui-accordion class="styled" collapsible=false}}
+      <UiAccordion class="styled" @collapsible={{false}} >
         <div class="title" data-id="title-1">
           Semantic UI
         </div>
@@ -156,7 +156,7 @@ module("Integration | Component | ui accordion", function(hooks) {
         <div class="content" data-id="content-2">
           Content Two
         </div>
-      {{/ui-accordion}}
+        </UiAccordion>
     `);
 
     assert.equal(findAll(".ui.accordion .active").length, 0);
@@ -173,7 +173,7 @@ module("Integration | Component | ui accordion", function(hooks) {
     assert.expect(4);
 
     await render(hbs`
-      {{#ui-accordion class="styled" collapsible=false as |execute|}}
+      <UiAccordion class="styled" @collapsible={{false}} as |execute| >
         <div class="title" data-id="title-1">
           Semantic UI
         </div>
@@ -188,7 +188,7 @@ module("Integration | Component | ui accordion", function(hooks) {
 
           <div class="ui button" data-id="content-2-button" {{action execute "close" 1}}>Close</div>
         </div>
-      {{/ui-accordion}}
+        </UiAccordion>
     `);
 
     assert.equal(findAll(".ui.accordion .active").length, 0);

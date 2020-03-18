@@ -1,12 +1,12 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render, findAll } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { module, test } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render, findAll } from "@ember/test-helpers";
+import { hbs } from "ember-cli-htmlbars";
 
-module('Integration | Component | ui shape', function(hooks) {
+module("Integration | Component | ui shape", function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
+  test("it renders", async function(assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -15,6 +15,6 @@ module('Integration | Component | ui shape', function(hooks) {
       {{/ui-shape}}
     `);
 
-    assert.equal(findAll('.ui.shape').length, 1);
+    assert.equal(findAll(".ui.shape").length, 1);
   });
 });

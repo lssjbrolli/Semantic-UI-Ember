@@ -1,11 +1,23 @@
-import Component from '@ember/component';
-import Base from '../mixins/base';
-import layout from '../templates/components/ui-embed';
+/* eslint-disable ember/require-tagless-components */
+/* eslint-disable ember/no-classic-components */
+import Component from "@ember/component";
+import Base from "../mixins/base";
 
-export default Component.extend(Base, {
-  layout,
-  module: 'embed',
-  classNames: ['ui', 'embed'],
-  attributeBindings: ['data-icon', 'data-id', 'data-placeholder', 'data-source', 'data-url'],
-  ignorableAttrs: ['data-icon', 'data-id', 'data-placeholder', 'data-source', 'data-url']
-});
+export default class UiEmbedComponent extends Component.extend(Base) {
+  module = "embed";
+  classNames = ["ui", "embed"];
+  attributeBindings = [
+    "data-icon",
+    "data-id",
+    "data-placeholder",
+    "data-source",
+    "data-url"
+  ];
+  ignorableAttrs = [
+    "data-icon",
+    "data-id",
+    "data-placeholder",
+    "data-source",
+    "data-url"
+  ];
+}

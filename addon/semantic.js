@@ -1,4 +1,4 @@
-import Namespace from '@ember/application/namespace';
+import Namespace from "@ember/application/namespace";
 
 var Semantic = Namespace.create({
   UI_DEBUG: false,

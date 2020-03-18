@@ -1,51 +1,55 @@
-import Component from '@ember/component';
-import Base from '../mixins/base';
-import layout from '../templates/components/ui-popup';
+/* eslint-disable ember/no-attrs-in-components */
+/* eslint-disable ember/require-tagless-components */
+/* eslint-disable ember/no-classic-components */
+import Component from "@ember/component";
+import Base from "../mixins/base";
 
-export default Component.extend(Base, {
-  layout,
-  module: 'popup',
+export default class UiPopupComponent extends Component.extend(Base) {
+  module = "popup";
 
   didInitSemantic() {
-    this._super(...arguments);
-    let possibleAttrs = ['content', 'title', 'html'];
+    super.didInitSemantic(...arguments);
+    let possibleAttrs = ["content", "title", "html"];
     for (let i = 0; i < possibleAttrs.length; i++) {
       let possibleAttr = possibleAttrs[i];
-      if (this._hasOwnProperty(this.attrs, possibleAttr) || this.get(possibleAttr) != null) {
-        this.get('_settableAttrs').addObject(possibleAttr);
+      if (
+        this._hasOwnProperty(this.attrs, possibleAttr) ||
+        this.possibleAttr != null
+      ) {
+        this._settableAttrs.addObject(possibleAttr);
       }
     }
-    this.get('_settableAttrs').removeObject('position');
-  },
+    this._settableAttrs.removeObject("position");
+  }
 
   setSemanticAttr(attrName, attrValue) {
-    if (attrName === 'content' || attrName === 'title' || attrName === 'html') {
+    if (attrName === "content" || attrName === "title" || attrName === "html") {
       let value = this._unwrapHTMLSafe(attrValue);
-      let response = this.execute('setting', attrName, value);
-      if (this.execute('is visible')) {
+      let response = this.execute("setting", attrName, value);
+      if (this.execute("is visible")) {
         let html;
-        if (attrName === 'html') {
+        if (attrName === "html") {
           html = value;
         } else {
           let text;
-          if (attrName === 'content')  {
+          if (attrName === "content") {
             text = {
-              title: this.get('title'),
+              title: this.title,
               content: value
             };
           } else {
             text = {
               title: value,
-              content: this.get('content')
+              content: this.content
             };
           }
           let moduleGlobal = this.getSemanticModuleGlobal();
           html = moduleGlobal.settings.templates.popup(text);
         }
-        this.execute('change content', html);
+        this.execute("change content", html);
       }
       return response;
     }
-    return this._super(...arguments);
+    return super.setSemanticAttr(...arguments);
   }
-});
+}

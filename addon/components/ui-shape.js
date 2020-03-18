@@ -1,9 +1,9 @@
-import Component from '@ember/component';
-import Base from '../mixins/base';
-import layout from '../templates/components/ui-shape';
+/* eslint-disable ember/no-classic-components */
+/* eslint-disable ember/require-tagless-components */
+import Component from "@ember/component";
+import Base from "../mixins/base";
 
-export default Component.extend(Base, {
-  layout,
-  module: 'shape',
-  classNames: ['ui', 'shape']
-});
+export default class UiShapeComponent extends Component.extend(Base) {
+  module = "shape";
+  classNames = ["ui", "shape"];
+}

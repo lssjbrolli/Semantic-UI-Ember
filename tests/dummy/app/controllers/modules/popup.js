@@ -1,5 +1,5 @@
-import Controller from '@ember/controller';
+import Controller from "@ember/controller";
 
-export default Controller.extend({
-  popup_message: "A message to popup"
-});
+export default class extends Controller {
+  popup_message = "A message to popup";
+}
