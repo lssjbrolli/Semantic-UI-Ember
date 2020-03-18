@@ -2,7 +2,7 @@ import { htmlSafe } from "@ember/template";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 import { render, find } from "@ember/test-helpers";
-import hbs from "htmlbars-inline-precompile";
+import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui popup", function(hooks) {
   setupRenderingTest(hooks);

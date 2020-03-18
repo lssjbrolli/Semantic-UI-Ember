@@ -1,18 +1,19 @@
+/* eslint-disable ember/require-tagless-components */
 /* global alert */
 import UiModal from "semantic-ui-ember/components/ui-modal";
+import { action } from "@ember/object";
 
-export default UiModal.extend({
-  name: "inbox",
-  classNames: ["inbox"],
+export default class extends UiModal {
+  name = "inbox";
+  classNames = ["inbox"];
 
-  actions: {
-    yes: function() {
-      alert("yes");
-      this.execute("hide");
-    },
-
-    no: function() {
-      alert("no");
-    }
+  @action
+  yes() {
+    alert("yes");
+    this.execute("hide");
   }
-});
+  @action
+  no() {
+    alert("no");
+  }
+}

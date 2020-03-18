@@ -1,9 +1,9 @@
-import Component from '@ember/component';
-import Base from '../mixins/base';
-import layout from '../templates/components/ui-sidebar';
+/* eslint-disable ember/require-tagless-components */
+/* eslint-disable ember/no-classic-components */
+import Component from "@ember/component";
+import Base from "../mixins/base";
 
-export default Component.extend(Base, {
-  layout,
-  module: 'sidebar',
-  classNames: ['ui', 'sidebar']
-});
+export default class UiSidebarComponent extends Component.extend(Base) {
+  module = "sidebar";
+  classNames = ["ui", "sidebar"];
+}

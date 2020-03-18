@@ -1,0 +1,11 @@
+<input
+  type={{this.type}}
+  name={{@name}}
+  tabindex={{@tabindex}}
+  checked={{unbound this.checked}}
+  disabled={{unbound this.disabled}}
+/>
+<label>
+  {{label}}
+</label>
+{{yield (fn this.execute)}}

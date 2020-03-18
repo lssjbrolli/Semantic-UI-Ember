@@ -16,7 +16,7 @@ import { isBlank, isPresent, isEqual } from "@ember/utils";
 import $ from "jquery";
 import Semantic from "../semantic";
 
-export default class UIAccordionClass extends Component {
+export default class UIAccordionComponent extends Component {
   module = "accordion";
   classNames = ["ui", "accordion"];
 

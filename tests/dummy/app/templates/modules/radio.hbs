@@ -1,55 +1,107 @@
 <div class="ui masthead vertical segment">
   <div class="ui container">
     <div class="introduction">
-
       <h1 class="ui header">
         Radio
-
         <div class="sub header">
           A radio button allows a user to select a value from a small set of options
         </div>
       </h1>
-
       <div class="ui hidden divider"></div>
-
       <p>
-        For additional documentation on how to configure this module, please refer to the {{#link-to 'modules.index'}}Getting Started{{/link-to}} section and Semantic UI's module specific external documentation links below.
+        For additional documentation on how to configure this module, please refer to the
+        <LinkTo @route="modules.index">
+          Getting Started
+        </LinkTo>
+        section and Semantic UI's module specific external documentation links below.
       </p>
-
       <div class="ui four item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html" target="_blank">Definition</a>
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/examples" target="_blank">Examples</a>
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/usage" target="_blank">Usage</a>
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/settings" target="_blank">Settings</a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/checkbox.html"
+          target="_blank"
+        >
+          Definition
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/checkbox.html#/examples"
+          target="_blank"
+        >
+          Examples
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/checkbox.html#/usage"
+          target="_blank"
+        >
+          Usage
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/checkbox.html#/settings"
+          target="_blank"
+        >
+          Settings
+        </a>
       </div>
-
     </div>
-
   </div>
 </div>
-
 <div class="ui main container">
-
   <div class="ui yellow message">
     There are API module differences for checkbox.
   </div>
-
-  {{#ui-annotation showing=true type="javascript"}}
-Original: onChange()
+  {{!-- {{#ui-annotation showing=true type="javascript"}}
+    Original: onChange()
 Modified: onChange(value [binded])
 
 // Description:
 //  The onChange event has been modify to include the bound value in the radio options
-  {{/ui-annotation}}
-
+  {{/ui-annotation}} --}}
   <div class="ui divider"></div>
-
   {{#ui-example
     header="Simple Example"
-    subHeader="Basic Radio Button"
-    as |showing setCopyCode|}}
-
+    subHeader="Basic Radio Button" as |showing setCopyCode|
+  }}
     {{#ui-html showing=showing}}
+      <div class="ui form">
+        <div class="grouped inline fields">
+          <div class="field">
+            <UiRadio
+              @name="fruit"
+              @label="Once a week"
+              @value="once-a-week"
+              @current={{this.fruit}}
+              @onChange={{fn (mut this.fruit)}}
+            />
+          </div>
+          <div class="field">
+            <UiRadio
+              @name="fruit"
+              @label="2-3 times a week"
+              @value="few-times-a-week"
+              @current={{this.fruit}}
+              @onChange={{fn (mut this.fruit)}}
+            />
+          </div>
+          <div class="field">
+            <UiRadio
+              @name="fruit"
+              @label="Once a day"
+              @value="once-a-day"
+              @current={{this.fruit}}
+              @onChange={{fn (mut this.fruit)}}
+            />
+          </div>
+        </div>
+      </div>
+      <div class="ui label">
+        Current fruit -
+        {{this.fruit}}
+      </div>
+    {{/ui-html}}
+    {{!-- {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
       <div class="ui form">
         <div class="grouped inline fields">
           <div class="field">
@@ -63,39 +115,61 @@ Modified: onChange(value [binded])
           </div>
         </div>
       </div>
-
       <div class="ui label">
-        Current fruit - {{fruit}}
+        Current fruit -
+        {{fruit}}
+      </div>
+    {{/ui-annotation}} --}}
+  {{/ui-example}}
+  {{#ui-example header="Pre selected example" as |showing setCopyCode|}}
+    {{#ui-html showing=showing}}
+      <div class="ui form">
+        <div class="grouped inline fields">
+          <div class="field">
+            <UiRadio
+              @name="color"
+              @label="Red"
+              @value="red"
+              @current={{this.color}}
+              @onChange={{fn (mut this.color)}}
+            />
+          </div>
+          <div class="field">
+            <UiRadio
+              @name="color"
+              @label="Yellow"
+              @value="yellow"
+              @current={{this.color}}
+              @onChange={{fn (mut this.color)}}
+            />
+          </div>
+          <div class="field">
+            <UiRadio
+              @name="color"
+              @label="Blue"
+              @value="blue"
+              @current={{this.color}}
+              @onChange={{fn (mut this.color)}}
+            />
+          </div>
+          <div class="field">
+            <UiRadio
+              @name="color"
+              @label="Disabled"
+              @value="disabled"
+              @current={{this.color}}
+              @disabled={{true}}
+              @onChange={{fn (mut this.color)}}
+            />
+          </div>
+        </div>
+      </div>
+      <div class="ui label">
+        Current Color -
+        {{this.color}}
       </div>
     {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-<div class="ui form">
-  <div class="grouped inline fields">
-    <div class="field">
-      \{{ui-radio name="fruit" label="Once a week" value="once-a-week" current=fruit onChange=(action (mut fruit))}}
-    </div>
-    <div class="field">
-      \{{ui-radio name="fruit" label="2-3 times a week" value="few-times-a-week" current=fruit onChange=(action (mut fruit))}}
-    </div>
-    <div class="field">
-      \{{ui-radio name="fruit" label="Once a day" value="once-a-day" current=fruit onChange=(action (mut fruit))}}
-    </div>
-  </div>
-</div>
-
-<div class="ui label">
-  Current fruit - \{{fruit}}
-</div>
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
-  {{#ui-example
-    header="Pre selected example"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
+    {{!-- {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
       <div class="ui form">
         <div class="grouped inline fields">
           <div class="field">
@@ -112,35 +186,10 @@ Modified: onChange(value [binded])
           </div>
         </div>
       </div>
-
       <div class="ui label">
-        Current Color - {{color}}
+        Current Color -
+        {{color}}
       </div>
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-<div class="ui form">
-  <div class="grouped inline fields">
-    <div class="field">
-      \{{ui-radio name="color" label="Red" value="red" current=color onChange=(action (mut color))}}
-    </div>
-    <div class="field">
-      \{{ui-radio name="color" label="Yellow" value="yellow" current=color onChange=(action (mut color))}}
-    </div>
-    <div class="field">
-      \{{ui-radio name="color" label="Blue" value="blue" current=color onChange=(action (mut color))}}
-    </div>
-    <div class="field">
-      \{{ui-radio name="color" label="Disabled" value="disabled" current=color disabled=true onChange=(action (mut color))}}
-    </div>
-  </div>
-</div>
-
-<div class="ui label">
-  Current Color - \{{color}}
-</div>
-    {{/ui-annotation}}
-
+    {{/ui-annotation}} --}}
   {{/ui-example}}
-
 </div>

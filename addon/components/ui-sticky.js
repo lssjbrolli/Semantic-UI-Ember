@@ -1,9 +1,9 @@
-import Component from '@ember/component';
-import Base from '../mixins/base';
-import layout from '../templates/components/ui-sticky';
+/* eslint-disable ember/require-tagless-components */
+/* eslint-disable ember/no-classic-components */
+import Component from "@ember/component";
+import Base from "../mixins/base";
 
-export default Component.extend(Base, {
-  layout,
-  module: 'sticky',
-  classNames: ['ui', 'sticky']
-});
+export default class UiStickyComponent extends Component.extend(Base) {
+  module = "sticky";
+  classNames = ["ui", "sticky"];
+}

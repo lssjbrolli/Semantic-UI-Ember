@@ -1,8 +1,8 @@
-import Component from '@ember/component';
-import Base from '../mixins/base';
-import layout from '../templates/components/ui-dimmer';
+/* eslint-disable ember/require-tagless-components */
+/* eslint-disable ember/no-classic-components */
+import Component from "@ember/component";
+import Base from "../mixins/base";
 
-export default Component.extend(Base, {
-  layout,
-  module: 'dimmer'
-});
+export default class UiDimmerComponent extends Component.extend(Base) {
+  module = "dimmer";
+}

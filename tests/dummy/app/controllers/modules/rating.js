@@ -1,6 +1,6 @@
-import Controller from '@ember/controller';
+import Controller from "@ember/controller";
 
-export default Controller.extend({
-  rating: 3,
-  heartRating: 1
-});
+export default class extends Controller {
+  rating = 3;
+  heartRating = 1;
+}

@@ -1,6 +1,6 @@
-import Controller from '@ember/controller';
+import Controller from "@ember/controller";
 
-export default Controller.extend({
-  fruit: null,
-  color: "red"
-});
+export default class extends Controller {
+  fruit = null;
+  color = "red";
+}

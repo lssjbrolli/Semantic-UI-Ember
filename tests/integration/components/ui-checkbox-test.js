@@ -1,7 +1,7 @@
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 import { render, click, findAll } from "@ember/test-helpers";
-import hbs from "htmlbars-inline-precompile";
+import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui checkbox", function(hooks) {
   setupRenderingTest(hooks);
@@ -10,13 +10,13 @@ module("Integration | Component | ui checkbox", function(hooks) {
     assert.expect(2);
 
     let count = 0;
-    this.set("changed", () => {
+    this.changed = () => {
       count++;
-    });
+    };
 
-    this.set("checked", false);
+    this.checked = false;
     await render(hbs`
-      {{ui-checkbox label="Make my profile visible" checked=checked onChange=(action changed)}}
+      <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @onChange={{fn this.changed}} />
     `);
 
     assert.equal(findAll(".ui.checkbox").length, 1);
@@ -27,14 +27,13 @@ module("Integration | Component | ui checkbox", function(hooks) {
     assert.expect(3);
 
     let count = 0;
-    this.set("changed", value => {
-      this.set("checked", value);
+    this.changed = () => {
       count++;
-    });
+    };
 
-    this.set("checked", false);
+    this.checked = false;
     await render(hbs`
-      {{ui-checkbox label="Make my profile visible" checked=checked onChange=(action changed)}}
+      <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @onChange={{fn this.changed}} />
     `);
 
     assert.equal(findAll(".ui.checkbox").length, 1);
@@ -47,15 +46,15 @@ module("Integration | Component | ui checkbox", function(hooks) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
-      this.set("checked", value);
+    this.changed = value => {
+      this.checked = value;
       count++;
-    });
+    };
 
-    this.set("checked", false);
-    this.set("disabled", true);
+    this.checked = false;
+    this.disabled = true;
     await render(hbs`
-      {{ui-checkbox label="Make my profile visible" checked=checked disabled=disabled onChange=(action changed)}}
+      <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @disabled={{this.disabled}} @onChange={{fn this.changed}} />
     `);
 
     assert.equal(findAll(".ui.checkbox").length, 1);
@@ -72,15 +71,15 @@ module("Integration | Component | ui checkbox", function(hooks) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
-      this.set("checked", value);
+    this.changed = value => {
+      this.checked = value;
       count++;
-    });
+    };
 
-    this.set("checked", false);
-    this.set("readonly", true);
+    this.checked = false;
+    this.readonly = true;
     await render(hbs`
-      {{ui-checkbox label="Make my profile visible" checked=checked readonly=readonly onChange=(action changed)}}
+      <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @readonly={{this.readonly}} @onChange={{fn this.changed}} />
     `);
 
     assert.equal(findAll(".ui.checkbox").length, 1);
