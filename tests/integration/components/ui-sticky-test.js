@@ -10,9 +10,9 @@ module("Integration | Component | ui sticky", function(hooks) {
     assert.expect(3);
 
     await render(hbs`
-      {{#ui-sticky}}
+      <UiSticky >
         <p>Some text</p>
-      {{/ui-sticky}}
+      </UiSticky >
     `);
 
     assert.equal(findAll(".ui.sticky").length, 1);

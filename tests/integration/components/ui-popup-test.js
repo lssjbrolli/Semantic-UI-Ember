@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-jquery */
 import { htmlSafe } from "@ember/template";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
@@ -11,11 +12,11 @@ module("Integration | Component | ui popup", function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      {{#ui-popup content="Add users to your feed"}}
+      <UiPopup @content="Add users to your feed">
         <div class="ui icon button">
           <i class="add icon"></i>
         </div>
-      {{/ui-popup}}
+      </UiPopup >
     `);
 
     assert.equal(
@@ -29,11 +30,11 @@ module("Integration | Component | ui popup", function(hooks) {
 
     this.set("content", "This is dynamic content");
     await render(hbs`
-      {{#ui-popup content=content}}
+      <UiPopup @content={{this.content}} >
         <div class="ui icon button">
           <i class="add icon"></i>
         </div>
-      {{/ui-popup}}
+      </UiPopup >
     `);
 
     assert.equal(
@@ -53,11 +54,11 @@ module("Integration | Component | ui popup", function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-      {{#ui-popup content="Add users to your feed" title="A title"}}
+      <UiPopup @content="Add users to your feed" @title="A title" >
         <div class="ui icon button">
           <i class="add icon"></i>
         </div>
-      {{/ui-popup}}
+      </UiPopup >
     `);
 
     this.$("div").popup("show");
@@ -83,11 +84,11 @@ module("Integration | Component | ui popup", function(hooks) {
     this.set("content", "something");
 
     await render(hbs`
-      {{#ui-popup content=content position="bottom right"}}
+      <UiPopup @content={{this.content}} @position="bottom right" >
         <div class="ui icon button">
           <i class="add icon"></i>
         </div>
-      {{/ui-popup}}
+      </UiPopup >
     `);
 
     this.$("div").popup("show");
@@ -112,11 +113,11 @@ module("Integration | Component | ui popup", function(hooks) {
     this.set("class", "some style");
 
     await render(hbs`
-      {{#ui-popup content="something" class=class}}
+      <UiPopup @content="something" class={{this.class}} >
         <div class="ui icon button">
           <i class="add icon"></i>
         </div>
-      {{/ui-popup}}
+      </UiPopup >
     `);
 
     this.$("div").popup("show");
@@ -153,11 +154,11 @@ module("Integration | Component | ui popup", function(hooks) {
     this.set("html", htmlSafe("<b>Awesome</b>"));
 
     await render(hbs`
-      {{#ui-popup html=html}}
+      <UiPopup @html={{this.html}} >
         <div class="ui icon button">
           <i class="add icon"></i>
         </div>
-      {{/ui-popup}}
+      </UiPopup >
     `);
 
     this.$("div").popup("show");

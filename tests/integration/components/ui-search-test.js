@@ -1,6 +1,14 @@
+/* eslint-disable ember/no-jquery */
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, focus, findAll, fillIn } from "@ember/test-helpers";
+import {
+  render,
+  focus,
+  find,
+  findAll,
+  fillIn,
+  triggerKeyEvent
+} from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui search", function(hooks) {
@@ -10,10 +18,10 @@ module("Integration | Component | ui search", function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      {{#ui-search apiSettings=(hash url="/search")}}
+      <UiSearch @apiSettings={{hash url="/search"}} >
         <input class="prompt" type="text" placeholder="Common passwords...">
         <div class="results"></div>
-      {{/ui-search}}
+      </UiSearch>
     `);
 
     assert.equal(findAll(".ui.search").length, 1);
@@ -27,11 +35,20 @@ module("Integration | Component | ui search", function(hooks) {
     this.set("query", null);
     this.set("selected", null);
 
+    this.set("setValue", value => {
+      this.set("selected", value);
+    });
+
     await render(hbs`
-      {{#ui-search source=commonPasswords onSearchQuery=(action (mut query)) onSelect=(action (mut selected))}}
-        <input class="prompt" type="text" placeholder="Common passwords...">
+      <UiSearch @source={{this.commonPasswords}} @onSelect={{fn this.setValue}}>
+        <Input
+          @value={{this.query}}
+          class="prompt"
+          type="text"
+          placeholder="Common passwords..."
+        />
         <div class="results"></div>
-      {{/ui-search}}
+      </UiSearch>
     `);
 
     assert.equal(findAll(".ui.search").length, 1);
@@ -48,11 +65,11 @@ module("Integration | Component | ui search", function(hooks) {
 
     let done = assert.async();
 
-    setTimeout(() => {
-      this.$(".result").addClass("active");
-      this.$("input").trigger(window.jQuery.Event("keydown", { which: 13 }));
+    setTimeout(async () => {
+      find(".result").classList.add("active");
+      await triggerKeyEvent(find("input"), "keydown", 13);
 
-      assert.equal(this.get("selected.title"), "12345");
+      assert.equal(this.selected.title, "12345");
       done();
     }, 500);
   });

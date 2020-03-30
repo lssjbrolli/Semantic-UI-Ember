@@ -10,9 +10,9 @@ module("Integration | Component | ui shape", function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      {{#ui-shape}}
+      <UiShape>
         <p>Content</p>
-      {{/ui-shape}}
+      </UiShape>
     `);
 
     assert.equal(findAll(".ui.shape").length, 1);

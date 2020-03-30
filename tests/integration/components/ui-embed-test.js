@@ -22,7 +22,7 @@ module("Integration | Component | ui embed", function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-      {{ui-embed data-url="https://www.youtube.com/embed/pfdu_gTry8E"}}
+      <UiEmbed data-url="https://www.youtube.com/embed/pfdu_gTry8E" />
     `);
 
     assert.equal(findAll(".ui.embed .embed iframe").length, 1);
@@ -34,7 +34,7 @@ module("Integration | Component | ui embed", function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-      {{ui-embed url="https://www.youtube.com/embed/pfdu_gTry8E"}}
+      <UiEmbed data-url="https://www.youtube.com/embed/pfdu_gTry8E"/>
     `);
 
     assert.equal(findAll(".ui.embed .embed iframe").length, 1);

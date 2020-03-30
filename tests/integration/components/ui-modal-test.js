@@ -1,7 +1,9 @@
+/* eslint-disable ember/no-jquery */
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 import { render, click, findAll } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
+import { bind } from "@ember/runloop";
 import $ from "jquery";
 
 module("Integration | Component | ui modal", function(hooks) {
@@ -17,7 +19,7 @@ module("Integration | Component | ui modal", function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      {{ui-modal name='profile'}}
+      <UiModal @name='profile' />
     `);
 
     assert.equal(findAll(".ui.modal").length, 1);
@@ -28,23 +30,26 @@ module("Integration | Component | ui modal", function(hooks) {
 
     let done = assert.async();
 
-    this.actions.openModal = () => {
-      $(".ui.modal").modal("show", () => {
-        assert.equal(
-          findAll(".ui.modal.visible").length,
-          1,
-          ".ui.modal is visible after showing"
-        );
-        done();
-      });
-    };
+    this.set("openModal", () => {
+      $(".ui.modal").modal(
+        "show",
+        bind(() => {
+          assert.equal(
+            findAll(".ui.modal.visible").length,
+            1,
+            ".ui.modal is visible after showing"
+          );
+          done();
+        })
+      );
+    });
 
     await render(hbs`
-      <div class="ui button" {{action 'openModal' 'profile'}}>
+      <div class="ui button" {{on 'click' (fn this.openModal 'profile')}}>
         Open
       </div>
 
-      {{ui-modal name='profile'}}
+      <UiModal @name='profile'/>
     `);
 
     assert.equal(findAll(".ui.modal").length, 1, ".ui.modal exists");
@@ -62,19 +67,22 @@ module("Integration | Component | ui modal", function(hooks) {
 
     let done = assert.async();
 
-    this.actions.openModal = () => {
-      $(".ui.modal").modal("show", async () => {
-        assert.equal(
-          findAll(".ui.modal.visible").length,
-          1,
-          ".ui.modal is visible after showing"
-        );
-        await click(".ui.modal .ui.positive.button");
-      });
-    };
+    this.set("openModal", () => {
+      $(".ui.modal").modal(
+        "show",
+        bind(async () => {
+          assert.equal(
+            findAll(".ui.modal.visible").length,
+            1,
+            ".ui.modal is visible after showing"
+          );
+          await click(".ui.modal .ui.positive.button");
+        })
+      );
+    });
 
-    this.actions.approve = function(element, component) {
-      var name = component.get("name");
+    this.set("approve", (element, component) => {
+      let name = component.name;
       assert.equal("profile", name, "approve is called");
       setTimeout(() => {
         assert.equal(
@@ -85,19 +93,19 @@ module("Integration | Component | ui modal", function(hooks) {
         done();
       }, 1000);
       return true;
-    };
+    });
 
     await render(hbs`
-      <div class="ui open button" {{action 'openModal' 'profile'}}>
+      <div class="ui open button" {{on 'click' (fn this.openModal 'profile')}}>
         Open
       </div>
 
-      {{#ui-modal name='profile' onApprove=(action 'approve')}}
+      <UiModal @name='profile' @onApprove={{fn this.approve}} >
         <div class="actions">
           <div class="ui negative button">No</div>
           <div class="ui positive button">Yes</div>
         </div>
-      {{/ui-modal}}
+      </UiModal>
     `);
 
     await click(".ui.open.button");
@@ -108,19 +116,22 @@ module("Integration | Component | ui modal", function(hooks) {
 
     let done = assert.async();
 
-    this.actions.openModal = () => {
-      $(".ui.modal").modal("show", async () => {
-        assert.equal(
-          findAll(".ui.modal.visible").length,
-          1,
-          ".ui.modal is visible after showing"
-        );
-        await click(".ui.modal .ui.positive.button");
-      });
-    };
+    this.set("openModal", () => {
+      $(".ui.modal").modal(
+        "show",
+        bind(async () => {
+          assert.equal(
+            findAll(".ui.modal.visible").length,
+            1,
+            ".ui.modal is visible after showing"
+          );
+          await click(".ui.modal .ui.positive.button");
+        })
+      );
+    });
 
-    this.actions.approve = function(element, component) {
-      var name = component.get("name");
+    this.set("approve", (element, component) => {
+      let name = component.name;
       assert.equal("profile", name, "approve is called");
       setTimeout(() => {
         assert.equal(
@@ -131,19 +142,19 @@ module("Integration | Component | ui modal", function(hooks) {
         done();
       }, 1000);
       return false;
-    };
+    });
 
     await render(hbs`
-      <div class="ui open button" {{action 'openModal' 'profile'}}>
+      <div class="ui open button" {{on 'click' (fn this.openModal 'profile')}}>
         Open
       </div>
 
-      {{#ui-modal name='profile' onApprove=(action 'approve')}}
+      <UiModal @name='profile' @onApprove={{fn this.approve}} >
         <div class="actions">
           <div class="ui negative button">No</div>
           <div class="ui positive button">Yes</div>
         </div>
-      {{/ui-modal}}
+      </UiModal>
     `);
 
     await click(".ui.open.button");
@@ -154,29 +165,29 @@ module("Integration | Component | ui modal", function(hooks) {
 
     let done = assert.async();
 
-    this.actions.openModal = () => {
+    this.set("openModal", () => {
       $(".ui.modal").modal("show", async () => {
         await click(".ui.negative.button");
       });
-    };
+    });
 
-    this.actions.deny = function(element, component) {
+    this.set("deny", (element, component) => {
       var name = component.get("name");
       assert.equal("profile", name);
       done();
-    };
+    });
 
     await render(hbs`
-      <div class="ui button" {{action 'openModal' 'profile'}}>
+      <div class="ui button" {{on 'click' (fn this.openModal 'profile')}}>
         Open
       </div>
 
-      {{#ui-modal name='profile' onDeny=(action 'deny')}}
+      <UiModal @name='profile' @onDeny={{fn this.deny}} >
         <div class="actions">
           <div class="ui negative button">No</div>
           <div class="ui positive button">Yes</div>
         </div>
-      {{/ui-modal}}
+      </UiModal>
     `);
 
     await click(".ui.button");

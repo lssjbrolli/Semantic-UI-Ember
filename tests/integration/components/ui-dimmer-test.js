@@ -10,9 +10,9 @@ module("Integration | Component | ui dimmer", function(hooks) {
     assert.expect(1);
     // Template block usage:
     await render(hbs`
-      {{#ui-dimmer class="ui segment"}}
+      <UiDimmer class="ui segment" >
         template block text
-      {{/ui-dimmer}}
+      </UiDimmer>
     `);
 
     assert.equal(
@@ -26,9 +26,9 @@ module("Integration | Component | ui dimmer", function(hooks) {
     assert.expect(6);
     // Template block usage:
     await render(hbs`
-      {{#ui-dimmer class="ui segment" on="click" duration=(hash show=0 hide=0)}}
+      <UiDimmer class="ui segment" @on="click" @duration={{hash show=0 hide=0}} >
         template block text
-      {{/ui-dimmer}}
+      </UiDimmer>
     `);
 
     assert.equal(
@@ -77,11 +77,11 @@ module("Integration | Component | ui dimmer", function(hooks) {
     assert.expect(6);
     // Template block usage:
     await render(hbs`
-      {{#ui-dimmer on="click" onElement=".ui.segment" duration=(hash show=0 hide=0)}}
+      <UiDimmer @on="click" @onElement=".ui.segment" @duration={{hash show=0 hide=0}} >
         <div class="ui segment">
           template block text
         </div>
-      {{/ui-dimmer}}
+      </UiDimmer>
     `);
 
     assert.equal(
@@ -130,13 +130,13 @@ module("Integration | Component | ui dimmer", function(hooks) {
     assert.expect(6);
     // Template block usage:
     await render(hbs`
-      {{#ui-dimmer on="click" onElement=".ui.segment" duration=(hash show=0 hide=0) as |execute|}}
-        <div class="ui button" {{action execute "show"}} data-id="show">Show</div>
-        <div class="ui button" {{action execute "hide"}} data-id="hide">Hide</div>
+      <UiDimmer @on="click" @onElement=".ui.segment" @duration={{hash show=0 hide=0}} as |execute|>
+        <div class="ui button" {{on 'click' (fn  execute "show")}} data-id="show">Show</div>
+        <div class="ui button" {{on 'click' (fn  execute "hide")}} data-id="hide">Hide</div>
         <div class="ui segment">
           template block text
         </div>
-      {{/ui-dimmer}}
+      </UiDimmer>
     `);
 
     assert.equal(
