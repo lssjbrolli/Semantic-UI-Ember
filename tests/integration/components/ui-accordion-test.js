@@ -37,7 +37,7 @@ module("Integration | Component | ui accordion", function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-    <UiAccordion class="styled">
+      <UiAccordion class="styled">
         <div class="title" data-id="title-1">
           Semantic UI
         </div>
@@ -50,7 +50,7 @@ module("Integration | Component | ui accordion", function(hooks) {
         <div class="content" data-id="content-2">
           Content Two
         </div>
-        </UiAccordion>
+      </UiAccordion>
     `);
 
     // Test clicking activates accordion
@@ -79,14 +79,14 @@ module("Integration | Component | ui accordion", function(hooks) {
           Content Two
         </div>
         {{#each this.panes as |pane|}}
-        <div class="title" data-id="extra-title-{{pane}}">
-          Extra Section {{pane}}
-        </div>
-        <div class="content" data-id="extra-content-{{pane}}">
-          Extra Content {{pane}}
-        </div>
+          <div class="title" data-id="extra-title-{{pane}}">
+            Extra Section {{pane}}
+          </div>
+          <div class="content" data-id="extra-content-{{pane}}">
+            Extra Content {{pane}}
+          </div>
         {{/each}}
-        </UiAccordion>
+      </UiAccordion>
     `);
 
     assert.equal(findAll(".ui.accordion").length, 1);
@@ -126,7 +126,7 @@ module("Integration | Component | ui accordion", function(hooks) {
         <div class="content" data-id="content-2">
           Content Two
         </div>
-        </UiAccordion>
+      </UiAccordion>
     `);
 
     // Test clicking activates accordion
@@ -156,7 +156,7 @@ module("Integration | Component | ui accordion", function(hooks) {
         <div class="content" data-id="content-2">
           Content Two
         </div>
-        </UiAccordion>
+      </UiAccordion>
     `);
 
     assert.equal(findAll(".ui.accordion .active").length, 0);
@@ -183,12 +183,11 @@ module("Integration | Component | ui accordion", function(hooks) {
         <div class="title" data-id="title-2">
           Section Two
         </div>
-        <div class="content" data-id="content-2">
-          Content Two
-
-          <div class="ui button" data-id="content-2-button" {{action execute "close" 1}}>Close</div>
+          <div class="content" data-id="content-2">
+            Content Two
+          <div class="ui button" data-id="content-2-button" {{on 'click' (fn execute "close" 1)}}>Close</div>
         </div>
-        </UiAccordion>
+      </UiAccordion>
     `);
 
     assert.equal(findAll(".ui.accordion .active").length, 0);

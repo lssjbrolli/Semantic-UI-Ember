@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-jquery */
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 import { render, click, find, findAll } from "@ember/test-helpers";
@@ -10,12 +11,12 @@ module("Integration | Component | ui nag", function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      {{#ui-nag class="inline cookie"}}
+      <UiNag class="inline cookie">
         <span class="title">
           We use cookies to ensure you get the best experience on our website
         </span>
         <i class="close icon"></i>
-      {{/ui-nag}}
+      </UiNag>
     `);
 
     assert.equal(findAll(".ui.nag").length, 1);
@@ -25,12 +26,12 @@ module("Integration | Component | ui nag", function(hooks) {
     assert.expect(4);
 
     await render(hbs`
-      {{#ui-nag class="inline cookie"}}
+      <UiNag class="inline cookie">
         <span class="title">
           We use cookies to ensure you get the best experience on our website
         </span>
         <i class="close icon"></i>
-      {{/ui-nag}}
+      </UiNag>
     `);
 
     assert.equal(findAll(".ui.nag").length, 1);

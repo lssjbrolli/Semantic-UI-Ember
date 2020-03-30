@@ -27,11 +27,12 @@ module("Integration | Component | ui checkbox", function(hooks) {
     assert.expect(3);
 
     let count = 0;
-    this.changed = () => {
+    this.set("changed", value => {
+      this.set("checked", value);
       count++;
-    };
+    });
+    this.set("checked", false);
 
-    this.checked = false;
     await render(hbs`
       <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @onChange={{fn this.changed}} />
     `);
@@ -46,13 +47,13 @@ module("Integration | Component | ui checkbox", function(hooks) {
     assert.expect(4);
 
     let count = 0;
-    this.changed = value => {
-      this.checked = value;
+    this.set("changed", value => {
+      this.set("checked", value);
       count++;
-    };
+    });
+    this.set("checked", false);
+    this.set("disabled", true);
 
-    this.checked = false;
-    this.disabled = true;
     await render(hbs`
       <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @disabled={{this.disabled}} @onChange={{fn this.changed}} />
     `);
@@ -71,13 +72,13 @@ module("Integration | Component | ui checkbox", function(hooks) {
     assert.expect(4);
 
     let count = 0;
-    this.changed = value => {
-      this.checked = value;
+    this.set("changed", value => {
+      this.set("checked", value);
       count++;
-    };
+    });
+    this.set("checked", false);
+    this.set("readonly", true);
 
-    this.checked = false;
-    this.readonly = true;
     await render(hbs`
       <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @readonly={{this.readonly}} @onChange={{fn this.changed}} />
     `);

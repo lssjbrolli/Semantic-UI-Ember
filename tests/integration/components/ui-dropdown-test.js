@@ -23,13 +23,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
 
     this.set("people", ["Sherlock Homes", "Patrick Bateman"]);
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed)}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{person}}>{{person}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2);
@@ -55,14 +55,14 @@ module("Integration | Component | ui dropdown", function(hooks) {
     ]);
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed)}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} >
         <div class='menu'>
         <p> mega test </p>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2);
@@ -89,13 +89,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
 
     this.set("selected", 2);
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed)}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2);
@@ -121,13 +121,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     ]);
 
     await render(hbs`
-      {{#ui-dropdown class='multiple' selected=selected onChange=(action changed)}}
+      <UiDropdown class='multiple' @selected={{this.selected}} @onChange={{fn this.changed}} >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2);
@@ -155,15 +155,15 @@ module("Integration | Component | ui dropdown", function(hooks) {
     ]);
 
     await render(hbs`
-      {{#ui-dropdown selected=people_id onChange=(action changed)}}
+      <UiDropdown @selected={{this.people_id}} @onChange={{fn this.changed}} >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class="item" data-value="{{person.id}}">
             {{person.name}}
           </div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2);
@@ -188,15 +188,15 @@ module("Integration | Component | ui dropdown", function(hooks) {
     ]);
 
     await render(hbs`
-      {{#ui-dropdown selected=people_id onChange=(action changed)}}
+      <UiDropdown @selected={{this.people_id}} @onChange={{fn this.changed}} >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class="item" data-value="{{person.id}}">
             {{person.name}}
           </div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2);
@@ -225,16 +225,16 @@ module("Integration | Component | ui dropdown", function(hooks) {
     ]);
 
     await render(hbs`
-      {{#ui-dropdown onChange=(action changed)}}
-        <input type="hidden" name="person" value="{{people_id}}" />
+      <UiDropdown @onChange={{fn this.changed}} >
+        <input type="hidden" name="person" value={{this.people_id}} />
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class="item" data-value="{{person.id}}">
             {{person.name}}
           </div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2);
@@ -264,15 +264,15 @@ module("Integration | Component | ui dropdown", function(hooks) {
     );
 
     await render(hbs`
-      {{#ui-dropdown selected=selected.id onChange=(action changed)}}
+      <UiDropdown @selected={{this.selected.id}} @onChange={{fn this.changed}} >
         <i class="dropdown icon"></i>
         <div class="default text"></div>
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");
@@ -329,13 +329,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     );
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper| >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{map-value mapper person}} data-id={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");
@@ -366,13 +366,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", this.people.objectAt(1));
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{map-value mapper person}} data-id={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");
@@ -401,13 +401,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     );
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{map-value mapper person}} data-id={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");
@@ -439,15 +439,15 @@ module("Integration | Component | ui dropdown", function(hooks) {
     );
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper| >
         <i class="dropdown icon"></i>
         <div class="default text"></div>
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{map-value mapper person}} data-id={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");
@@ -501,13 +501,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     );
 
     await render(hbs`
-      {{#ui-dropdown selected=selected.sub onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected.sub}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{map-value mapper person}} data-id={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     let selected = { sub: this.people.objectAt(1) };
@@ -542,13 +542,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("numbers", A([1, 2]));
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each numbers as |number|}}
+        {{#each this.this.numbers as |number|}}
           <div class='item' data-value={{map-value mapper number}} data-id={{number}}>{{number}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");
@@ -583,13 +583,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", ["2", "4"]);
 
     await render(hbs`
-      {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown class="multiple" @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each numbers as |number|}}
+        {{#each this.numbers as |number|}}
           <div class='item' data-value={{number}} data-id={{number}}>{{number}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 5, "Right number of items");
@@ -613,13 +613,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", "2");
 
     await render(hbs`
-      {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown class="multiple" @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each numbers as |number|}}
+        {{#each this.numbers as |number|}}
           <div class='item' data-value={{number}} data-id={{number}}>{{number}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 5, "Right number of items");
@@ -650,13 +650,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", [numbers[1], numbers[3]]);
 
     await render(hbs`
-      {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown class="multiple" @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each numbers as |number|}}
+        {{#each this.numbers as |number|}}
           <div class='item' data-value={{map-value mapper number}} data-id={{number.item}}>{{number.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 5, "Right number of items");
@@ -688,13 +688,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", numbers[1]);
 
     await render(hbs`
-      {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown class="multiple" @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each numbers as |number|}}
+        {{#each this.numbers as |number|}}
           <div class='item' data-value={{map-value mapper number}} data-id={{number.item}}>{{number.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 5, "Right number of items");
@@ -717,13 +717,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", []);
 
     await render(hbs`
-      {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown class="multiple" @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper| >
         <div class='menu'>
-        {{#each numbers as |number|}}
+        {{#each this.numbers as |number|}}
           <div class='item' data-value={{number}} data-id={{number}}>{{number}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 5, "Right number of items");
@@ -761,13 +761,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", []);
 
     await render(hbs`
-      {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown class="multiple" @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper| >
         <div class='menu'>
-        {{#each numbers as |number|}}
+        {{#each this.numbers as |number|}}
           <div class='item' data-value={{map-value mapper number}} data-id={{number.item}}>{{number.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 5, "Right number of items");
@@ -797,13 +797,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", []);
 
     await render(hbs`
-      {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown class="multiple" @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each numbers as |number|}}
+        {{#each this.numbers as |number|}}
           <div class='item' data-value={{number}} data-id={{number}}>{{number}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 5, "Right number of items");
@@ -847,13 +847,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", []);
 
     await render(hbs`
-      {{#ui-dropdown class="multiple" selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown class="multiple" @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each numbers as |number|}}
+        {{#each this.numbers as |number|}}
           <div class='item' data-value={{map-value mapper number}} data-id={{number.item}}>{{number.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 5, "Right number of items");
@@ -884,13 +884,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
 
     this.set("people", ["Sherlock Homes", "Patrick Bateman"]);
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed)}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{person}}>{{person}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2);
@@ -923,13 +923,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
 
     this.set("people", ["Sherlock Homes", "Patrick Bateman"]);
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed)}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{person}}>{{person}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2);
@@ -960,13 +960,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", "Patrick Bateman");
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper| >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{map-value mapper person}} data-id={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");
@@ -1010,13 +1010,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", "Patrick Bateman");
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{map-value mapper person}} data-id={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");
@@ -1055,13 +1055,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", deferredSelect.promise);
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper|>
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{map-value mapper person}} data-id={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");
@@ -1123,13 +1123,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("selected", deferredSelect.promise);
 
     await render(hbs`
-      {{#ui-dropdown selected=selected onChange=(action changed) as |execute mapper|}}
+      <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper| >
         <div class='menu'>
-        {{#each people as |person|}}
+        {{#each this.people as |person|}}
           <div class='item' data-value={{map-value mapper person}} data-id={{person.id}}>{{person.name}}</div>
         {{/each}}
         </div>
-      {{/ui-dropdown}}
+      </UiDropdown>
     `);
 
     assert.equal(findAll(".item").length, 2, "Right number of items");

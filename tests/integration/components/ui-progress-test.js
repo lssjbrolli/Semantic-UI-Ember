@@ -10,10 +10,10 @@ module("Integration | Component | ui progress", function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-      {{#ui-progress percent=40 class="teal indicating"}}
+      <UiProgress @percent={{40}} class="teal indicating" >
         <div class="bar"></div>
         <div class="label">Completed</div>
-      {{/ui-progress}}
+      </UiProgress >
     `);
 
     assert.equal(findAll(".ui.progress").length, 1);
@@ -24,10 +24,10 @@ module("Integration | Component | ui progress", function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-      {{#ui-progress value=40 class="teal indicating"}}
+      <UiProgress @value={{40}} class="teal indicating" >
         <div class="bar"></div>
         <div class="label">Completed</div>
-      {{/ui-progress}}
+      </UiProgress >
     `);
 
     assert.equal(findAll(".ui.progress").length, 1);
@@ -39,10 +39,10 @@ module("Integration | Component | ui progress", function(hooks) {
 
     this.set("progress", 40);
     await render(hbs`
-      {{#ui-progress percent=progress class="teal indicating"}}
+      <UiProgress @percent={{this.progress}} class="teal indicating">
         <div class="bar"></div>
         <div class="label">Completed</div>
-      {{/ui-progress}}
+      </UiProgress >
     `);
 
     assert.equal(findAll(".ui.progress").length, 1);
@@ -65,10 +65,10 @@ module("Integration | Component | ui progress", function(hooks) {
 
     this.set("progress", 40);
     await render(hbs`
-      {{#ui-progress percent=progress total=30 class="teal indicating"}}
+      <UiProgress @percent={{this.progress}} @total={{30}} class="teal indicating">
         <div class="bar"></div>
         <div class="label">Completed</div>
-      {{/ui-progress}}
+      </UiProgress >
     `);
 
     assert.equal(findAll(".ui.progress").length, 1);
@@ -91,10 +91,10 @@ module("Integration | Component | ui progress", function(hooks) {
 
     this.set("value", 50);
     await render(hbs`
-      {{#ui-progress value=value progress=value class="teal indicating"}}
+      <UiProgress @value={{this.value}} @progress={{this.value}} class="teal indicating">
         <div class="bar"></div>
         <div class="label">Completed</div>
-      {{/ui-progress}}
+      </UiProgress >
     `);
 
     assert.equal(findAll(".ui.progress").length, 1);
@@ -117,10 +117,10 @@ module("Integration | Component | ui progress", function(hooks) {
 
     this.set("value", 15);
     await render(hbs`
-      {{#ui-progress value=value progress=value total=30 class="teal indicating"}}
+      <UiProgress @value={{this.value}} @progress={{this.value}} @total={{30}} class="teal indicating">
         <div class="bar"></div>
         <div class="label">Completed</div>
-      {{/ui-progress}}
+      </UiProgress >
     `);
 
     assert.equal(findAll(".ui.progress").length, 1);

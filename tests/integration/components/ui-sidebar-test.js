@@ -11,11 +11,11 @@ module("Integration | Component | ui sidebar", function(hooks) {
 
     await render(hbs`
       <div class="component context">
-        {{#ui-sidebar context=".component.context"}}
+        <UiSidebar @context=".component.context">
           <a class="item">1</a>
           <a class="item">2</a>
           <a class="item">3</a>
-        {{/ui-sidebar}}
+        </UiSidebar>
         <div class="pusher">
           Main Content here
         </div>

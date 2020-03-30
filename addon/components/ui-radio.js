@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable ember/no-attrs-in-components */
 /* eslint-disable ember/require-tagless-components */
 /* eslint-disable ember/no-classic-components */
@@ -15,8 +16,20 @@ export default class UiRadioComponent extends Component.extend(
   PromiseResolver
 ) {
   type = "radio";
-  classNames = ["radio"];
+  classNames = ["ui radio"];
   ignorableAttrs = ["checked", "label", "disabled", "value", "current"];
+
+  constructor() {
+    super(...arguments);
+
+    if (isBlank(this.name)) {
+      this.name = "default";
+
+      console.log(
+        "The required component parameter of 'name' was not passed into the ui-radio component"
+      );
+    }
+  }
 
   // Internal wrapper for onchange, to pass through checked
   _onChange() {

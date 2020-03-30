@@ -1,6 +1,18 @@
 import Controller from "@ember/controller";
+import { action } from "@ember/object";
+import { tracked } from "@glimmer/tracking";
 
 export default class extends Controller {
+  @tracked query;
+  @tracked selected;
+
+  @action
+  setValue(v) {
+    alert(v);
+
+    this.selected = v;
+  }
+
   commonPasswords = [
     { title: "password" },
     { title: "123456" },

@@ -10,7 +10,7 @@ module("Integration | Component | ui rating", function(hooks) {
     assert.expect(3);
 
     await render(hbs`
-      {{ui-rating initialRating=3 maxRating=6}}
+      <UiRating @initialRating={{3}} @maxRating={{6}} />
     `);
 
     assert.equal(findAll(".ui.rating").length, 1);
@@ -23,7 +23,7 @@ module("Integration | Component | ui rating", function(hooks) {
 
     this.set("rating", 3);
     await render(hbs`
-      {{ui-rating rating=rating maxRating=7}}
+      <UiRating @rating={{this.rating}} @maxRating={{7}} />
     `);
 
     assert.equal(findAll(".ui.rating").length, 1);
@@ -38,7 +38,7 @@ module("Integration | Component | ui rating", function(hooks) {
 
     this.set("rating", 3);
     await render(hbs`
-      {{ui-rating rating=rating maxRating=7 onRate=(action (mut rating))}}
+      <UiRating @rating={{this.rating}} @maxRating={{7}} @onRate={{fn (mut this.rating)}} />
     `);
 
     assert.equal(findAll(".ui.rating").length, 1);
@@ -54,7 +54,7 @@ module("Integration | Component | ui rating", function(hooks) {
 
     this.set("rating", 3);
     await render(hbs`
-      {{ui-rating rating=rating onRate=(action (mut rating)) clearable=true}}
+      <UiRating @rating={{this.rating}} @onRate={{fn (mut this.rating)}} @clearable={{true}} />
     `);
 
     assert.equal(findAll(".ui.rating").length, 1);
