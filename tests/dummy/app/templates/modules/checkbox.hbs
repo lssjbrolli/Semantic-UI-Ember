@@ -61,10 +61,7 @@
     can be mutated directly on the event instead of having to wire up both onChecked
     and onUnchecked to mutate the checked variable
   END-SNIPPET }}
-  <UiAnnotation
-    @showing={{true}}
-    @snippet={{get-code-snippet "checkbox.warning.hbs"}}
-  />
+  <UiAnnotation @showing={{true}} @snippet="checkbox.warning.hbs" />
   <div class="ui divider"></div>
   <UiExample
     @header="Simple Example"
@@ -81,10 +78,7 @@
       -
       {{if this.checked "Checked" "Not Checked"}}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "checkbox.simple.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="checkbox.simple.hbs" />
   </UiExample>
   <UiExample
     @header="Simple Example Prechecked"
@@ -104,7 +98,7 @@
     </UiHtml>
     <UiAnnotation
       @showing={{showing}}
-      @snippet={{get-code-snippet "checkbox.simple.pre_checked.hbs"}}
+      @snippet="checkbox.simple.pre_checked.hbs"
     />
   </UiExample>
   <UiExample @header="Disabled Checkbox" as |showing code|>
@@ -120,10 +114,7 @@
       -
       {{if this.disabled_checked "Checked" "Not Checked"}}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "checkbox.disabled.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="checkbox.disabled.hbs" />
   </UiExample>
   <UiExample @header="Read-only Checkbox" as |showing code|>
     <UiHtml @showing={{showing}}>
@@ -138,9 +129,6 @@
       -
       {{if this.readonly_checked "Checked" "Not Checked"}}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "checkbox.readOnly.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="checkbox.readOnly.hbs" />
   </UiExample>
 </div>

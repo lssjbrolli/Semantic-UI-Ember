@@ -126,10 +126,7 @@
       </div>
     </UiAccordion>
     {{! END-SNIPPET }}
-    <UiAnnotation
-      @showing={{true}}
-      @snippet={{get-code-snippet "usage.accordion1.hbs"}}
-    />
+    <UiAnnotation @showing={{true}} @snippet="usage.accordion1.hbs" />
     <p>
       As you can see on the accordions behavior page, you can "open" another tab by passing in the index.
       The composable "execute" action allows you to call a behavior.
@@ -147,10 +144,7 @@
       then you would
       pass the arguments like this:
     </p>
-    <UiAnnotation
-      @showing={{true}}
-      @snippet={{get-code-snippet "usage.checkbox.hbs"}}
-    />
+    <UiAnnotation @showing={{true}} @snippet="usage.checkbox.hbs" />
     {{! BEGIN-SNIPPET usage.checkbox }}
     <UiCheckbox
       @label="Some Label"
@@ -198,10 +192,7 @@
       </div>
     </UiAccordion>
     {{! END-SNIPPET }}
-    <UiAnnotation
-      @showing={{true}}
-      @snippet={{get-code-snippet "usage.accordion2.hbs"}}
-    />
+    <UiAnnotation @showing={{true}} @snippet="usage.accordion2.hbs" />
     <p>
       If the property passed through bindable to Semantic-UI, when you're property updates, the Semantic-UI-Ember component will detect the change and
       update the Semantic-UI module automatically.
@@ -224,10 +215,7 @@
       </div>
     </UiAccordion>
     END-SNIPPET --}}
-    <UiAnnotation
-      @showing={{true}}
-      @snippet={{get-code-snippet "usage.accordion3.hbs"}}
-    />
+    <UiAnnotation @showing={{true}} @snippet="usage.accordion3.hbs" />
     <p>
       It's also possibly to mutate a value directly through a composable helper from the Semantic-UI callback.
       This allows you to have simple value binding in your templates without having to create actions on a component or controller.
@@ -239,10 +227,7 @@
       @onRate={{fn (mut internalRating)}}
     />
     END-SNIPPET --}}
-    <UiAnnotation
-      @showing={{true}}
-      @snippet={{get-code-snippet "usage.rating1.hbs"}}
-    />
+    <UiAnnotation @showing={{true}} @snippet="usage.rating1.hbs" />
     <p>
       When hooking into a Semantic-UI callback, all of the parameters are passed through in the same order as Semantic UI would,
       but there is one additional parameter at the end that is passed in you have access to.
@@ -278,7 +263,7 @@
   <UiAnnotation
     @showing={{true}}
     @lang="javascript"
-    @snippet={{get-code-snippet "usage.conf1.hbs"}}
+    @snippet="usage.conf1.hbs"
   />
   <p>
     The default configuration includes all resources.
@@ -312,7 +297,7 @@
   <UiAnnotation
     @showing={{true}}
     @lang="javascript"
-    @snippet={{get-code-snippet "usage.conf2.hbs"}}
+    @snippet="usage.conf2.hbs"
   />
   <h2 class="ui dividing header">
     Bugs and Fixes

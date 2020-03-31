@@ -42,10 +42,7 @@
       </UiNag>
       {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "nag.simple.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="nag.simple.hbs" />
   </UiExample>
   <div class="ui button" {{on "click" (fn this.clear)}}>
     Reset

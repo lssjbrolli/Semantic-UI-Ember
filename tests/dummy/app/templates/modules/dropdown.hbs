@@ -63,13 +63,13 @@
   <UiAnnotation
     @showing={{true}}
     @type="javascript"
-    @snippet={{get-code-snippet "dropdown.warning.hbs"}}
+    @snippet="dropdown.warning.hbs"
   />
   <div class="ui divider"></div>
   <div class="ui blue message">
     Dropdown allows value bindings, string bindings or mixed bindings.
     In the examples below you'll see the
-    {{map-value mapper}}
+    \{{map-value mapper}}
     helper usage to
     accomplish this.
   </div>
@@ -113,10 +113,7 @@
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "dropdown.string.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="dropdown.string.hbs" />
   </UiExample>
   <UiExample
     @header="Value Bound Dropdown Example"
@@ -160,10 +157,7 @@
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "dropdown.value.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="dropdown.value.hbs" />
   </UiExample>
   <UiExample
     @header="Object Bound Dropdown Example"
@@ -204,10 +198,7 @@
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "dropdown.object.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="dropdown.object.hbs" />
   </UiExample>
   <UiExample
     @header="Value Bound Allowing Selections and Search Dropdown Example"
@@ -258,7 +249,7 @@
     </UiHtml>
     <UiAnnotation
       @showing={{showing}}
-      @snippet={{get-code-snippet "dropdown.value.selections.hbs"}}
+      @snippet="dropdown.value.selections.hbs"
     />
   </UiExample>
   <UiExample
@@ -301,10 +292,7 @@
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "dropdown.multi.select.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="dropdown.multi.select.hbs" />
   </UiExample>
   <UiExample
     @header="Multi Select Binded Dropdown Example"
@@ -348,7 +336,7 @@
     </UiHtml>
     <UiAnnotation
       @showing={{showing}}
-      @snippet={{get-code-snippet "dropdown.multi.select.binded.hbs"}}
+      @snippet="dropdown.multi.select.binded.hbs"
     />
   </UiExample>
 </div>
