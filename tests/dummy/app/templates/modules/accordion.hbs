@@ -54,18 +54,33 @@
     @subHeader="Styled Accordion" as |showing|
   >
     <UiHtml @showing={{showing}}>
-      <p>
-        test
-      </p>
-      <UiAccordion />
+      {{! BEGIN-SNIPPET accordion.simple  }}
+      <UiAccordion class="styled">
+        <div class="title">
+          Semantic UI
+        </div>
+        <div class="content">
+          Accordion Component
+        </div>
+        <div class="title">
+          Accordion Two
+        </div>
+        <div class="content">
+          Content Two
+        </div>
+      </UiAccordion>
+      {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="accordion.simple.hbs" />
+    {{#let (get-code-snippet "accordion.simple.hbs") as |snippet|}}
+      <UiAnnotation @showing={{showing}} @snippet={{snippet}} />
+    {{/let}}
   </UiExample>
-  {{!-- <UiExample
+  <UiExample
     @header="Execute Example"
     @subHeader="Using the execute composable action" as |showing|
   >
     <UiHtml @showing={{showing}}>
+      {{! BEGIN-SNIPPET accordion.execute  }}
       <UiAccordion as |execute|>
         <div class="title">
           <i class="dropdown icon"></i>
@@ -77,10 +92,10 @@
             <div class="ui tiny header">
               Example using composable actions from within accordion
             </div>
-            <div class="ui button">
+            <div class="ui button" {{on "click" (fn execute "close" 0)}}>
               Close
             </div>
-            <div class="ui button">
+            <div class="ui button" {{on "click" (fn execute "open" 1)}}>
               Open two
             </div>
           </div>
@@ -93,14 +108,18 @@
           Content Two
         </div>
       </UiAccordion>
+      {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="accordion.execute.hbs" />
+    {{#let (get-code-snippet "accordion.execute.hbs") as |snippet|}}
+      <UiAnnotation @showing={{showing}} @snippet={{snippet}} />
+    {{/let}}
   </UiExample>
   <UiExample
     @header="Dynamic Example"
     @subHeader="Adding new sections" as |showing setCode code|
   >
     <UiHtml @showing={{showing}} @code={{code}}>
+      {{! BEGIN-SNIPPET accordion.dynamic  }}
       <UiAccordion class="styled" as |execute|>
         <div class="title">
           Semantic UI
@@ -136,7 +155,10 @@
           Remove Extra Section
         </div>
       </div>
+      {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="accordion.dynamic.hbs" />
-  </UiExample> --}}
+    {{#let (get-code-snippet "accordion.dynamic.hbs") as |snippet|}}
+      <UiAnnotation @showing={{showing}} @snippet={{snippet}} />
+    {{/let}}
+  </UiExample>
 </div>

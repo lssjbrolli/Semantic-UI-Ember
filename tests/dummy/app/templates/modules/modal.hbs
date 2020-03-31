@@ -16,16 +16,32 @@
         section and Semantic UI's module specific external documentation links below.
       </p>
       <div class="ui four item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/modal.html" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/modal.html"
+          target="_blank"
+        >
           Definition
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/modal.html#/examples" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/modal.html#/examples"
+          target="_blank"
+        >
           Examples
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/modal.html#/usage" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/modal.html#/usage"
+          target="_blank"
+        >
           Usage
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/modal.html#/settings" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/modal.html#/settings"
+          target="_blank"
+        >
           Settings
         </a>
       </div>
@@ -33,12 +49,24 @@
   </div>
 </div>
 <div class="ui main container">
-  <UiExample @header="Simple Example" @subHeader="Modal using an inline component" as |showing|>
+  <UiExample
+    @header="Simple Example"
+    @subHeader="Modal using an inline component" as |showing|
+  >
     <UiHtml @showing={{showing}}>
       <div class="ui button" {{on "click" (fn this.openModal "profile")}}>
         Open Profile
       </div>
-      <UiModal @name="profile" class="profile" @onApprove={{fn this.approveModal}} @onDeny={{fn this.denyModal}}>
+      {{! BEGIN-SNIPPET modal.inline  }}
+      <div class="ui button" {{on "click" (fn this.openModal "profile")}}>
+        Open Profile
+      </div>
+      <UiModal
+        @name="profile"
+        class="profile"
+        @onApprove={{fn this.approveModal}}
+        @onDeny={{fn this.denyModal}}
+      >
         <i class="close icon"></i>
         <div class="header">
           Profile Picture
@@ -73,21 +101,115 @@
           </div>
         </div>
       </UiModal>
+      {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="modal.inline.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "modal.inline.hbs"}}
+    />
   </UiExample>
-  <UiAnnotation @showing={{true}} @type="javascript" @snippet="modal.inline.javascript.hbs" />
+  {{! BEGIN-SNIPPET modal.inline.javascript
+  import Controller from "@ember/controller";
+  import { action } from "@ember/object";
+  import $ from "jquery";
+
+  export default class extends Controller {
+    @action
+    openModal(name) {
+      $(".ui." + name + ".modal").modal("show");
+    }
+
+    @action
+    approveModal(element, component) {
+      alert("approve " + component.get("name"));
+      return false;
+    }
+
+    @action
+    denyModal(element, component) {
+      alert("deny " + component.get("name"));
+      return true;
+    }
+  } 
+  END-SNIPPET }}
+  <UiAnnotation
+    @showing={{true}}
+    @lang="javascript"
+    @snippet={{get-code-snippet "modal.inline.javascript.hbs"}}
+  />
   <div class="ui divider"></div>
-  <UiExample @header="Simple Example" @subHeader="Modal using an inbox-modal component" as |showing|>
+  <UiExample
+    @header="Simple Example"
+    @subHeader="Modal using an inbox-modal component" as |showing|
+  >
     <UiHtml @showing={{showing}}>
+      {{! BEGIN-SNIPPET modal.inbox }}
       <div class="ui button" {{on "click" (fn this.openModal "inbox")}}>
         Open Inbox
       </div>
       <InboxModal />
+      {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="modal.inbox.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "modal.inbox.hbs"}}
+    />
   </UiExample>
-  <UiAnnotation @showing={{true}} @type="javascript" @snippet="modal.inbox.javascript.hbs" />
+  {{! BEGIN-SNIPPET modal.inbox.javascript
+  import UiModal from "semantic-ui-ember/components/ui-modal";
+
+  export default UiModal.extend({
+    name: "inbox",
+    classNames: ["inbox"],
+
+    actions: {
+      yes: function() {
+        alert("yes");
+        this.execute("hide");
+      },
+
+      no: function() {
+        alert("no");
+      }
+    }
+  });
+  END-SNIPPET }}
+  <UiAnnotation
+    @showing={{true}}
+    @lang="javascript"
+    @snippet={{get-code-snippet "modal.inbox.javascript.hbs"}}
+  />
   <br />
-  <UiAnnotation @showing={{true}} @snippet="modal.inbox.template.hbs" />
+  {{!-- BEGIN-SNIPPET modal.inbox.template 
+  <i class="close icon"></i>
+  <div class="header">
+    Archive Old Messages
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="archive icon"></i>
+    </div>
+    <div class="description">
+      <p>
+        Your inbox is getting full, would you like us to enable automatic archiving of old messages?
+      </p>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="two fluid ui inverted buttons">
+      <div class="ui red basic inverted button" {{action "no"}}>
+        <i class="remove icon"></i>
+        No
+      </div>
+      <div class="ui green basic inverted button" {{action "yes"}}>
+        <i class="checkmark icon"></i>
+        Yes
+      </div>
+    </div>
+  </div>
+  END-SNIPPET --}}
+  <UiAnnotation
+    @showing={{true}}
+    @snippet={{get-code-snippet "modal.inbox.template.hbs"}}
+  />
 </div>

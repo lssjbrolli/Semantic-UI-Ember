@@ -2,6 +2,7 @@
 /* eslint-disable ember/no-classic-components */
 /* eslint-disable ember/require-tagless-components */
 import Component from "@ember/component";
+import { action } from "@ember/object";
 import Checkbox from "../mixins/checkbox";
 
 export default class UiCheckboxComponent extends Component.extend(Checkbox) {
@@ -12,5 +13,9 @@ export default class UiCheckboxComponent extends Component.extend(Checkbox) {
   _onChange() {
     let checked = this.execute("is checked");
     return this.attrs.onChange(checked, this);
+  }
+  @action
+  exec() {
+    return this.execute(...arguments);
   }
 }

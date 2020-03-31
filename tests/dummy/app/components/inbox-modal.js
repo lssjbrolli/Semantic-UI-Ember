@@ -5,7 +5,7 @@ import { action } from "@ember/object";
 
 export default class extends UiModal {
   name = "inbox";
-  classNames = ["inbox"];
+  classNames = ["ui modal inbox"];
 
   @action
   yes() {

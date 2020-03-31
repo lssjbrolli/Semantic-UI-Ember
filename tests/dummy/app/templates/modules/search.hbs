@@ -67,6 +67,7 @@
     @subHeader="Search based on a list" as |showing|
   >
     <UiHtml @showing={{showing}}>
+      {{! BEGIN-SNIPPET search.simple }}
       <UiSearch @source={{this.commonPasswords}} @onSelect={{fn this.setValue}}>
         <Input
           @value={{this.query}}
@@ -76,16 +77,11 @@
         />
         <div class="results"></div>
       </UiSearch>
+      {{! END-SNIPPET }}
     </UiHtml>
-    {{!-- {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-      {{#ui-search
-        source=commonPasswords
-        onSearchQuery=(action (mut query))
-        onSelect=(action (mut selected))
-      }}
-        <input class="prompt" type="text" placeholder="Common passwords..." />
-        <div class="results"></div>
-      {{/ui-search}}
-    {{/ui-annotation}} --}}
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "search.simple.hbs"}}
+    />
   </UiExample>
 </div>

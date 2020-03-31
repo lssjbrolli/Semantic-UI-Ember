@@ -1,75 +1,87 @@
 <div class="ui masthead vertical segment">
   <div class="ui container">
     <div class="introduction">
-
       <h1 class="ui header">
         Sidebar
-
         <div class="sub header">
           A sidebar hides additional content beside a page.
         </div>
       </h1>
-
       <div class="ui hidden divider"></div>
-
       <p>
-        For additional documentation on how to configure this module, please refer to the {{#link-to 'modules.index'}}Getting Started{{/link-to}} section and Semantic UI's module specific external documentation links below.
+        For additional documentation on how to configure this module, please refer to the
+        <LinkTo @route="modules.index">
+          Getting Started
+        </LinkTo>
+        section and Semantic UI's module specific external documentation links below.
       </p>
-
       <div class="ui four item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/sidebar.html" target="_blank">Definition</a>
-        <a class="item" href="http://semantic-ui.com/modules/sidebar.html#/examples" target="_blank">Examples</a>
-        <a class="item" href="http://semantic-ui.com/modules/sidebar.html#/usage" target="_blank">Usage</a>
-        <a class="item" href="http://semantic-ui.com/modules/sidebar.html#/settings" target="_blank">Settings</a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/sidebar.html"
+          target="_blank"
+        >
+          Definition
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/sidebar.html#/examples"
+          target="_blank"
+        >
+          Examples
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/sidebar.html#/usage"
+          target="_blank"
+        >
+          Usage
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/sidebar.html#/settings"
+          target="_blank"
+        >
+          Settings
+        </a>
       </div>
-
     </div>
-
   </div>
 </div>
-
 <div class="ui main container">
-
-  {{#ui-example
-    header="Simple Example"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
-      <div class="ui button" {{action 'toggle' 'sub-sidebar'}}>
+  <UiExample @header="Simple Example" as |showing|>
+    <UiHtml @showing={{showing}}>
+      {{! BEGIN-SNIPPET sidebar.simple }}
+      <div class="ui button" {{on "click" (fn this.toggle "sub-sidebar")}}>
         Toggle
       </div>
       <div class="ui pushable segment component context">
-        {{#ui-sidebar class="inverted menu left inline vertical" context=".component.context" id="sub-sidebar"}}
-          <a class="item">Item 1</a>
-          <a class="item">Item 2</a>
-          <a class="item">Item 3</a>
-        {{/ui-sidebar}}
+        <UiSidebar
+          class="inverted menu left inline vertical"
+          id="sub-sidebar"
+          @context=".component.context"
+        >
+          <a class="item">
+            Item 1
+          </a>
+          <a class="item">
+            Item 2
+          </a>
+          <a class="item">
+            Item 3
+          </a>
+        </UiSidebar>
         <div class="pusher">
           <div class="ui basic segment" style="min-height: 300px;">
             Sub Content Here
           </div>
         </div>
       </div>
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-<div class="ui button" onclick={{action 'toggle' 'sub-sidebar'}}>
-  Toggle
-</div>
-<div class="ui pushable segment component context">
-  \{{#ui-sidebar class="inverted menu left inline vertical" context=".component.context" id="sub-sidebar"}}
-    <a class="item">Item 1</a>
-    <a class="item">Item 2</a>
-    <a class="item">Item 3</a>
-  \{{/ui-sidebar}}
-  <div class="pusher">
-    <div class="ui basic segment" style="min-height: 300px;">
-      Sub Content Here
-    </div>
-  </div>
-</div>
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
+      {{! END-SNIPPET }}
+    </UiHtml>
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "sidebar.simple.hbs"}}
+    />
+  </UiExample>
 </div>
