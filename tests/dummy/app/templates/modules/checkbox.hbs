@@ -16,16 +16,32 @@
         section and Semantic UI's module specific external documentation links below.
       </p>
       <div class="ui four item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/checkbox.html"
+          target="_blank"
+        >
           Definition
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/examples" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/checkbox.html#/examples"
+          target="_blank"
+        >
           Examples
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/usage" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/checkbox.html#/usage"
+          target="_blank"
+        >
           Usage
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/checkbox.html#/settings" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/checkbox.html#/settings"
+          target="_blank"
+        >
           Settings
         </a>
       </div>
@@ -36,53 +52,95 @@
   <div class="ui yellow message">
     There are API module differences for checkbox.
   </div>
-  <UiAnnotation @showing={{true}} @snippet="checkbox.warning.hbs" />
+  {{! BEGIN-SNIPPET checkbox.warning 
+  Original: onChange()
+  Modified: onChange(checked [Boolean])
+
+  Description:
+    The onChange event has been modify to include a checked boolean so that properties
+    can be mutated directly on the event instead of having to wire up both onChecked
+    and onUnchecked to mutate the checked variable
+  END-SNIPPET }}
+  <UiAnnotation
+    @showing={{true}}
+    @snippet={{get-code-snippet "checkbox.warning.hbs"}}
+  />
   <div class="ui divider"></div>
-  <UiExample @header="Simple Example" @subHeader="Basic Checkbox" as |showing setCode code|>
+  <UiExample
+    @header="Simple Example"
+    @subHeader="Basic Checkbox" as |showing setCode code|
+  >
     <UiHtml @showing={{showing}} @code={{code}}>
-      <UiCheckbox @label="Click Me" @checked={{this.checked}} @onChange={{fn (mut this.checked)}} />
+      {{! BEGIN-SNIPPET checkbox.simple  }}
+      <UiCheckbox
+        @label="Click Me"
+        @checked={{this.checked}}
+        @onChange={{fn (mut this.checked)}}
+      />
+      {{! END-SNIPPET }}
       -
       {{if this.checked "Checked" "Not Checked"}}
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="checkbox.simple.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "checkbox.simple.hbs"}}
+    />
   </UiExample>
-  <UiExample @header="Simple Example Prechecked" @subHeader="Variable is already true" as |showing setCode code|>
+  <UiExample
+    @header="Simple Example Prechecked"
+    @subHeader="Variable is already true" as |showing code|
+  >
     <UiHtml @showing={{showing}} @code={{code}}>
+      {{! BEGIN-SNIPPET checkbox.simple.pre_checked  }}
       <UiCheckbox
         class="toggle"
         @label="I start checked!"
         @checked={{this.pre_checked}}
         @onChange={{fn (mut this.pre_checked)}}
       />
+      {{! END-SNIPPET }}
       -
       {{if pre_checked "Checked" "Not Checked"}}
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="checkbox.simple.pre_checked.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "checkbox.simple.pre_checked.hbs"}}
+    />
   </UiExample>
-  <UiExample @header="Disabled Checkbox" as |showing setCode code|>
+  <UiExample @header="Disabled Checkbox" as |showing code|>
     <UiHtml @showing={{showing}}>
+      {{! BEGIN-SNIPPET checkbox.disabled  }}
       <UiCheckbox
         @label="Disabled checkbox (checked binding)"
         @checked={{this.disabled_checked}}
         @disabled={{true}}
         @onChange={{fn (mut this.disabled_checked)}}
       />
+      {{! END-SNIPPET }}
       -
       {{if this.disabled_checked "Checked" "Not Checked"}}
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="checkbox.disabled.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "checkbox.disabled.hbs"}}
+    />
   </UiExample>
-  <UiExample @header="Read-only Checkbox" as |showing setCode code|>
+  <UiExample @header="Read-only Checkbox" as |showing code|>
     <UiHtml @showing={{showing}}>
+      {{! BEGIN-SNIPPET checkbox.readOnly  }}
       <UiCheckbox
         @label="Readonly checkbox (checked binding)"
         @checked={{this.readonly_checked}}
         @readonly={{true}}
         @onChange={{fn (mut this.readonly_checked)}}
       />
+      {{! END-SNIPPET }}
       -
       {{if this.readonly_checked "Checked" "Not Checked"}}
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="checkbox.readOnly.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "checkbox.readOnly.hbs"}}
+    />
   </UiExample>
 </div>

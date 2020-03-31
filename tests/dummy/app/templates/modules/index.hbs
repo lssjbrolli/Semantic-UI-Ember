@@ -42,7 +42,10 @@
     </p>
     <p>
       If you're looking for the 1.0 release, you can find it
-      <a href="https://github.com/Semantic-Org/Semantic-UI-Ember/tree/release-1-0" target="_blank">
+      <a
+        href="https://github.com/Semantic-Org/Semantic-UI-Ember/tree/release-1-0"
+        target="_blank"
+      >
         here
       </a>
       .
@@ -105,15 +108,36 @@
     <div class="ui label">
       v3.0
     </div>
-    <UiAnnotation @showing={{true}} type="bash" @snippet="index.install.3.hbs" />
+    {{! BEGIN-SNIPPET index.install.3  }}
+    ember install semantic-ui-ember
+    {{! END-SNIPPET }}
+    <UiAnnotation
+      @showing={{true}}
+      @lang="bash"
+      @snippet={{get-code-snippet "index.install.3.hbs"}}
+    />
     <div class="ui label">
       v2.1
     </div>
-    <UiAnnotation @showing={{true}} type="bash" @snippet="index.install.21.hbs" />
+    {{! BEGIN-SNIPPET index.install.21  }}
+    ember install semantic-ui-ember@2.1
+    {{! END-SNIPPET }}
+    <UiAnnotation
+      @showing={{true}}
+      @lang="bash"
+      @snippet={{get-code-snippet "index.install.21.hbs"}}
+    />
     <div class="ui label">
       v2.0
     </div>
-    <UiAnnotation @showing={{true}} type="bash" @snippet="index.install.2.hbs" />
+    {{! BEGIN-SNIPPET index.install.2  }}
+    ember install semantic-ui-ember@2.0
+    {{! END-SNIPPET }}
+    <UiAnnotation
+      @showing={{true}}
+      @lang="bash"
+      @snippet={{get-code-snippet "index.install.2.hbs"}}
+    />
     <div class="ui yellow message small">
       v2.1 and above do not need bower dependencies, and hence no blueprints are necessary to run.
       <br />
@@ -125,7 +149,14 @@
       , addon blueprints are not run by default
       Once installed, run the library's blueprint to pull in its Bower dependencies. This only needs to be done once.
     </div>
-    <UiAnnotation @showing={{true}} type="bash" @snippet="index.generate.hbs" />
+    {{! BEGIN-SNIPPET index.generate  }}
+    ember generate semantic-ui-ember
+    {{! END-SNIPPET }}
+    <UiAnnotation
+      @showing={{true}}
+      @lang="bash"
+      @snippet={{get-code-snippet "index.generate.hbs"}}
+    />
   </div>
   <h2 class="ui dividing header">
     Next Step
@@ -138,14 +169,6 @@
       </LinkTo>
       section.
       It's critical to understand the overall usage principles. All components are based on the same base mixin and operate the same.
-    </p>
-    <p>
-      If you're upgrading from Semantic-UI-Ember 1.0, there are some minor changes you will need to be aware of in upgrading.
-      Please review the upgrade changes
-      <LinkTo @route="modules.upgrading" class="item">
-        here
-      </LinkTo>
-      .
     </p>
   </div>
   <h2 class="ui dividing header">
@@ -165,7 +188,14 @@
       that can be customized as per your
       needs
     </p>
-    <UiAnnotation @showing={{true}} type="bash" @snippet="index.generate.custom.hbs" />
+    {{! BEGIN-SNIPPET index.generate.custom  }}
+    ember generate semantic-ui-custom
+    {{! END-SNIPPET }}
+    <UiAnnotation
+      @showing={{true}}
+      @lang="bash"
+      @snippet={{get-code-snippet "index.generate.custom.hbs"}}
+    />
     <p>
       You'll find further details in
       <LinkTo @route="modules.usage" class="item">

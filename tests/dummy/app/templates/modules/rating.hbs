@@ -1,79 +1,88 @@
 <div class="ui masthead vertical segment">
   <div class="ui container">
     <div class="introduction">
-
       <h1 class="ui header">
         Rating
-
         <div class="sub header">
           A rating indicates user interest in content
         </div>
       </h1>
-
       <div class="ui hidden divider"></div>
-
       <p>
-        For additional documentation on how to configure this module, please refer to the {{#link-to 'modules.index'}}Getting Started{{/link-to}} section and Semantic UI's module specific external documentation links below.
+        For additional documentation on how to configure this module, please refer to the
+        <LinkTo @route="modules.index">
+          Getting Started
+        </LinkTo>
+        section and Semantic UI's module specific external documentation links below.
       </p>
-
       <div class="ui four item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/rating.html" target="_blank">Definition</a>
-        <a class="item" href="http://semantic-ui.com/modules/rating.html#/examples" target="_blank">Examples</a>
-        <a class="item" href="http://semantic-ui.com/modules/rating.html#/usage" target="_blank">Usage</a>
-        <a class="item" href="http://semantic-ui.com/modules/rating.html#/settings" target="_blank">Settings</a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/rating.html"
+          target="_blank"
+        >
+          Definition
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/rating.html#/examples"
+          target="_blank"
+        >
+          Examples
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/rating.html#/usage"
+          target="_blank"
+        >
+          Usage
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/rating.html#/settings"
+          target="_blank"
+        >
+          Settings
+        </a>
       </div>
-
     </div>
-
   </div>
 </div>
-
 <div class="ui main container">
-
-  {{#ui-example
-    header="Simple Example"
-    subHeader="Rating with max"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
-      {{ui-rating
-        initialRating=rating
-        rating=rating
-        maxRating=7
-        onRate=(action (mut rating))}} - Rating {{rating}}
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-\{{ui-rating
-    initialRating=rating
-    rating=rating
-    maxRating=7
-    onRate=(action (mut rating))}} - Rating \{{rating}}
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
-  {{#ui-example
-    header="Simple Example"
-    subHeader="Styled Rating"
-    as |showing setCopyCode|}}
-
-    {{#ui-html showing=showing}}
-      {{ui-rating
-          class="heart"
-          rating=heartRating
-          onRate=(action (mut heartRating))
-          clearable=true}} - Rating {{heartRating}}
-    {{/ui-html}}
-
-    {{#ui-annotation showing=showing setCopyCode=setCopyCode}}
-\{{ui-rating
-    class="heart"
-    rating=heartRating
-    onRate=(action (mut heartRating))
-    clearable=true}} - Rating \{{heartRating}}
-    {{/ui-annotation}}
-
-  {{/ui-example}}
-
+  <UiExample @header="Simple Example" @subHeader="Rating with max" as |showing|>
+    <UiHtml @showing={{showing}}>
+      {{! BEGIN-SNIPPET rating.simple }}
+      <UiRating
+        @initialRating={{this.rating}}
+        @rating={{this.rating}}
+        @maxRating={{7}}
+        @onRate={{fn (mut this.rating)}}
+      />
+      {{! END-SNIPPET }}
+      - Rating
+      {{this.rating}}
+    </UiHtml>
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "rating.simple.hbs"}}
+    />
+  </UiExample>
+  <UiExample @header="Simple Example" @subHeader="Styled Rating" as |showing|>
+    <UiHtml @showing={{showing}}>
+      {{! BEGIN-SNIPPET rating.simple.styled }}
+      <UiRating
+        class="heart"
+        @rating={{this.heartRating}}
+        @onRate={{fn (mut this.heartRating)}}
+        @clearable={{true}}
+      />
+      {{! END-SNIPPET }}
+      - Rating
+      {{this.heartRating}}
+    </UiHtml>
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "rating.simple.styled.hbs"}}
+    />
+  </UiExample>
 </div>

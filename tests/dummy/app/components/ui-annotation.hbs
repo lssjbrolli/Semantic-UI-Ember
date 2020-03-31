@@ -1,7 +1,10 @@
 <div class="annotation transition {{if @showing "visible" "hidden"}}">
   <div class="ui instructive bottom attached segment">
-    {{#let (get-code-snippet @snippet) as |snippet|}}
-      <UiHighlight @type={{@type}} @snippet={{snippet}} @setCode={{@setCode}} />
-    {{/let}}
+    <pre>
+      <code
+        class="code hljs {{this.language}}"
+        {{did-insert this.highlight @snippet}}
+      ></code>
+    </pre>
   </div>
 </div>

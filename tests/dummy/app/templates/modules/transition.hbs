@@ -1,59 +1,83 @@
 <div class="ui masthead vertical segment">
   <div class="ui container">
     <div class="introduction">
-
       <h1 class="ui header">
         Transition
-
         <div class="sub header">
           A transition is an animation usually used to move content in or out of view
         </div>
       </h1>
-
       <div class="ui hidden divider"></div>
-
       <p>
-        For additional documentation on how to configure this module, please refer to the {{#link-to 'modules.index'}}Getting Started{{/link-to}} section and Semantic UI's module specific external documentation links below.
+        For additional documentation on how to configure this module, please refer to the
+        <LinkTo @route="modules.index">
+          Getting Started
+        </LinkTo>
+        section and Semantic UI's module specific external documentation links below.
       </p>
-
       <div class="ui four item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/transition.html" target="_blank">Definition</a>
-        <a class="item" href="http://semantic-ui.com/modules/transition.html#/examples" target="_blank">Examples</a>
-        <a class="item" href="http://semantic-ui.com/modules/transition.html#/usage" target="_blank">Usage</a>
-        <a class="item" href="http://semantic-ui.com/modules/transition.html#/settings" target="_blank">Settings</a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/transition.html"
+          target="_blank"
+        >
+          Definition
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/transition.html#/examples"
+          target="_blank"
+        >
+          Examples
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/transition.html#/usage"
+          target="_blank"
+        >
+          Usage
+        </a>
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/transition.html#/settings"
+          target="_blank"
+        >
+          Settings
+        </a>
       </div>
-
     </div>
-
   </div>
 </div>
-
 <div class="ui main container">
-
   <p>
-   Because a transition happens on initialize, we are leaving transitions to be ran through your own actions for now.
+    Because a transition happens on initialize, we are leaving transitions to be ran through your own actions for now.
    That way they only happen in response to an event, instead on load.
   </p>
-
-  <div class="ui button" {{action 'transition'}}>
+  <div class="ui button" {{on "click" (fn this.transition)}}>
     Transition
   </div>
+  <br />
+  <br />
+  <img
+    class="ui small image"
+    src="http://semantic-ui.com/images/avatar/large/steve.jpg"
+  />
+  <br />
+  {{! BEGIN-SNIPPET transition.simple
+  import Controller from "@ember/controller";
+  import { action } from "@ember/object";
+  import $ from "jquery";
 
-  <br/><br/>
-
-  <img class="ui small image" src="http://semantic-ui.com/images/avatar/large/steve.jpg">
-
-  <br/>
-
-  {{#ui-annotation showing=true type="javascript"}}
-import Ember from 'ember';
-
-export default Ember.Controller.extend({
-  actions: {
-    transition: function() {
-      $('img').transition('horizontal flip', '500ms');
+  export default class extends Controller {
+    @action
+    transition() {
+      $("img").transition("horizontal flip", "500ms");
     }
   }
-});
-  {{/ui-annotation}}
+  END-SNIPPET }}
+  <UiAnnotation
+    @showing={{true}}
+    @lang="javascript"
+    @snippet={{get-code-snippet "transition.simple.hbs"}}
+  />
 </div>

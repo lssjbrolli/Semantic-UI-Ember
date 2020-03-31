@@ -16,16 +16,32 @@
         section and Semantic UI's module specific external documentation links below.
       </p>
       <div class="ui four item stackable tabs menu">
-        <a class="item" href="http://semantic-ui.com/modules/dropdown.html" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/dropdown.html"
+          target="_blank"
+        >
           Definition
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/dropdown.html#/examples" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/dropdown.html#/examples"
+          target="_blank"
+        >
           Examples
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/dropdown.html#/usage" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/dropdown.html#/usage"
+          target="_blank"
+        >
           Usage
         </a>
-        <a class="item" href="http://semantic-ui.com/modules/dropdown.html#/settings" target="_blank">
+        <a
+          class="item"
+          href="http://semantic-ui.com/modules/dropdown.html#/settings"
+          target="_blank"
+        >
           Settings
         </a>
       </div>
@@ -36,12 +52,24 @@
   <div class="ui yellow message">
     There are API module differences for checkbox.
   </div>
-  <UiAnnotation @showing={{true}} @type="javascript" @snippet="dropdown.warning.hbs" />
+  {{! BEGIN-SNIPPET dropdown.warning
+  Original: onChange()
+  Modified: onChange(value [binded])
+
+  Description:
+    The onChange event has been modify to include the bound value if you use the
+    map-value mapper helper. If you don't it will return the data-value string 
+  END-SNIPPET }}
+  <UiAnnotation
+    @showing={{true}}
+    @type="javascript"
+    @snippet={{get-code-snippet "dropdown.warning.hbs"}}
+  />
   <div class="ui divider"></div>
   <div class="ui blue message">
     Dropdown allows value bindings, string bindings or mixed bindings.
     In the examples below you'll see the
-    {{!-- \ {{map-value mapper}} --}}
+    {{map-value mapper}}
     helper usage to
     accomplish this.
   </div>
@@ -53,7 +81,12 @@
     <UiHtml @showing={{showing}}>
       <div class="ui two column grid">
         <div class="column">
-          <UiDropdown class="selection" @selected={{this.gender}} @onChange={{fn (mut this.gender)}}>
+          {{! BEGIN-SNIPPET dropdown.string  }}
+          <UiDropdown
+            class="selection"
+            @selected={{this.gender}}
+            @onChange={{fn (mut this.gender)}}
+          >
             <div class="default text">
               Gender
             </div>
@@ -66,6 +99,7 @@
               {{/each}}
             </div>
           </UiDropdown>
+          {{! END-SNIPPET }}
         </div>
         <div class="column">
           <div class="ui form">
@@ -79,7 +113,10 @@
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="dropdown.string.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "dropdown.string.hbs"}}
+    />
   </UiExample>
   <UiExample
     @header="Value Bound Dropdown Example"
@@ -88,6 +125,7 @@
     <UiHtml @showing={{showing}}>
       <div class="ui two column grid">
         <div class="column">
+          {{! BEGIN-SNIPPET dropdown.value  }}
           <UiDropdown
             class="selection"
             @selected={{this.selected_type}}
@@ -108,6 +146,7 @@
               {{/each}}
             </div>
           </UiDropdown>
+          {{! END-SNIPPET }}
         </div>
         <div class="column">
           <div class="ui form">
@@ -121,7 +160,10 @@
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="dropdown.value.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "dropdown.value.hbs"}}
+    />
   </UiExample>
   <UiExample
     @header="Object Bound Dropdown Example"
@@ -130,6 +172,7 @@
     <UiHtml @showing={{showing}}>
       <div class="ui two column grid">
         <div class="column">
+          {{! BEGIN-SNIPPET dropdown.object  }}
           <UiDropdown
             class="selection"
             @selected={{this.gender2}}
@@ -147,6 +190,7 @@
               {{/each}}
             </div>
           </UiDropdown>
+          {{! END-SNIPPET }}
         </div>
         <div class="column">
           <div class="ui form">
@@ -160,7 +204,10 @@
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="dropdown.object.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "dropdown.object.hbs"}}
+    />
   </UiExample>
   <UiExample
     @header="Value Bound Allowing Selections and Search Dropdown Example"
@@ -169,11 +216,13 @@
     <UiHtml @showing={{showing}}>
       <div class="ui two column grid">
         <div class="column">
+          {{! BEGIN-SNIPPET dropdown.value.selections  }}
           <UiDropdown
             class="search selection"
             @allowAdditions={{true}}
             @selected={{this.selected_type_addition}}
-            @onChange={{fn (mut this.selected_type_addition)}} as |execute mapper|
+            @onChange={{fn (mut this.selected_type_addition)
+            }} as |execute mapper|
           >
             <div class="default text">
               Types
@@ -190,6 +239,7 @@
               {{/each}}
             </div>
           </UiDropdown>
+          {{! END-SNIPPET }}
         </div>
         <div class="column">
           <div class="ui form">
@@ -197,13 +247,19 @@
               <label>
                 Selected
               </label>
-              <Input @value={{this.selected_type_addition}} @readonly={{true}} />
+              <Input
+                @value={{this.selected_type_addition}}
+                @readonly={{true}}
+              />
             </div>
           </div>
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="dropdown.value.selections.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "dropdown.value.selections.hbs"}}
+    />
   </UiExample>
   <UiExample
     @header="Multi Select Bound Dropdown Example"
@@ -212,7 +268,12 @@
     <UiHtml @showing={{showing}}>
       <div class="ui two column grid">
         <div class="column">
-          <UiDropdown class="fluid multiple selection" @selected={{this.country}} @onChange={{fn (mut this.country)}}>
+          {{! BEGIN-SNIPPET dropdown.multi.select  }}
+          <UiDropdown
+            class="fluid multiple selection"
+            @selected={{this.country}}
+            @onChange={{fn (mut this.country)}}
+          >
             <i class="dropdown icon"></i>
             <div class="default text">
               Select Country
@@ -226,6 +287,7 @@
               {{/each}}
             </div>
           </UiDropdown>
+          {{! END-SNIPPET }}
         </div>
         <div class="column">
           <div class="ui form">
@@ -239,7 +301,10 @@
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="dropdown.multi.select.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "dropdown.multi.select.hbs"}}
+    />
   </UiExample>
   <UiExample
     @header="Multi Select Binded Dropdown Example"
@@ -248,6 +313,7 @@
     <UiHtml @showing={{showing}}>
       <div class="ui two column grid">
         <div class="eight wide column">
+          {{! BEGIN-SNIPPET dropdown.multi.select.binded  }}
           <UiDropdown
             class="fluid multiple selection"
             @selected={{this.country2}}
@@ -266,6 +332,7 @@
               {{/each}}
             </div>
           </UiDropdown>
+          {{! END-SNIPPET }}
         </div>
         <div class="eight wide column">
           <div class="ui form">
@@ -279,6 +346,9 @@
         </div>
       </div>
     </UiHtml>
-    <UiAnnotation @showing={{showing}} @snippet="dropdown.multi.select.binded.hbs" />
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "dropdown.multi.select.binded.hbs"}}
+    />
   </UiExample>
 </div>

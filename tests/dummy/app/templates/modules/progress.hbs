@@ -10,9 +10,9 @@
       <div class="ui hidden divider"></div>
       <p>
         For additional documentation on how to configure this module, please refer to the
-        {{#link-to "modules.index"}}
+        <LinkTo @route="modules.index">
           Getting Started
-        {{/link-to}}
+        </LinkTo>
         section and Semantic UI's module specific external documentation links below.
       </p>
       <div class="ui three item stackable tabs menu">
@@ -48,8 +48,8 @@
     @subHeader="Percent Progress" as |showing|
   >
     <UiHtml @showing={{showing}}>
+      {{! BEGIN-SNIPPET progress.simple.percent }}
       <UiProgress
-        @options={{hash autoSuccess=false debug=true}}
         @percent={{this.progressOne}}
         @total="100"
         class="indicating" as |behavior|
@@ -65,17 +65,37 @@
           />
         </div>
       </UiProgress>
+      {{! END-SNIPPET }}
     </UiHtml>
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "progress.simple.percent.hbs"}}
+    />
   </UiExample>
   <UiExample @header="Simple Example" @subHeader="Value Progress" as |showing|>
     <UiHtml @showing={{showing}}>
-      {{#ui-progress value=progressTwo progress=progressTwo total=30}}
+      {{! BEGIN-SNIPPET progress.simple.value }}
+      <UiProgress
+        @value={{this.progressTwo}}
+        @progress={{this.progressTwo}}
+        @total={{30}}
+      >
         <div class="bar"></div>
         <div class="label">
           Uploaded
-          {{input value=progressTwo type="range" min=0 max=30}}
+          <Input
+            @value={{this.progressTwo}}
+            type="range"
+            @min={{0}}
+            @max={{30}}
+          />
         </div>
-      {{/ui-progress}}
+      </UiProgress>
+      {{! END-SNIPPET }}
     </UiHtml>
+    <UiAnnotation
+      @showing={{showing}}
+      @snippet={{get-code-snippet "progress.simple.value.hbs"}}
+    />
   </UiExample>
 </div>

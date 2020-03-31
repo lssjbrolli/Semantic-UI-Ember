@@ -8,8 +8,6 @@ export default class extends Controller {
 
   @action
   setValue(v) {
-    alert(v);
-
     this.selected = v;
   }
 
