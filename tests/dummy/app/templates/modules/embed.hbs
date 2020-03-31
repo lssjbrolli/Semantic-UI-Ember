@@ -58,10 +58,7 @@
       />
       {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "embed.placeholder.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="embed.placeholder.hbs" />
   </UiExample>
   <UiExample @header="Parameter Example" as |showing|>
     <UiHtml @showing={{showing}}>
@@ -69,9 +66,6 @@
       <UiEmbed data-source="youtube" data-id="O6Xo21L0ybE" />
       {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "embed.parameter.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="embed.parameter.hbs" />
   </UiExample>
 </div>

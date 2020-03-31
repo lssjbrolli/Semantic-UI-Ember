@@ -67,10 +67,7 @@
       </UiProgress>
       {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "progress.simple.percent.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="progress.simple.percent.hbs" />
   </UiExample>
   <UiExample @header="Simple Example" @subHeader="Value Progress" as |showing|>
     <UiHtml @showing={{showing}}>
@@ -93,9 +90,6 @@
       </UiProgress>
       {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "progress.simple.value.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="progress.simple.value.hbs" />
   </UiExample>
 </div>

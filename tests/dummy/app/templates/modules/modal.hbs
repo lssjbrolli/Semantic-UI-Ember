@@ -103,10 +103,7 @@
       </UiModal>
       {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "modal.inline.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="modal.inline.hbs" />
   </UiExample>
   {{! BEGIN-SNIPPET modal.inline.javascript
   import Controller from "@ember/controller";
@@ -135,7 +132,7 @@
   <UiAnnotation
     @showing={{true}}
     @lang="javascript"
-    @snippet={{get-code-snippet "modal.inline.javascript.hbs"}}
+    @snippet="modal.inline.javascript.hbs"
   />
   <div class="ui divider"></div>
   <UiExample
@@ -150,10 +147,7 @@
       <InboxModal />
       {{! END-SNIPPET }}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "modal.inbox.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="modal.inbox.hbs" />
   </UiExample>
   {{! BEGIN-SNIPPET modal.inbox.javascript
   import UiModal from "semantic-ui-ember/components/ui-modal";
@@ -177,7 +171,7 @@
   <UiAnnotation
     @showing={{true}}
     @lang="javascript"
-    @snippet={{get-code-snippet "modal.inbox.javascript.hbs"}}
+    @snippet="modal.inbox.javascript.hbs"
   />
   <br />
   {{!-- BEGIN-SNIPPET modal.inbox.template 
@@ -208,8 +202,5 @@
     </div>
   </div>
   END-SNIPPET --}}
-  <UiAnnotation
-    @showing={{true}}
-    @snippet={{get-code-snippet "modal.inbox.template.hbs"}}
-  />
+  <UiAnnotation @showing={{true}} @snippet="modal.inbox.template.hbs" />
 </div>

@@ -62,10 +62,7 @@
       - Rating
       {{this.rating}}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "rating.simple.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="rating.simple.hbs" />
   </UiExample>
   <UiExample @header="Simple Example" @subHeader="Styled Rating" as |showing|>
     <UiHtml @showing={{showing}}>
@@ -80,9 +77,6 @@
       - Rating
       {{this.heartRating}}
     </UiHtml>
-    <UiAnnotation
-      @showing={{showing}}
-      @snippet={{get-code-snippet "rating.simple.styled.hbs"}}
-    />
+    <UiAnnotation @showing={{showing}} @snippet="rating.simple.styled.hbs" />
   </UiExample>
 </div>

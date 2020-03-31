@@ -71,9 +71,7 @@
       </UiAccordion>
       {{! END-SNIPPET }}
     </UiHtml>
-    {{#let (get-code-snippet "accordion.simple.hbs") as |snippet|}}
-      <UiAnnotation @showing={{showing}} @snippet={{snippet}} />
-    {{/let}}
+    <UiAnnotation @showing={{showing}} @snippet="accordion.simple.hbs" />
   </UiExample>
   <UiExample
     @header="Execute Example"
@@ -110,9 +108,7 @@
       </UiAccordion>
       {{! END-SNIPPET }}
     </UiHtml>
-    {{#let (get-code-snippet "accordion.execute.hbs") as |snippet|}}
-      <UiAnnotation @showing={{showing}} @snippet={{snippet}} />
-    {{/let}}
+    <UiAnnotation @showing={{showing}} @snippet="accordion.execute.hbs" />
   </UiExample>
   <UiExample
     @header="Dynamic Example"
@@ -157,8 +153,6 @@
       </div>
       {{! END-SNIPPET }}
     </UiHtml>
-    {{#let (get-code-snippet "accordion.dynamic.hbs") as |snippet|}}
-      <UiAnnotation @showing={{showing}} @snippet={{snippet}} />
-    {{/let}}
+    <UiAnnotation @showing={{showing}} @snippet="accordion.dynamic.hbs" />
   </UiExample>
 </div>
