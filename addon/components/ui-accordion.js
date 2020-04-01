@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-component-lifecycle-hooks */
 /* eslint-disable no-unused-vars */
 /* eslint-disable ember/no-jquery */
 /* eslint-disable ember/no-classic-components */
