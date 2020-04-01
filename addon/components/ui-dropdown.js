@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-component-lifecycle-hooks */
 /* eslint-disable ember/no-attrs-in-components */
 /* eslint-disable ember/require-tagless-components */
 /* eslint-disable ember/no-classic-components */
