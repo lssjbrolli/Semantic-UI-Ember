@@ -1,7 +1,7 @@
 /* eslint-disable ember/no-jquery */
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, click, findAll } from "@ember/test-helpers";
+import { render, click } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 import { bind } from "@ember/runloop";
 import $ from "jquery";
@@ -22,7 +22,7 @@ module("Integration | Component | ui modal", function(hooks) {
       <UiModal @name='profile' />
     `);
 
-    assert.equal(findAll(".ui.modal").length, 1);
+    assert.dom(".ui.modal").exists({ count: 1 });
   });
 
   test("it will show if triggered", async function(assert) {
@@ -34,11 +34,9 @@ module("Integration | Component | ui modal", function(hooks) {
       $(".ui.modal").modal(
         "show",
         bind(() => {
-          assert.equal(
-            findAll(".ui.modal.visible").length,
-            1,
-            ".ui.modal is visible after showing"
-          );
+          assert
+            .dom(".ui.modal.visible")
+            .exists({ count: 1 }, ".ui.modal is visible after showing");
           done();
         })
       );
@@ -52,12 +50,8 @@ module("Integration | Component | ui modal", function(hooks) {
       <UiModal @name='profile'/>
     `);
 
-    assert.equal(findAll(".ui.modal").length, 1, ".ui.modal exists");
-    assert.equal(
-      findAll(".ui.modal.visible").length,
-      0,
-      ".ui.modal is not visible"
-    );
+    assert.dom(".ui.modal").exists({ count: 1 }, ".ui.modal exists");
+    assert.dom(".ui.modal.visible").doesNotExist(".ui.modal is not visible");
 
     await click(".ui.button");
   });
@@ -71,11 +65,9 @@ module("Integration | Component | ui modal", function(hooks) {
       $(".ui.modal").modal(
         "show",
         bind(async () => {
-          assert.equal(
-            findAll(".ui.modal.visible").length,
-            1,
-            ".ui.modal is visible after showing"
-          );
+          assert
+            .dom(".ui.modal.visible")
+            .exists({ count: 1 }, ".ui.modal is visible after showing");
           await click(".ui.modal .ui.positive.button");
         })
       );
@@ -85,11 +77,9 @@ module("Integration | Component | ui modal", function(hooks) {
       let name = component.name;
       assert.equal("profile", name, "approve is called");
       setTimeout(() => {
-        assert.equal(
-          findAll(".ui.modal.visible").length,
-          0,
-          ".ui.modal is not visible after clicking"
-        );
+        assert
+          .dom(".ui.modal.visible")
+          .doesNotExist(".ui.modal is not visible after clicking");
         done();
       }, 1000);
       return true;
@@ -120,11 +110,9 @@ module("Integration | Component | ui modal", function(hooks) {
       $(".ui.modal").modal(
         "show",
         bind(async () => {
-          assert.equal(
-            findAll(".ui.modal.visible").length,
-            1,
-            ".ui.modal is visible after showing"
-          );
+          assert
+            .dom(".ui.modal.visible")
+            .exists({ count: 1 }, ".ui.modal is visible after showing");
           await click(".ui.modal .ui.positive.button");
         })
       );
@@ -134,11 +122,9 @@ module("Integration | Component | ui modal", function(hooks) {
       let name = component.name;
       assert.equal("profile", name, "approve is called");
       setTimeout(() => {
-        assert.equal(
-          findAll(".ui.modal.visible").length,
-          1,
-          ".ui.modal is visible after clicking"
-        );
+        assert
+          .dom(".ui.modal.visible")
+          .exists({ count: 1 }, ".ui.modal is visible after clicking");
         done();
       }, 1000);
       return false;

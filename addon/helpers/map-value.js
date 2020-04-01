@@ -5,10 +5,10 @@ export default class MapValueHelper extends Helper.extend(PromiseResolver) {
   compute([action, maybePromise]) {
     return this.resolvePromise(
       maybePromise,
-      function(value) {
+      value => {
         return action(value);
       },
-      function() {
+      () => {
         this.recompute();
         return null;
       }

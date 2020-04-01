@@ -1,6 +1,6 @@
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, click, findAll } from "@ember/test-helpers";
+import { render, click } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui checkbox", function(hooks) {
@@ -19,7 +19,7 @@ module("Integration | Component | ui checkbox", function(hooks) {
       <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @onChange={{fn this.changed}} />
     `);
 
-    assert.equal(findAll(".ui.checkbox").length, 1);
+    assert.dom(".ui.checkbox").exists({ count: 1 });
     assert.equal(count, 0, "onChange should not have been called");
   });
 
@@ -37,7 +37,7 @@ module("Integration | Component | ui checkbox", function(hooks) {
       <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @onChange={{fn this.changed}} />
     `);
 
-    assert.equal(findAll(".ui.checkbox").length, 1);
+    assert.dom(".ui.checkbox").exists({ count: 1 });
     await click(".ui.checkbox");
     assert.equal(true, this.checked);
     assert.equal(count, 1, "onChange should have only been called once");
@@ -58,7 +58,7 @@ module("Integration | Component | ui checkbox", function(hooks) {
       <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @disabled={{this.disabled}} @onChange={{fn this.changed}} />
     `);
 
-    assert.equal(findAll(".ui.checkbox").length, 1);
+    assert.dom(".ui.checkbox").exists({ count: 1 });
     await click(".ui.checkbox");
     assert.equal(false, this.checked);
 
@@ -83,7 +83,7 @@ module("Integration | Component | ui checkbox", function(hooks) {
       <UiCheckbox @label="Make my profile visible" @checked={{this.checked}} @readonly={{this.readonly}} @onChange={{fn this.changed}} />
     `);
 
-    assert.equal(findAll(".ui.checkbox").length, 1);
+    assert.dom(".ui.checkbox").exists({ count: 1 });
     await click(".ui.checkbox");
     assert.equal(false, this.checked);
 
