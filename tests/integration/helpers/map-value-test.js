@@ -4,7 +4,7 @@ import { later } from "@ember/runloop";
 import { defer, all } from "rsvp";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, find, findAll } from "@ember/test-helpers";
+import { render } from "@ember/test-helpers";
 import afterRender from "dummy/tests/helpers/after-render";
 import { hbs } from "ember-cli-htmlbars";
 
@@ -13,45 +13,45 @@ module("Integration | Helper | map value", function(hooks) {
 
   test("renders value passed in on non-promise", async function(assert) {
     this.set("value", 42);
-    this.set("mapper", function(value) {
+    this.set("mapper", value => {
       return value;
     });
     this.set("text", "Forty Two");
 
     await render(hbs`
-      <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
+      <div class="item" data-value={{map-value this.mapper this.value}}>{{this.text}}</div>
     `);
 
-    assert.equal(find(".item").getAttribute("data-value"), "42");
-    assert.equal(find(".item").textContent.trim(), "Forty Two");
+    assert.dom(".item").hasAttribute("data-value", "42");
+    assert.dom(".item").hasText("Forty Two");
   });
 
   test("when unresolved renders is passed in, null is rendered", async function(assert) {
     let deferred = defer();
 
     this.set("value", deferred.promise);
-    this.set("mapper", function(value) {
+    this.set("mapper", value => {
       return value;
     });
     this.set("text", "Forty Two");
 
     await render(hbs`
-      <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
+      <div class="item" data-value={{map-value this.mapper this.value}}>{{this.text}}</div>
     `);
 
-    assert.equal(find(".item").getAttribute("data-value"), undefined);
-    assert.equal(find(".item").textContent.trim(), "Forty Two");
+    assert.dom(".item").hasNoAttribute("data-value");
+    assert.dom(".item").hasText("Forty Two");
 
     deferred.resolve("LIFE");
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(
-        find(".item")
-          .getAttribute("data-value")
-          .trim(),
-        "LIFE",
-        "data value is updated to correct value"
-      );
+      assert
+        .dom(".item")
+        .hasAttribute(
+          "data-value",
+          "LIFE",
+          "data value is updated to correct value"
+        );
     });
   });
 
@@ -70,8 +70,8 @@ module("Integration | Helper | map value", function(hooks) {
       <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
     `);
 
-    assert.equal(find(".item").getAttribute("data-value"), undefined);
-    assert.equal(find(".item").textContent.trim(), "Forty Two");
+    assert.dom(".item").hasNoAttribute("data-value");
+    assert.dom(".item").hasText("Forty Two");
 
     deferred1.resolve("number 1");
 
@@ -82,13 +82,13 @@ module("Integration | Helper | map value", function(hooks) {
     this.set("value", deferred3.promise);
 
     return afterRender(all([deferred2.promise, deferred3.promise])).then(() => {
-      assert.equal(
-        find(".item")
-          .getAttribute("data-value")
-          .trim(),
-        "number 3",
-        "data value is updated to correct value"
-      );
+      assert
+        .dom(".item")
+        .hasAttribute(
+          "data-value",
+          "number 3",
+          "data value is updated to correct value"
+        );
     });
   });
 
@@ -96,25 +96,25 @@ module("Integration | Helper | map value", function(hooks) {
     let deferred = defer();
 
     this.set("value", deferred.promise);
-    this.set("mapper", function(value) {
+
+    this.set("mapper", value => {
       return value;
     });
     this.set("text", "Forty Two");
 
     await render(hbs`
-      <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
+      <div class="item" data-value={{map-value this.mapper this.value}}>{{this.text}}</div>
     `);
-
-    assert.equal(find(".item").getAttribute("data-value"), undefined);
 
     deferred.reject(new Error("oops"));
 
-    return afterRender(deferred.promise).then(() => {
-      assert.equal(
-        find(".item").getAttribute("data-value"),
-        undefined,
-        "value of re-render does not reveal reason for rejection"
-      );
+    return afterRender(deferred.promise).then(async () => {
+      assert
+        .dom(".item")
+        .hasNoAttribute(
+          "data-value",
+          "value of re-render does not reveal reason for rejection"
+        );
     });
   });
 
@@ -144,11 +144,13 @@ module("Integration | Helper | map value", function(hooks) {
         return afterRender(deferred2.promise);
       })
       .then(() => {
-        assert.equal(
-          find(".item").getAttribute("data-value"),
-          deferred2Text,
-          "value updates when the promise changes"
-        );
+        assert
+          .dom(".item")
+          .hasAttribute(
+            "data-value",
+            deferred2Text,
+            "value updates when the promise changes"
+          );
       });
   });
 
@@ -166,15 +168,17 @@ module("Integration | Helper | map value", function(hooks) {
     `);
 
     this.set("value", "iAmConstant");
-    assert.equal(find(".item").getAttribute("data-value"), "iAmConstant");
+    assert.dom(".item").hasAttribute("data-value", "iAmConstant");
     deferred.resolve("promiseFinished");
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(
-        find(".item").getAttribute("data-value"),
-        "iAmConstant",
-        "ignores a promise that has been replaced"
-      );
+      assert
+        .dom(".item")
+        .hasAttribute(
+          "data-value",
+          "iAmConstant",
+          "ignores a promise that has been replaced"
+        );
     });
   });
 
@@ -196,7 +200,7 @@ module("Integration | Helper | map value", function(hooks) {
     `);
     deferred.resolve("hasAValue");
     return afterRender(deferred.promise).then(() => {
-      assert.equal(find(".item").getAttribute("data-value"), "hasAValue");
+      assert.dom(".item").hasAttribute("data-value", "hasAValue");
     });
   });
 
@@ -216,15 +220,17 @@ module("Integration | Helper | map value", function(hooks) {
       <div class="item" data-value={{map-value mapper value}}>{{text}}</div>
     `);
 
-    assert.equal(findAll(".item").length, 1);
-    assert.equal(find(".item").getAttribute("data-value"), text);
+    assert.dom(".item").exists({ count: 1 });
+    assert.dom(".item").hasAttribute("data-value", text);
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(
-        find(".item").getAttribute("data-value"),
-        text,
-        "re-renders when the promise is resolved"
-      );
+      assert
+        .dom(".item")
+        .hasAttribute(
+          "data-value",
+          text,
+          "re-renders when the promise is resolved"
+        );
     });
   });
 });

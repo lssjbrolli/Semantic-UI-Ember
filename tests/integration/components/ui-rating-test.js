@@ -1,6 +1,6 @@
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, click, findAll } from "@ember/test-helpers";
+import { render, click } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui rating", function(hooks) {
@@ -13,9 +13,9 @@ module("Integration | Component | ui rating", function(hooks) {
       <UiRating @initialRating={{3}} @maxRating={{6}} />
     `);
 
-    assert.equal(findAll(".ui.rating").length, 1);
-    assert.equal(findAll(".ui.rating i").length, 6);
-    assert.equal(findAll(".ui.rating .active").length, 3);
+    assert.dom(".ui.rating").exists({ count: 1 });
+    assert.dom(".ui.rating i").exists({ count: 6 });
+    assert.dom(".ui.rating .active").exists({ count: 3 });
   });
 
   test("it updates with bound values", async function(assert) {
@@ -26,11 +26,11 @@ module("Integration | Component | ui rating", function(hooks) {
       <UiRating @rating={{this.rating}} @maxRating={{7}} />
     `);
 
-    assert.equal(findAll(".ui.rating").length, 1);
-    assert.equal(findAll(".ui.rating i").length, 7);
-    assert.equal(findAll(".ui.rating .active").length, 3);
+    assert.dom(".ui.rating").exists({ count: 1 });
+    assert.dom(".ui.rating i").exists({ count: 7 });
+    assert.dom(".ui.rating .active").exists({ count: 3 });
     this.set("rating", 6);
-    assert.equal(findAll(".ui.rating .active").length, 6);
+    assert.dom(".ui.rating .active").exists({ count: 6 });
   });
 
   test("clicking updates with bound values", async function(assert) {
@@ -41,11 +41,11 @@ module("Integration | Component | ui rating", function(hooks) {
       <UiRating @rating={{this.rating}} @maxRating={{7}} @onRate={{fn (mut this.rating)}} />
     `);
 
-    assert.equal(findAll(".ui.rating").length, 1);
-    assert.equal(findAll(".ui.rating i").length, 7);
-    assert.equal(findAll(".ui.rating .active").length, 3);
+    assert.dom(".ui.rating").exists({ count: 1 });
+    assert.dom(".ui.rating i").exists({ count: 7 });
+    assert.dom(".ui.rating .active").exists({ count: 3 });
     await click(".ui.rating i:nth-child(4)");
-    assert.equal(findAll(".ui.rating .active").length, 4);
+    assert.dom(".ui.rating .active").exists({ count: 4 });
     assert.equal(4, this.rating);
   });
 
@@ -57,14 +57,14 @@ module("Integration | Component | ui rating", function(hooks) {
       <UiRating @rating={{this.rating}} @onRate={{fn (mut this.rating)}} @clearable={{true}} />
     `);
 
-    assert.equal(findAll(".ui.rating").length, 1);
-    assert.equal(findAll(".ui.rating i").length, 4);
-    assert.equal(findAll(".ui.rating .active").length, 3);
+    assert.dom(".ui.rating").exists({ count: 1 });
+    assert.dom(".ui.rating i").exists({ count: 4 });
+    assert.dom(".ui.rating .active").exists({ count: 3 });
     await click(".ui.rating i:nth-child(4)");
-    assert.equal(findAll(".ui.rating .active").length, 4);
+    assert.dom(".ui.rating .active").exists({ count: 4 });
     assert.equal(4, this.rating);
     await click(".ui.rating i:nth-child(4)");
-    assert.equal(findAll(".ui.rating .active").length, 0);
+    assert.dom(".ui.rating .active").doesNotExist();
     assert.equal(0, this.rating);
   });
 });

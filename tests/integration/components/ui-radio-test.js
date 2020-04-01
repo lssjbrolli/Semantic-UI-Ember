@@ -36,7 +36,7 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
+    assert.dom(".ui.radio").exists({ count: 3 });
   });
 
   test("will start with selected current property", async function(assert) {
@@ -64,8 +64,8 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
-    assert.ok(findAll(".ui.radio")[0].classList.contains("checked"));
+    assert.dom(".ui.radio").exists({ count: 3 });
+    assert.dom(findAll(".ui.radio")[0]).hasClass("checked");
     assert.equal(count, 0, "onChange shouldnt have been called");
   });
 
@@ -95,7 +95,7 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
+    assert.dom(".ui.radio").exists({ count: 3 });
     await click(findAll(".ui.radio")[2]);
     assert.equal("daily", this.frequency);
     assert.equal(count, 1, "onChange should have been called only once");
@@ -127,18 +127,18 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
+    assert.dom(".ui.radio").exists({ count: 3 });
     await click(findAll(".ui.radio")[2]);
     assert.equal("daily", this.frequency);
-    assert.ok(findAll(".ui.radio")[2].classList.contains("checked"));
+    assert.dom(findAll(".ui.radio")[2]).hasClass("checked");
 
     await click(findAll(".ui.radio")[0]);
     assert.equal("weekly", this.frequency);
-    assert.ok(findAll(".ui.radio")[0].classList.contains("checked"));
+    assert.dom(findAll(".ui.radio")[0]).hasClass("checked");
 
     await click(findAll(".ui.radio")[1]);
     assert.equal("biweekly", this.frequency);
-    assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+    assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
     assert.equal(count, 3, "onChange should have been called three times");
   });
 
@@ -170,17 +170,17 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
+    assert.dom(".ui.radio").exists({ count: 3 });
     await click(findAll(".ui.radio")[1]);
 
     assert.equal("weekly", this.frequency);
-    assert.ok(findAll(".ui.radio")[0].classList.contains("checked"));
+    assert.dom(findAll(".ui.radio")[0]).hasClass("checked");
 
     this.set("disabled", false);
 
     await click(findAll(".ui.radio")[1]);
     assert.equal("biweekly", this.frequency);
-    assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+    assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
@@ -212,17 +212,17 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
+    assert.dom(".ui.radio").exists({ count: 3 });
     await click(findAll(".ui.radio")[1]);
 
     assert.equal("weekly", this.frequency);
-    assert.ok(findAll(".ui.radio")[0].classList.contains("checked"));
+    assert.dom(findAll(".ui.radio")[0]).hasClass("checked");
 
     this.set("readonly", false);
 
     await click(findAll(".ui.radio")[1]);
     assert.equal("biweekly", this.frequency);
-    assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+    assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
@@ -257,16 +257,16 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
-    assert.equal(findAll(".ui.radio.checked").length, 0);
+    assert.dom(".ui.radio").exists({ count: 3 });
+    assert.dom(".ui.radio.checked").doesNotExist();
 
     assert.equal("weekly", this.frequency);
     this.set("value1", "weekly");
-    assert.ok(findAll(".ui.radio")[0].classList.contains("checked"));
+    assert.dom(findAll(".ui.radio")[0]).hasClass("checked");
 
     this.set("frequency", "biweekly");
     assert.equal("biweekly", this.frequency);
-    assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+    assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
     assert.equal(count, 0, "onChange should not have been called");
   });
 
@@ -297,14 +297,14 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
-    assert.equal(findAll(".ui.radio.checked").length, 0);
+    assert.dom(".ui.radio").exists({ count: 3 });
+    assert.dom(".ui.radio.checked").doesNotExist();
 
     deferred.resolve("weekly");
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(findAll(".ui.radio.checked").length, 1);
-      assert.ok(findAll(".ui.radio")[0].classList.contains("checked"));
+      assert.dom(".ui.radio.checked").exists({ count: 1 });
+      assert.dom(findAll(".ui.radio")[0]).hasClass("checked");
       assert.equal(count, 0, "onChange should not have been called");
     });
   });
@@ -337,14 +337,14 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
-    assert.equal(findAll(".ui.radio.checked").length, 0);
+    assert.dom(".ui.radio").exists({ count: 3 });
+    assert.dom(".ui.radio.checked").doesNotExist();
 
     deferred.resolve("biweekly");
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(findAll(".ui.radio.checked").length, 1);
-      assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+      assert.dom(".ui.radio.checked").exists({ count: 1 });
+      assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
       assert.equal(count, 0, "onChange should not have been called");
     });
   });
@@ -378,8 +378,8 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
-    assert.equal(findAll(".ui.radio.checked").length, 0);
+    assert.dom(".ui.radio").exists({ count: 3 });
+    assert.dom(".ui.radio.checked").doesNotExist();
 
     deferredCurrent.resolve("daily");
     deferredValue.resolve("daily");
@@ -387,8 +387,8 @@ module("Integration | Component | ui radio", function(hooks) {
     return afterRender(
       all([deferredCurrent.promise, deferredValue.promise])
     ).then(() => {
-      assert.equal(findAll(".ui.radio.checked").length, 1);
-      assert.ok(findAll(".ui.radio")[2].classList.contains("checked"));
+      assert.dom(".ui.radio.checked").exists({ count: 1 });
+      assert.dom(findAll(".ui.radio")[2]).hasClass("checked");
       assert.equal(count, 0, "onChange should not have been called");
     });
   });
@@ -421,22 +421,22 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
-    assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+    assert.dom(".ui.radio").exists({ count: 3 });
+    assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
 
     let deferred = defer();
 
     this.set("value2", deferred.promise);
 
     // No changes should take place until the promise resolves
-    assert.equal(findAll(".ui.radio").length, 3);
-    assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+    assert.dom(".ui.radio").exists({ count: 3 });
+    assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
 
     deferred.resolve("bi-weekly");
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(findAll(".ui.radio").length, 3);
-      assert.equal(findAll(".ui.radio.checked").length, 0);
+      assert.dom(".ui.radio").exists({ count: 3 });
+      assert.dom(".ui.radio.checked").doesNotExist();
       assert.equal(count, 0, "onChange should not have been called");
     });
   });
@@ -468,23 +468,23 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.radio").length, 3);
-    assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+    assert.dom(".ui.radio").exists({ count: 3 });
+    assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
 
     let deferred = defer();
 
     this.set("current", deferred.promise);
 
     // No changes should take place until the promise resolves
-    assert.equal(findAll(".ui.radio").length, 3);
-    assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+    assert.dom(".ui.radio").exists({ count: 3 });
+    assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
 
     deferred.resolve("biweekly");
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(findAll(".ui.radio").length, 3);
-      assert.equal(findAll(".ui.radio.checked").length, 1);
-      assert.ok(findAll(".ui.radio")[1].classList.contains("checked"));
+      assert.dom(".ui.radio").exists({ count: 3 });
+      assert.dom(".ui.radio.checked").exists({ count: 1 });
+      assert.dom(findAll(".ui.radio")[1]).hasClass("checked");
       assert.equal(count, 0, "onChange should not have been called");
     });
   });

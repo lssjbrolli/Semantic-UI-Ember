@@ -1,7 +1,7 @@
 /* eslint-disable ember/no-jquery */
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, click, find, findAll } from "@ember/test-helpers";
+import { render, click } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui nag", function(hooks) {
@@ -19,7 +19,7 @@ module("Integration | Component | ui nag", function(hooks) {
       </UiNag>
     `);
 
-    assert.equal(findAll(".ui.nag").length, 1);
+    assert.dom(".ui.nag").exists({ count: 1 });
   });
 
   test("it will only show once", async function(assert) {
@@ -34,18 +34,24 @@ module("Integration | Component | ui nag", function(hooks) {
       </UiNag>
     `);
 
-    assert.equal(findAll(".ui.nag").length, 1);
+    assert.dom(".ui.nag").exists({ count: 1 });
     this.$(".ui.nag").nag("clear");
     this.$(".ui.nag").nag("show");
-    assert.equal(find(".ui.nag").style.display, "block");
+    assert.dom(".ui.nag").hasStyle({
+      display: "block"
+    });
     await click(".ui.nag .close");
 
     let done = assert.async();
 
     setTimeout(() => {
-      assert.equal(find(".ui.nag").style.display, "none");
+      assert.dom(".ui.nag").hasStyle({
+        display: "none"
+      });
       this.$(".ui.nag").nag("show");
-      assert.equal(find(".ui.nag").style.display, "block");
+      assert.dom(".ui.nag").hasStyle({
+        display: "block"
+      });
 
       done();
     }, 1000);

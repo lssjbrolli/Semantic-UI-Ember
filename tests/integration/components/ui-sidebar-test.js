@@ -1,6 +1,6 @@
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, findAll } from "@ember/test-helpers";
+import { render } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui sidebar", function(hooks) {
@@ -22,7 +22,7 @@ module("Integration | Component | ui sidebar", function(hooks) {
       </div>
     `);
 
-    assert.equal(findAll(".ui.sidebar").length, 1);
-    assert.equal(findAll(".ui.sidebar a").length, 3);
+    assert.dom(".ui.sidebar").exists({ count: 1 });
+    assert.dom(".ui.sidebar a").exists({ count: 3 });
   });
 });

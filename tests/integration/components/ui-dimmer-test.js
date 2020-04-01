@@ -1,6 +1,6 @@
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, click, findAll, getRootElement } from "@ember/test-helpers";
+import { render, click, getRootElement } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui dimmer", function(hooks) {
@@ -15,11 +15,9 @@ module("Integration | Component | ui dimmer", function(hooks) {
       </UiDimmer>
     `);
 
-    assert.equal(
-      findAll(".ui.segment .ui.dimmer").length,
-      1,
-      "UI Dimmer not found"
-    );
+    assert
+      .dom(".ui.segment .ui.dimmer")
+      .exists({ count: 1 }, "UI Dimmer not found");
   });
 
   test("dimmer shows and hides on click", async function(assert) {
@@ -31,43 +29,31 @@ module("Integration | Component | ui dimmer", function(hooks) {
       </UiDimmer>
     `);
 
-    assert.equal(
-      findAll(".ui.segment .ui.dimmer").length,
-      1,
-      "UI Dimmer not found"
-    );
-    assert.equal(
-      findAll(".ui.segment .ui.dimmer.active").length,
-      0,
-      "An active UI Dimmer was found and shouldn't be"
-    );
+    assert
+      .dom(".ui.segment .ui.dimmer")
+      .exists({ count: 1 }, "UI Dimmer not found");
+    assert
+      .dom(".ui.segment .ui.dimmer.active")
+      .doesNotExist("An active UI Dimmer was found and shouldn't be");
     await click(".ui.segment");
 
     let done = assert.async();
     setTimeout(async () => {
-      assert.equal(
-        findAll(".ui.segment .ui.dimmer").length,
-        1,
-        "UI Dimmer not found"
-      );
-      assert.equal(
-        findAll(".ui.segment .ui.dimmer.active").length,
-        1,
-        "No active UI Dimmer was found"
-      ); //broken
+      assert
+        .dom(".ui.segment .ui.dimmer")
+        .exists({ count: 1 }, "UI Dimmer not found");
+      assert
+        .dom(".ui.segment .ui.dimmer.active")
+        .exists({ count: 1 }, "No active UI Dimmer was found"); //broken
       await click(".ui.segment");
 
       setTimeout(() => {
-        assert.equal(
-          findAll(".ui.segment .ui.dimmer").length,
-          1,
-          "UI Dimmer not found"
-        );
-        assert.equal(
-          findAll(".ui.segment .ui.dimmer.active").length,
-          0,
-          "An active UI Dimmer was found and shouldn't be"
-        );
+        assert
+          .dom(".ui.segment .ui.dimmer")
+          .exists({ count: 1 }, "UI Dimmer not found");
+        assert
+          .dom(".ui.segment .ui.dimmer.active")
+          .doesNotExist("An active UI Dimmer was found and shouldn't be");
         done();
       }, 100);
     }, 100);
@@ -84,43 +70,31 @@ module("Integration | Component | ui dimmer", function(hooks) {
       </UiDimmer>
     `);
 
-    assert.equal(
-      findAll(`#${getRootElement().id} > .ui.dimmer`).length,
-      0,
-      "UI Dimmer was found as a direct child"
-    );
-    assert.equal(
-      findAll(".ui.segment .ui.dimmer").length,
-      1,
-      "UI Dimmer was not found under segment"
-    );
+    assert
+      .dom(`#${getRootElement().id} > .ui.dimmer`)
+      .doesNotExist("UI Dimmer was found as a direct child");
+    assert
+      .dom(".ui.segment .ui.dimmer")
+      .exists({ count: 1 }, "UI Dimmer was not found under segment");
     await click(".dimmer");
 
     let done = assert.async();
     setTimeout(async () => {
-      assert.equal(
-        findAll(".ui.segment .ui.dimmer").length,
-        1,
-        "UI Dimmer not found"
-      );
-      assert.equal(
-        findAll(".ui.segment .ui.dimmer.active").length,
-        0,
-        "An active UI Dimmer was found"
-      );
+      assert
+        .dom(".ui.segment .ui.dimmer")
+        .exists({ count: 1 }, "UI Dimmer not found");
+      assert
+        .dom(".ui.segment .ui.dimmer.active")
+        .doesNotExist("An active UI Dimmer was found");
       await click(".ui.segment");
 
       setTimeout(() => {
-        assert.equal(
-          findAll(".ui.segment .ui.dimmer").length,
-          1,
-          "UI Dimmer not found"
-        );
-        assert.equal(
-          findAll(".ui.segment .ui.dimmer.active").length,
-          1,
-          "An active UI Dimmer was not found"
-        ); // broken
+        assert
+          .dom(".ui.segment .ui.dimmer")
+          .exists({ count: 1 }, "UI Dimmer not found");
+        assert
+          .dom(".ui.segment .ui.dimmer.active")
+          .exists({ count: 1 }, "An active UI Dimmer was not found"); // broken
         done();
       }, 100);
     }, 100);
@@ -139,44 +113,32 @@ module("Integration | Component | ui dimmer", function(hooks) {
       </UiDimmer>
     `);
 
-    assert.equal(
-      findAll(`#${getRootElement().id} > .ui.dimmer`).length,
-      0,
-      "UI Dimmer was found as a direct child"
-    );
-    assert.equal(
-      findAll(".ui.segment .ui.dimmer").length,
-      1,
-      "UI Dimmer was not found under segment"
-    );
+    assert
+      .dom(`#${getRootElement().id} > .ui.dimmer`)
+      .doesNotExist("UI Dimmer was found as a direct child");
+    assert
+      .dom(".ui.segment .ui.dimmer")
+      .exists({ count: 1 }, "UI Dimmer was not found under segment");
     await click("[data-id=show]");
 
     let done = assert.async();
 
     setTimeout(async () => {
-      assert.equal(
-        findAll(".ui.segment .ui.dimmer").length,
-        1,
-        "UI Dimmer not found"
-      );
-      assert.equal(
-        findAll(".ui.segment .ui.dimmer.active").length,
-        1,
-        "An active UI Dimmer was not found"
-      );
+      assert
+        .dom(".ui.segment .ui.dimmer")
+        .exists({ count: 1 }, "UI Dimmer not found");
+      assert
+        .dom(".ui.segment .ui.dimmer.active")
+        .exists({ count: 1 }, "An active UI Dimmer was not found");
       await click("[data-id=hide]");
 
       setTimeout(() => {
-        assert.equal(
-          findAll(".ui.segment .ui.dimmer").length,
-          1,
-          "UI Dimmer not found"
-        );
-        assert.equal(
-          findAll(".ui.segment .ui.dimmer.active").length,
-          0,
-          "An active UI Dimmer was found"
-        );
+        assert
+          .dom(".ui.segment .ui.dimmer")
+          .exists({ count: 1 }, "UI Dimmer not found");
+        assert
+          .dom(".ui.segment .ui.dimmer.active")
+          .doesNotExist("An active UI Dimmer was found");
         done();
       }, 100);
     }, 100);

@@ -5,7 +5,6 @@ import {
   render,
   focus,
   find,
-  findAll,
   fillIn,
   triggerKeyEvent
 } from "@ember/test-helpers";
@@ -24,7 +23,7 @@ module("Integration | Component | ui search", function(hooks) {
       </UiSearch>
     `);
 
-    assert.equal(findAll(".ui.search").length, 1);
+    assert.dom(".ui.search").exists({ count: 1 });
   });
 
   test("searching content works", async function(assert) {
@@ -51,7 +50,7 @@ module("Integration | Component | ui search", function(hooks) {
       </UiSearch>
     `);
 
-    assert.equal(findAll(".ui.search").length, 1);
+    assert.dom(".ui.search").exists({ count: 1 });
     assert.equal(this.query, null);
     assert.equal(this.selected, null);
 

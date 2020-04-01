@@ -1,6 +1,6 @@
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, findAll, find } from "@ember/test-helpers";
+import { render, find } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui sticky", function(hooks) {
@@ -15,7 +15,7 @@ module("Integration | Component | ui sticky", function(hooks) {
       </UiSticky >
     `);
 
-    assert.equal(findAll(".ui.sticky").length, 1);
+    assert.dom(".ui.sticky").exists({ count: 1 });
     assert.ok(find(".ui.sticky").style.width !== undefined);
     assert.ok(find(".ui.sticky").style.height !== undefined);
   });

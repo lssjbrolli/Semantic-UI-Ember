@@ -1,6 +1,6 @@
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, find, findAll } from "@ember/test-helpers";
+import { render, find } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
 module("Integration | Component | ui progress", function(hooks) {
@@ -16,8 +16,8 @@ module("Integration | Component | ui progress", function(hooks) {
       </UiProgress >
     `);
 
-    assert.equal(findAll(".ui.progress").length, 1);
-    assert.equal(find(".ui.progress").getAttribute("data-percent"), 40);
+    assert.dom(".ui.progress").exists({ count: 1 });
+    assert.dom(".ui.progress").hasAttribute("data-percent", "40");
   });
 
   test("it renders with value", async function(assert) {
@@ -30,8 +30,8 @@ module("Integration | Component | ui progress", function(hooks) {
       </UiProgress >
     `);
 
-    assert.equal(findAll(".ui.progress").length, 1);
-    assert.equal(find(".ui.progress").getAttribute("data-percent"), 40);
+    assert.dom(".ui.progress").exists({ count: 1 });
+    assert.dom(".ui.progress").hasAttribute("data-percent", "40");
   });
 
   test("binding updates precent progress", async function(assert) {
@@ -45,15 +45,15 @@ module("Integration | Component | ui progress", function(hooks) {
       </UiProgress >
     `);
 
-    assert.equal(findAll(".ui.progress").length, 1);
-    assert.equal(find(".ui.progress").getAttribute("data-percent"), 40);
-    var width = find(".ui.progress .bar").style.width;
+    assert.dom(".ui.progress").exists({ count: 1 });
+    assert.dom(".ui.progress").hasAttribute("data-percent", "40");
+    let width = find(".ui.progress .bar").style.width;
     this.set("progress", 60);
 
     let done = assert.async();
 
     setTimeout(() => {
-      assert.equal(find(".ui.progress").getAttribute("data-percent"), 60);
+      assert.dom(".ui.progress").hasAttribute("data-percent", "60");
       assert.notEqual(find(".ui.progress .bar").style.width, width);
 
       done();
@@ -71,15 +71,15 @@ module("Integration | Component | ui progress", function(hooks) {
       </UiProgress >
     `);
 
-    assert.equal(findAll(".ui.progress").length, 1);
-    assert.equal(find(".ui.progress").getAttribute("data-percent"), 40);
-    var width = find(".ui.progress .bar").style.width;
+    assert.dom(".ui.progress").exists({ count: 1 });
+    assert.dom(".ui.progress").hasAttribute("data-percent", "40");
+    let width = find(".ui.progress .bar").style.width;
     this.set("progress", 60);
 
     let done = assert.async();
 
     setTimeout(() => {
-      assert.equal(find(".ui.progress").getAttribute("data-percent"), 60);
+      assert.dom(".ui.progress").hasAttribute("data-percent", "60");
       assert.notEqual(find(".ui.progress .bar").style.width, width);
 
       done();
@@ -97,15 +97,15 @@ module("Integration | Component | ui progress", function(hooks) {
       </UiProgress >
     `);
 
-    assert.equal(findAll(".ui.progress").length, 1);
-    assert.equal(find(".ui.progress").getAttribute("data-percent"), 50);
-    var width = find(".ui.progress .bar").style.width;
+    assert.dom(".ui.progress").exists({ count: 1 });
+    assert.dom(".ui.progress").hasAttribute("data-percent", "50");
+    let width = find(".ui.progress .bar").style.width;
     this.set("value", 70);
 
     let done = assert.async();
 
     setTimeout(() => {
-      assert.equal(find(".ui.progress").getAttribute("data-percent"), 70);
+      assert.dom(".ui.progress").hasAttribute("data-percent", "70");
       assert.notEqual(find(".ui.progress .bar").style.width, width);
 
       done();
@@ -123,15 +123,15 @@ module("Integration | Component | ui progress", function(hooks) {
       </UiProgress >
     `);
 
-    assert.equal(findAll(".ui.progress").length, 1);
-    assert.equal(find(".ui.progress").getAttribute("data-percent"), 50);
-    var width = find(".ui.progress .bar").style.width;
+    assert.dom(".ui.progress").exists({ count: 1 });
+    assert.dom(".ui.progress").hasAttribute("data-percent", "50");
+    let width = find(".ui.progress .bar").style.width;
     this.set("value", 21);
 
     let done = assert.async();
 
     setTimeout(() => {
-      assert.equal(find(".ui.progress").getAttribute("data-percent"), 70);
+      assert.dom(".ui.progress").hasAttribute("data-percent", "70");
       assert.notEqual(find(".ui.progress .bar").style.width, width);
 
       done();

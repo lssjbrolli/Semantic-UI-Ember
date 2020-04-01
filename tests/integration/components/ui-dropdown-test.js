@@ -5,7 +5,7 @@ import { begin, end } from "@ember/runloop";
 import { A } from "@ember/array";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
-import { render, settled, click, find, findAll } from "@ember/test-helpers";
+import { render, settled, click } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 import afterRender from "dummy/tests/helpers/after-render";
 
@@ -32,7 +32,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2);
+    assert.dom(".item").exists({ count: 2 });
     assert.equal(this.selected, undefined);
 
     await click(".menu .item[data-value='Sherlock Homes']");
@@ -65,7 +65,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2);
+    assert.dom(".item").exists({ count: 2 });
     assert.equal(this.selected, undefined);
 
     await click(".menu .item[data-value='1']");
@@ -98,7 +98,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2);
+    assert.dom(".item").exists({ count: 2 });
     assert.equal(this.selected, 2);
 
     await click(".menu .item[data-value='1']");
@@ -130,7 +130,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2);
+    assert.dom(".item").exists({ count: 2 });
     assert.equal(this.selected, undefined);
 
     await click(".menu .item[data-value='1']");
@@ -166,9 +166,9 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2);
-    assert.equal(findAll(".item.selected").length, 1);
-    assert.equal(find(".item.selected").dataset.value, 2);
+    assert.dom(".item").exists({ count: 2 });
+    assert.dom(".item.selected").exists({ count: 1 });
+    assert.dom(".item.selected").hasAttribute("data-value", "2");
     assert.equal(count, 0, "onChange should have not been called");
   });
 
@@ -199,10 +199,10 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2);
+    assert.dom(".item").exists({ count: 2 });
 
     this.set("people_id", 1);
-    assert.equal(find(".item.selected").dataset.value, 1);
+    assert.dom(".item.selected").hasAttribute("data-value", "1");
 
     await click(".item");
     assert.equal(this.people_id, 1);
@@ -237,11 +237,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2);
-    assert.equal(findAll(".item.selected").length, 0);
+    assert.dom(".item").exists({ count: 2 });
+    assert.dom(".item.selected").doesNotExist();
 
-    await click(find(".item"));
-    assert.equal(find(".item.selected").dataset.value, 1);
+    await click(".item");
+    assert.dom(".item.selected").hasAttribute("data-value", "1");
     assert.equal(this.people_id, 1);
     assert.equal(count, 1, "onChange should have been called only once");
   });
@@ -275,21 +275,15 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
     assert.equal(this.selected, undefined, "Nothing is selected");
-    assert.equal(
-      find(".ui.dropdown > .text").textContent,
-      "",
-      "Default text isn't blank"
-    );
+    assert.dom(".ui.dropdown > .text").hasText("", "Default text isn't blank");
 
     this.set("selected", this.people.objectAt(1));
-    assert.equal(find(".item.active").textContent, "Patrick Bateman");
-    assert.equal(
-      find(".ui.dropdown > .text").textContent,
-      "Patrick Bateman",
-      "Default text isn't correct"
-    );
+    assert.dom(".item.active").hasText("Patrick Bateman");
+    assert
+      .dom(".ui.dropdown > .text")
+      .hasText("Patrick Bateman", "Default text isn't correct");
 
     await click(".menu .item[data-value='1']");
     assert.equal(this.selected.id, "1", "Sherlock has been selected");
@@ -297,13 +291,9 @@ module("Integration | Component | ui dropdown", function(hooks) {
     // Now clear the property
     this.set("selected", null);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
-    assert.equal(findAll(".item.active").length, 0);
-    assert.equal(
-      find(".ui.dropdown > .text").textContent,
-      "",
-      "Default text isn't blank"
-    );
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist();
+    assert.dom(".ui.dropdown > .text").hasText("", "Default text isn't blank");
     assert.equal(this.selected, undefined, "Nothing is selected");
     assert.equal(count, 1, "onChange should have been called only once");
   });
@@ -338,7 +328,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
     assert.equal(this.selected, undefined, "Nothing is selected");
 
     await click(".menu .item[data-id='1']");
@@ -375,7 +365,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
     assert.equal(this.selected.id, "2", "Patrick has been selected");
 
     await click(".menu .item[data-id='1']");
@@ -410,11 +400,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
     assert.equal(this.selected, undefined, "Nothing is selected");
 
     this.set("selected", this.people.objectAt(1));
-    assert.equal(find(".item.active").textContent, "Patrick Bateman");
+    assert.dom(".item.active").hasText("Patrick Bateman");
 
     await click(".menu .item[data-id='1']");
     assert.equal(this.selected.id, "1", "Sherlock has been selected");
@@ -450,21 +440,15 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
     assert.equal(this.selected, undefined, "Nothing is selected");
-    assert.equal(
-      find(".ui.dropdown > .text").textContent,
-      "",
-      "Default text isn't blank"
-    );
+    assert.dom(".ui.dropdown > .text").hasText("", "Default text isn't blank");
 
     this.set("selected", this.people.objectAt(1));
-    assert.equal(find(".item.active").textContent, "Patrick Bateman");
-    assert.equal(
-      find(".ui.dropdown > .text").textContent,
-      "Patrick Bateman",
-      "Default text isn't correct"
-    );
+    assert.dom(".item.active").hasText("Patrick Bateman");
+    assert
+      .dom(".ui.dropdown > .text")
+      .hasText("Patrick Bateman", "Default text isn't correct");
 
     await click(".menu .item[data-id='1']");
     assert.equal(this.selected.id, "1", "Sherlock has been selected");
@@ -472,13 +456,9 @@ module("Integration | Component | ui dropdown", function(hooks) {
     // Now clear the property
     this.set("selected", null);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
-    assert.equal(findAll(".item.active").length, 0);
-    assert.equal(
-      find(".ui.dropdown > .text").textContent,
-      "",
-      "Default text isn't blank"
-    );
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist();
+    assert.dom(".ui.dropdown > .text").hasText("", "Default text isn't blank");
     assert.equal(this.selected, undefined, "Nothing is selected");
     assert.equal(count, 1, "onChange should have been called only once");
   });
@@ -512,11 +492,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
 
     let selected = { sub: this.people.objectAt(1) };
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
     assert.equal(this.selected?.sub, undefined, "Nothing is selected");
 
     this.set("selected", selected);
-    assert.equal(find(".item.active").textContent, "Patrick Bateman");
+    assert.dom(".item.active").hasText("Patrick Bateman");
 
     await click(".menu .item[data-id='1']");
     assert.equal(this.selected.sub.id, "1", "Sherlock has been selected");
@@ -524,8 +504,8 @@ module("Integration | Component | ui dropdown", function(hooks) {
     // Now clear the property
     this.set("selected.sub", null);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
-    assert.equal(findAll(".item.active").length, 0);
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist();
     assert.equal(this.selected.sub, undefined, "Nothing is selected");
     assert.equal(count, 1, "onChange should have been called only once");
   });
@@ -551,11 +531,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
     assert.equal(this.selected, undefined, "Nothing is selected");
 
     this.set("selected", 2);
-    assert.equal(find(".item.active").textContent, "2");
+    assert.dom(".item.active").hasText("2");
 
     await click(".menu .item[data-id='1']");
     assert.equal(this.selected, 1, "Sherlock has been selected");
@@ -563,8 +543,8 @@ module("Integration | Component | ui dropdown", function(hooks) {
     // Now clear the property
     this.set("selected", null);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
-    assert.equal(findAll(".item.active").length, 0);
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist();
     assert.equal(this.selected, null, "Nothing is selected");
     assert.equal(count, 1, "onChange should have been called only once");
   });
@@ -592,10 +572,10 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 5, "Right number of items");
-    assert.equal(findAll(".item.active").length, 2, "Pre selected count");
-    assert.ok(find(".item[data-id='2']").classList.contains("active"));
-    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.dom(".item").exists({ count: 5 }, "Right number of items");
+    assert.dom(".item.active").exists({ count: 2 }, "Pre selected count");
+    assert.dom(".item[data-id='2']").hasClass("active");
+    assert.dom(".item[data-id='4']").hasClass("active");
     assert.equal(count, 0, "onChange should not have been called");
   });
 
@@ -622,9 +602,9 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 5, "Right number of items");
-    assert.equal(findAll(".item.active").length, 1, "Pre selected count");
-    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.dom(".item").exists({ count: 5 }, "Right number of items");
+    assert.dom(".item.active").exists({ count: 1 }, "Pre selected count");
+    assert.dom(".item[data-id='2']").hasClass("active");
     assert.equal(count, 0, "onChange should not have been called");
   });
 
@@ -659,10 +639,10 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 5, "Right number of items");
-    assert.equal(findAll(".item.active").length, 2, "Pre selected count");
-    assert.ok(find(".item[data-id='2']").classList.contains("active"));
-    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.dom(".item").exists({ count: 5 }, "Right number of items");
+    assert.dom(".item.active").exists({ count: 2 }, "Pre selected count");
+    assert.dom(".item[data-id='2']").hasClass("active");
+    assert.dom(".item[data-id='4']").hasClass("active");
     assert.equal(count, 0, "onChange should not have been called");
   });
 
@@ -697,9 +677,9 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 5, "Right number of items");
-    assert.equal(findAll(".item.active").length, 1, "Pre selected count");
-    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.dom(".item").exists({ count: 5 }, "Right number of items");
+    assert.dom(".item.active").exists({ count: 1 }, "Pre selected count");
+    assert.dom(".item[data-id='2']").hasClass("active");
     assert.equal(count, 0, "onChange should not have been called");
   });
 
@@ -726,14 +706,14 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 5, "Right number of items");
-    assert.equal(findAll(".item.active").length, 0, "Pre selected count");
+    assert.dom(".item").exists({ count: 5 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist("Pre selected count");
     await click(".item[data-id='2']");
-    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.dom(".item[data-id='2']").hasClass("active");
     assert.equal(this.selected.join(","), ["2"].join(","));
 
     await click(".item[data-id='4']");
-    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.dom(".item[data-id='4']").hasClass("active");
     assert.equal(this.selected.join(","), ["2", "4"].join(","));
     assert.equal(count, 2, "onChange should not have been called");
   });
@@ -770,14 +750,14 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 5, "Right number of items");
-    assert.equal(findAll(".item.active").length, 0, "Pre selected count");
+    assert.dom(".item").exists({ count: 5 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist("Pre selected count");
     await click(".item[data-id='2']");
-    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.dom(".item[data-id='2']").hasClass("active");
     assert.equal(this.selected.join(","), [numbers[1]].join(","));
 
     await click(".item[data-id='4']");
-    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.dom(".item[data-id='4']").hasClass("active");
     assert.equal(this.selected.join(","), [numbers[1], numbers[3]].join(","));
     assert.equal(count, 2, "onChange should not have been called");
   });
@@ -806,11 +786,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 5, "Right number of items");
-    assert.equal(findAll(".item.active").length, 0, "Pre selected count");
+    assert.dom(".item").exists({ count: 5 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist("Pre selected count");
     this.set("selected", ["2"]);
 
-    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.dom(".item[data-id='2']").hasClass("active");
     assert.equal(this.selected.join(","), ["2"].join(","));
 
     begin();
@@ -819,7 +799,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
     // Doesn't clear in time on tests occasionally
     end();
 
-    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.dom(".item[data-id='4']").hasClass("active");
     assert.equal(this.selected.join(","), ["2", "4"].join(","));
     assert.equal(count, 0, "onChange should not have been called");
   });
@@ -856,14 +836,14 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 5, "Right number of items");
-    assert.equal(findAll(".item.active").length, 0, "Pre selected count");
+    assert.dom(".item").exists({ count: 5 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist("Pre selected count");
     this.set("selected", [numbers[1]]);
-    assert.ok(find(".item[data-id='2']").classList.contains("active"));
+    assert.dom(".item[data-id='2']").hasClass("active");
     assert.equal(this.selected.join(","), [numbers[1]].join(","));
 
     this.set("selected", [numbers[1], numbers[3]]);
-    assert.ok(find(".item[data-id='4']").classList.contains("active"));
+    assert.dom(".item[data-id='4']").hasClass("active");
     assert.equal(this.selected.join(","), [numbers[1], numbers[3]].join(","));
     assert.equal(count, 0, "onChange should not have been called");
   });
@@ -893,14 +873,14 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2);
-    assert.equal(findAll(".item.active").length, 0);
+    assert.dom(".item").exists({ count: 2 });
+    assert.dom(".item.active").doesNotExist();
 
     deferred.resolve("Patrick Bateman");
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(findAll(".item.active").length, 1);
-      assert.equal(find(".item.active").textContent, "Patrick Bateman");
+      assert.dom(".item.active").exists({ count: 1 });
+      assert.dom(".item.active").hasText("Patrick Bateman");
       assert.equal(count, 0, "onChange should not have been called");
     });
   });
@@ -932,9 +912,9 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2);
-    assert.equal(findAll(".item.active").length, 1);
-    assert.equal(find(".item.active").textContent, "Patrick Bateman");
+    assert.dom(".item").exists({ count: 2 });
+    assert.dom(".item.active").exists({ count: 1 });
+    assert.dom(".item.active").hasText("Patrick Bateman");
     assert.equal(count, 0, "onChange should not have been called");
   });
 
@@ -969,19 +949,15 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
-    assert.equal(
-      findAll(".item.active").length,
-      0,
-      "Right number of items active"
-    );
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist("Right number of items active");
 
     let deferredValue = { id: 2, name: "Patrick Bateman" };
     deferred.resolve(deferredValue);
 
     return afterRender(deferred.promise).then(() => {
-      assert.equal(findAll(".item.active").length, 1);
-      assert.equal(find(".item.active").textContent, "Patrick Bateman");
+      assert.dom(".item.active").exists({ count: 1 });
+      assert.dom(".item.active").hasText("Patrick Bateman");
       assert.equal(count, 0, "onChange should not have been called");
     });
   });
@@ -1019,15 +995,13 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
     return afterRender(deferred.promise).then(() => {
       return settled().then(() => {
-        assert.equal(
-          findAll(".item.active").length,
-          1,
-          "Right number of items active"
-        );
-        assert.equal(find(".item.active").textContent, "Patrick Bateman");
+        assert
+          .dom(".item.active")
+          .exists({ count: 1 }, "Right number of items active");
+        assert.dom(".item.active").hasText("Patrick Bateman");
         assert.equal(count, 0, "onChange should not have been called");
       });
     });
@@ -1064,23 +1038,17 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
-    assert.equal(
-      findAll(".item.active").length,
-      0,
-      "Right number of items active"
-    );
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist("Right number of items active");
 
     deferredSelect.resolve("Patrick Bateman");
 
     return afterRender(deferredSelect.promise)
       .then(() => {
         return settled().then(() => {
-          assert.equal(
-            findAll(".item.active").length,
-            0,
-            "Right number of items active"
-          );
+          assert
+            .dom(".item.active")
+            .doesNotExist("Right number of items active");
 
           let deferredValue = { id: 2, name: "Patrick Bateman" };
           deferredMap.resolve(deferredValue);
@@ -1090,12 +1058,10 @@ module("Integration | Component | ui dropdown", function(hooks) {
       })
       .then(() => {
         return settled().then(() => {
-          assert.equal(
-            findAll(".item.active").length,
-            1,
-            "Right number of items active"
-          );
-          assert.equal(find(".item.active").textContent, "Patrick Bateman");
+          assert
+            .dom(".item.active")
+            .exists({ count: 1 }, "Right number of items active");
+          assert.dom(".item.active").hasText("Patrick Bateman");
           assert.equal(count, 0, "onChange should not have been called");
         });
       });
@@ -1132,35 +1098,25 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
-    assert.equal(findAll(".item").length, 2, "Right number of items");
-    assert.equal(
-      findAll(".item.active").length,
-      0,
-      "Right number of items active"
-    );
+    assert.dom(".item").exists({ count: 2 }, "Right number of items");
+    assert.dom(".item.active").doesNotExist("Right number of items active");
 
     let deferredValue = { id: 2, name: "Patrick Bateman" };
     deferredMap.resolve(deferredValue);
 
     return afterRender(deferredMap.promise)
       .then(() => {
-        assert.equal(
-          findAll(".item.active").length,
-          0,
-          "Right number of items active"
-        );
+        assert.dom(".item.active").doesNotExist("Right number of items active");
 
         deferredSelect.resolve("Patrick Bateman");
 
         return afterRender(deferredSelect.promise);
       })
       .then(() => {
-        assert.equal(
-          findAll(".item.active").length,
-          1,
-          "Right number of items active"
-        );
-        assert.equal(find(".item.active").textContent, "Patrick Bateman");
+        assert
+          .dom(".item.active")
+          .exists({ count: 1 }, "Right number of items active");
+        assert.dom(".item.active").hasText("Patrick Bateman");
         assert.equal(count, 0, "onChange should not have been called");
       });
   });
