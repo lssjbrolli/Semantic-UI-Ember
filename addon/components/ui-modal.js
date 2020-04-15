@@ -1,11 +1,7 @@
-/* eslint-disable ember/no-classic-components */
-/* eslint-disable ember/require-tagless-components */
-import Component from "@ember/component";
-import Base from "../mixins/base";
+import BaseComponent from "./base";
 
-export default class UiModalComponent extends Component.extend(Base) {
+export default class UiModalComponent extends BaseComponent {
   module = "modal";
-  classNames = ["ui", "modal"];
 
   willInitSemantic(settings) {
     super.willInitSemantic(...arguments);

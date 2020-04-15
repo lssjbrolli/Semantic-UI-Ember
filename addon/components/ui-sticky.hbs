@@ -1,1 +1,8 @@
-{{yield (fn this.execute)}}
+<div
+  class="ui sticky"
+  ...attributes
+  {{did-insert this.initModule}}
+  {{did-update this.updateModule}}
+>
+  {{yield (fn this.execute)}}
+</div>

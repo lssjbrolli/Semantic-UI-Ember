@@ -1,10 +1,5 @@
-/* eslint-disable ember/no-classic-components */
-/* eslint-disable ember/require-tagless-components */
-import Component from "@ember/component";
-import Base from "../mixins/base";
+import BaseComponent from "./base";
 
-export default class UiProgressComponent extends Component.extend(Base) {
+export default class UiProgressComponent extends BaseComponent {
   module = "progress";
-  classNames = ["ui", "progress"];
-  ignorableAttrs = ["progress"];
 }

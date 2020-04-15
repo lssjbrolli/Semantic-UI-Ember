@@ -54,9 +54,6 @@
     @subHeader="Modal using an inline component" as |showing|
   >
     <UiHtml @showing={{showing}}>
-      <div class="ui button" {{on "click" (fn this.openModal "profile")}}>
-        Open Profile
-      </div>
       {{! BEGIN-SNIPPET modal.inline  }}
       <div class="ui button" {{on "click" (fn this.openModal "profile")}}>
         Open Profile

@@ -6,14 +6,15 @@ import {
   focus,
   find,
   fillIn,
-  triggerKeyEvent
+  triggerKeyEvent,
 } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
+import $ from "jquery";
 
-module("Integration | Component | ui search", function(hooks) {
+module("Integration | Component | ui search", function (hooks) {
   setupRenderingTest(hooks);
 
-  test("it renders", async function(assert) {
+  test("it renders", async function (assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -26,7 +27,7 @@ module("Integration | Component | ui search", function(hooks) {
     assert.dom(".ui.search").exists({ count: 1 });
   });
 
-  test("searching content works", async function(assert) {
+  test("searching content works", async function (assert) {
     assert.expect(5);
 
     this.set("commonPasswords", [{ title: "bobby" }, { title: "12345" }]);
@@ -34,7 +35,7 @@ module("Integration | Component | ui search", function(hooks) {
     this.set("query", null);
     this.set("selected", null);
 
-    this.set("setValue", value => {
+    this.set("setValue", (value) => {
       this.set("selected", value);
     });
 
@@ -56,11 +57,12 @@ module("Integration | Component | ui search", function(hooks) {
 
     await focus("input");
     await fillIn("input", "123");
-    this.$(".ui.search").search("query");
+
+    $(".ui.search").search("query");
 
     assert.equal(this.query, "123");
 
-    this.$(".ui.search").search("show results");
+    $(".ui.search").search("show results");
 
     let done = assert.async();
 

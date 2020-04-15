@@ -11,13 +11,13 @@ export default class extends Controller {
 
   @action
   approveModal(element, component) {
-    alert("approve " + component.get("name"));
+    alert("approve " + component.args.name);
     return false;
   }
 
   @action
   denyModal(element, component) {
-    alert("deny " + component.get("name"));
+    alert("deny " + component.args.name);
     return true;
   }
 }

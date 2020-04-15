@@ -5,10 +5,10 @@ import { setupRenderingTest } from "ember-qunit";
 import { render, find } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
-module("Integration | Component | ui popup", function(hooks) {
+module("Integration | Component | ui popup", function (hooks) {
   setupRenderingTest(hooks);
 
-  test("it renders", async function(assert) {
+  test("it renders", async function (assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -25,7 +25,7 @@ module("Integration | Component | ui popup", function(hooks) {
     );
   });
 
-  test("updating content updates popup", async function(assert) {
+  test("updating content updates popup", async function (assert) {
     assert.expect(2);
 
     this.set("content", "This is dynamic content");
@@ -50,7 +50,7 @@ module("Integration | Component | ui popup", function(hooks) {
     );
   });
 
-  test("title works with attribute bindings and popup title", async function(assert) {
+  test("title works with attribute bindings and popup title", async function (assert) {
     assert.expect(2);
 
     await render(hbs`
@@ -78,7 +78,7 @@ module("Integration | Component | ui popup", function(hooks) {
     }, 500);
   });
 
-  test("position sets initially, then doesnt after that init", async function(assert) {
+  test("position sets initially, then doesnt after that init", async function (assert) {
     assert.expect(3);
 
     this.set("content", "something");
@@ -107,7 +107,7 @@ module("Integration | Component | ui popup", function(hooks) {
     }, 500);
   });
 
-  test("changing class doesnt throw error", async function(assert) {
+  test("changing class doesnt throw error", async function (assert) {
     assert.expect(5);
 
     this.set("class", "some style");
@@ -129,26 +129,18 @@ module("Integration | Component | ui popup", function(hooks) {
       let popup = window.$(".ui.popup");
       assert.equal(popup.text(), "something");
 
-      assert.ok(
-        find("div")
-          .getAttribute("class")
-          .includes("some style")
-      );
+      assert.ok(find("div").getAttribute("class").includes("some style"));
 
       this.set("class", "other style");
 
       assert.equal(popup.text(), "something");
 
-      assert.ok(
-        find("div")
-          .getAttribute("class")
-          .includes("other style")
-      );
+      assert.ok(find("div").getAttribute("class").includes("other style"));
       done();
     }, 500);
   });
 
-  test("popup unwraps safe string", async function(assert) {
+  test("popup unwraps safe string", async function (assert) {
     assert.expect(2);
 
     this.set("html", htmlSafe("<b>Awesome</b>"));

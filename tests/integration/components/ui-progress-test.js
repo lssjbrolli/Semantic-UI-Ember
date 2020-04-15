@@ -3,10 +3,10 @@ import { setupRenderingTest } from "ember-qunit";
 import { render, find } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
-module("Integration | Component | ui progress", function(hooks) {
+module("Integration | Component | ui progress", function (hooks) {
   setupRenderingTest(hooks);
 
-  test("it renders with percent", async function(assert) {
+  test("it renders with percent", async function (assert) {
     assert.expect(2);
 
     await render(hbs`
@@ -20,7 +20,7 @@ module("Integration | Component | ui progress", function(hooks) {
     assert.dom(".ui.progress").hasAttribute("data-percent", "40");
   });
 
-  test("it renders with value", async function(assert) {
+  test("it renders with value", async function (assert) {
     assert.expect(2);
 
     await render(hbs`
@@ -34,7 +34,7 @@ module("Integration | Component | ui progress", function(hooks) {
     assert.dom(".ui.progress").hasAttribute("data-percent", "40");
   });
 
-  test("binding updates precent progress", async function(assert) {
+  test("binding updates precent progress", async function (assert) {
     assert.expect(4);
 
     this.set("progress", 40);
@@ -48,6 +48,7 @@ module("Integration | Component | ui progress", function(hooks) {
     assert.dom(".ui.progress").exists({ count: 1 });
     assert.dom(".ui.progress").hasAttribute("data-percent", "40");
     let width = find(".ui.progress .bar").style.width;
+
     this.set("progress", 60);
 
     let done = assert.async();
@@ -60,7 +61,7 @@ module("Integration | Component | ui progress", function(hooks) {
     }, 500);
   });
 
-  test("binding updates precent progress with total", async function(assert) {
+  test("binding updates precent progress with total", async function (assert) {
     assert.expect(4);
 
     this.set("progress", 40);
@@ -86,7 +87,7 @@ module("Integration | Component | ui progress", function(hooks) {
     }, 500);
   });
 
-  test("binding updates progress", async function(assert) {
+  test("binding updates progress", async function (assert) {
     assert.expect(4);
 
     this.set("value", 50);
@@ -112,7 +113,7 @@ module("Integration | Component | ui progress", function(hooks) {
     }, 500);
   });
 
-  test("binding updates progress with total", async function(assert) {
+  test("binding updates progress with total", async function (assert) {
     assert.expect(4);
 
     this.set("value", 15);

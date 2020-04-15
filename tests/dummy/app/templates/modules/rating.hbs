@@ -53,7 +53,6 @@
     <UiHtml @showing={{showing}}>
       {{! BEGIN-SNIPPET rating.simple }}
       <UiRating
-        @initialRating={{this.rating}}
         @rating={{this.rating}}
         @maxRating={{7}}
         @onRate={{fn (mut this.rating)}}
@@ -61,6 +60,9 @@
       {{! END-SNIPPET }}
       - Rating
       {{this.rating}}
+      <button class="ui button" {{on "click" (fn this.inc)}}>
+        Click me
+      </button>
     </UiHtml>
     <UiAnnotation @showing={{showing}} @snippet="rating.simple.hbs" />
   </UiExample>
@@ -69,7 +71,7 @@
       {{! BEGIN-SNIPPET rating.simple.styled }}
       <UiRating
         class="heart"
-        @rating={{this.heartRating}}
+        @initialRating={{this.heartRating}}
         @onRate={{fn (mut this.heartRating)}}
         @clearable={{true}}
       />
