@@ -6,26 +6,20 @@ import { hbs } from "ember-cli-htmlbars";
 import { bind } from "@ember/runloop";
 import $ from "jquery";
 
-module("Integration | Component | ui modal", function(hooks) {
+module("Integration | Component | ui modal", function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
-    this.actions = {};
-    this.send = (actionName, ...args) =>
-      this.actions[actionName].apply(this, args);
-  });
-
-  test("it renders", async function(assert) {
+  test("it renders", async function (assert) {
     assert.expect(1);
 
     await render(hbs`
-      <UiModal @name='profile' />
+      <UiModal />
     `);
 
     assert.dom(".ui.modal").exists({ count: 1 });
   });
 
-  test("it will show if triggered", async function(assert) {
+  test("it will show if triggered", async function (assert) {
     assert.expect(3);
 
     let done = assert.async();
@@ -36,27 +30,27 @@ module("Integration | Component | ui modal", function(hooks) {
         bind(() => {
           assert
             .dom(".ui.modal.visible")
-            .exists({ count: 1 }, ".ui.modal is visible after showing");
+            .exists({ count: 1 }, "UI Modal is visible after showing");
           done();
         })
       );
     });
 
     await render(hbs`
-      <div class="ui button" {{on 'click' (fn this.openModal 'profile')}}>
+      <div class="ui button" {{on 'click' (fn this.openModal)}}>
         Open
       </div>
 
       <UiModal @name='profile'/>
     `);
 
-    assert.dom(".ui.modal").exists({ count: 1 }, ".ui.modal exists");
-    assert.dom(".ui.modal.visible").doesNotExist(".ui.modal is not visible");
+    assert.dom(".ui.modal").exists({ count: 1 }, "UI Modal exists");
+    assert.dom(".ui.modal.visible").doesNotExist("UI Modal is not visible");
 
     await click(".ui.button");
   });
 
-  test("it will send approve back to controller and hide", async function(assert) {
+  test("it will send approve back to controller and hide", async function (assert) {
     assert.expect(3);
 
     let done = assert.async();
@@ -74,7 +68,7 @@ module("Integration | Component | ui modal", function(hooks) {
     });
 
     this.set("approve", (element, component) => {
-      let name = component.name;
+      let name = component.args.name;
       assert.equal("profile", name, "approve is called");
       setTimeout(() => {
         assert
@@ -101,7 +95,7 @@ module("Integration | Component | ui modal", function(hooks) {
     await click(".ui.open.button");
   });
 
-  test("it will send approve back to controller and skip the hide", async function(assert) {
+  test("it will send approve back to controller and skip the hide", async function (assert) {
     assert.expect(3);
 
     let done = assert.async();
@@ -119,7 +113,7 @@ module("Integration | Component | ui modal", function(hooks) {
     });
 
     this.set("approve", (element, component) => {
-      let name = component.name;
+      let name = component.args.name;
       assert.equal("profile", name, "approve is called");
       setTimeout(() => {
         assert
@@ -146,7 +140,7 @@ module("Integration | Component | ui modal", function(hooks) {
     await click(".ui.open.button");
   });
 
-  test("it will send deny back to controller", async function(assert) {
+  test("it will send deny back to controller", async function (assert) {
     assert.expect(1);
 
     let done = assert.async();
@@ -158,7 +152,7 @@ module("Integration | Component | ui modal", function(hooks) {
     });
 
     this.set("deny", (element, component) => {
-      var name = component.get("name");
+      var name = component.args.name;
       assert.equal("profile", name);
       done();
     });

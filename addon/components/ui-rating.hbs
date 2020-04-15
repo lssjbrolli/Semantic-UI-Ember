@@ -1,1 +1,8 @@
-{{yield (fn this.execute)}}
+<div
+  class="ui rating"
+  ...attributes
+  {{did-insert this.initModule}}
+  {{did-update this.updateModule @rating}}
+>
+  {{yield (fn this.execute)}}
+</div>

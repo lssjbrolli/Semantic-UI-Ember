@@ -1,56 +1,32 @@
-/* eslint-disable ember/no-component-lifecycle-hooks */
-/* eslint-disable no-console */
-/* eslint-disable ember/no-attrs-in-components */
-/* eslint-disable ember/require-tagless-components */
-/* eslint-disable ember/no-classic-components */
 import { hash } from "rsvp";
-import { isBlank } from "@ember/utils";
-import Component from "@ember/component";
-import Checkbox from "../mixins/checkbox";
 import isPromise from "ember-promise-utils/utils/is-promise";
 import isFulfilled from "ember-promise-utils/utils/is-fulfilled";
 import getPromiseContent from "ember-promise-utils/utils/get-promise-content";
-import PromiseResolver from "ember-promise-utils/mixins/promise-resolver";
 
-export default class UiRadioComponent extends Component.extend(
-  Checkbox,
-  PromiseResolver
-) {
+import BaseCheckboxComponent from "./base-checkbox";
+
+export default class UiRadioComponent extends BaseCheckboxComponent {
   type = "radio";
-  classNames = ["ui radio"];
-  ignorableAttrs = ["checked", "label", "disabled", "value", "current"];
-
-  constructor() {
-    super(...arguments);
-
-    if (isBlank(this.name)) {
-      this.name = "default";
-
-      console.log(
-        "The required component parameter of 'name' was not passed into the ui-radio component"
-      );
-    }
-  }
 
   // Internal wrapper for onchange, to pass through checked
   _onChange() {
-    let value = this.value;
-    return this.attrs.onChange(value, this);
+    let value = this.args.value;
+    return this.args.onChange(value, this);
   }
 
-  didInitSemantic() {
-    super.didInitSemantic(...arguments);
+  initModule() {
+    super.initModule(...arguments);
     this._inspectValueAndCurrent();
   }
 
-  didUpdateAttrs() {
-    super.didUpdateAttrs(...arguments);
+  updateModule() {
+    super.updateModule(...arguments);
     this._inspectValueAndCurrent();
   }
 
   _inspectValueAndCurrent() {
-    let value = this.value;
-    let current = this.current;
+    let value = this.args.value;
+    let current = this.args.current;
     // If either are a promise, we need to make sure both are resolved
     // Or wait for them to resolve
     if (isPromise(value) || isPromise(current)) {

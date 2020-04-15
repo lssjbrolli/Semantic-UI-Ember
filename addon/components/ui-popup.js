@@ -1,10 +1,6 @@
-/* eslint-disable ember/no-attrs-in-components */
-/* eslint-disable ember/require-tagless-components */
-/* eslint-disable ember/no-classic-components */
-import Component from "@ember/component";
-import Base from "../mixins/base";
+import BaseComponent from "./base";
 
-export default class UiPopupComponent extends Component.extend(Base) {
+export default class UiPopupComponent extends BaseComponent {
   module = "popup";
 
   didInitSemantic() {
@@ -12,14 +8,13 @@ export default class UiPopupComponent extends Component.extend(Base) {
     let possibleAttrs = ["content", "title", "html"];
     for (let i = 0; i < possibleAttrs.length; i++) {
       let possibleAttr = possibleAttrs[i];
-      if (
-        this._hasOwnProperty(this.attrs, possibleAttr) ||
-        this.possibleAttr != null
-      ) {
+      if (this.args[possibleAttr] || this.possibleAttr != null) {
         this._settableAttrs.addObject(possibleAttr);
       }
     }
-    this._settableAttrs.removeObject("position");
+    if (this.args.position) {
+      this._settableAttrs.removeObject("position");
+    }
   }
 
   setSemanticAttr(attrName, attrValue) {
@@ -35,12 +30,12 @@ export default class UiPopupComponent extends Component.extend(Base) {
           if (attrName === "content") {
             text = {
               title: this.title,
-              content: value
+              content: value,
             };
           } else {
             text = {
               title: value,
-              content: this.content
+              content: this.content,
             };
           }
           let moduleGlobal = this.getSemanticModuleGlobal();

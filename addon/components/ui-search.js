@@ -1,30 +1,22 @@
-/* eslint-disable ember/no-classic-components */
-/* eslint-disable ember/require-tagless-components */
-import Component from "@ember/component";
-import Base from "../mixins/base";
+import BaseComponent from "./base";
 
-export default class UiSearchComponent extends Component.extend(Base) {
+export default class UiSearchComponent extends BaseComponent {
   module = "search";
-  classNames = ["ui", "search"];
 
-  didInitSemantic(...args) {
-    super.didInitSemantic(...args);
-    this._bindableAttrs.addObject("source");
-  }
-  execute(...args) {
-    const cmd = args[0];
-    const attrValue = args[1];
+  execute() {
+    const cmd = arguments[0];
+    const attrValue = arguments[1];
 
     if (cmd === "set source") {
       let module = this.getSemanticModule();
       if (module) {
         return module.apply(this.getSemanticScope(), [
           {
-            source: attrValue
-          }
+            source: attrValue,
+          },
         ]);
       }
     }
-    return super.execute(...args);
+    return super.execute(...arguments);
   }
 }

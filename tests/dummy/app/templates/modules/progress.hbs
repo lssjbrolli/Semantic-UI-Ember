@@ -49,12 +49,10 @@
   >
     <UiHtml @showing={{showing}}>
       {{! BEGIN-SNIPPET progress.simple.percent }}
-      <UiProgress
-        @percent={{this.progressOne}}
-        @total="100"
-        class="indicating" as |behavior|
-      >
-        <div class="bar"></div>
+      <UiProgress @percent={{this.progressOne}} @total="100" class="indicating">
+        <div class="bar">
+          <div class="progress"></div>
+        </div>
         <div class="label">
           Completed
           <Input
@@ -72,12 +70,10 @@
   <UiExample @header="Simple Example" @subHeader="Value Progress" as |showing|>
     <UiHtml @showing={{showing}}>
       {{! BEGIN-SNIPPET progress.simple.value }}
-      <UiProgress
-        @value={{this.progressTwo}}
-        @progress={{this.progressTwo}}
-        @total={{30}}
-      >
-        <div class="bar"></div>
+      <UiProgress @progress={{this.progressTwo}} @total={{30}} @label="ratio">
+        <div class="bar">
+          <div class="progress"></div>
+        </div>
         <div class="label">
           Uploaded
           <Input

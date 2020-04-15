@@ -1,1 +1,8 @@
-{{yield (fn this.execute)}}
+<div
+  class="ui progress"
+  ...attributes
+  {{did-insert this.initModule}}
+  {{did-update this.updateModule @percent @progress}}
+>
+  {{yield (fn this.execute)}}
+</div>

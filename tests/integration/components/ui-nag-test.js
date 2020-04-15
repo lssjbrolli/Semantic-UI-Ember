@@ -4,10 +4,10 @@ import { setupRenderingTest } from "ember-qunit";
 import { render, click } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 
-module("Integration | Component | ui nag", function(hooks) {
+module("Integration | Component | ui nag", function (hooks) {
   setupRenderingTest(hooks);
 
-  test("it renders", async function(assert) {
+  test("it renders", async function (assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -22,7 +22,7 @@ module("Integration | Component | ui nag", function(hooks) {
     assert.dom(".ui.nag").exists({ count: 1 });
   });
 
-  test("it will only show once", async function(assert) {
+  test("it will only show once", async function (assert) {
     assert.expect(4);
 
     await render(hbs`
@@ -38,21 +38,20 @@ module("Integration | Component | ui nag", function(hooks) {
     this.$(".ui.nag").nag("clear");
     this.$(".ui.nag").nag("show");
     assert.dom(".ui.nag").hasStyle({
-      display: "block"
+      display: "block",
     });
+
     await click(".ui.nag .close");
 
     let done = assert.async();
-
     setTimeout(() => {
       assert.dom(".ui.nag").hasStyle({
-        display: "none"
+        display: "none",
       });
       this.$(".ui.nag").nag("show");
       assert.dom(".ui.nag").hasStyle({
-        display: "block"
+        display: "block",
       });
-
       done();
     }, 1000);
   });

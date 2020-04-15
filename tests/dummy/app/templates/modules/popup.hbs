@@ -67,11 +67,7 @@
   >
     <UiHtml @showing={{showing}}>
       {{! BEGIN-SNIPPET popup.simple.icon }}
-      <UiPopup
-        class="info icon"
-        @tagName="i"
-        @content="The text you'd like to show"
-      />
+      <UiPopup class="info icon" @content="The text you'd like to show" />
       {{! END-SNIPPET }}
     </UiHtml>
     <UiAnnotation @showing={{showing}} @snippet="popup.simple.icon.hbs" />

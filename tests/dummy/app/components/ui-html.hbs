@@ -4,8 +4,16 @@
   </div>
   <div class="ui top attached label">
     Example
-    <CopyButton @clipboardText={{@code}} @success={{this.copied}} @error={{this.copyError}}>
-      <UiPopup @tagName="i" class="copy link icon" @content={{this.copyMessage}} @variation="inverted" />
+    <CopyButton
+      @clipboardText={{@code}}
+      @success={{this.copied}}
+      @error={{this.copyError}}
+    >
+      <UiPopup
+        class="copy link icon"
+        @content={{this.copyMessage}}
+        @variation="inverted"
+      />
     </CopyButton>
   </div>
 </div>

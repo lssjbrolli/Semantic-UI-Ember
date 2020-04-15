@@ -1,1 +1,7 @@
-{{yield (fn this.exec)}}
+<div
+  ...attributes
+  {{did-insert this.initModule}}
+  {{did-update this.updateModule}}
+>
+  {{yield (fn this.execute)}}
+</div>
