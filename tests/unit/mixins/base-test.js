@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-mixins */
 /* eslint-disable ember/no-classic-classes */
 /* eslint-disable ember/no-new-mixins */
 import { htmlSafe } from "@ember/template";
@@ -5,21 +6,21 @@ import EmberObject from "@ember/object";
 import BaseMixin from "semantic-ui-ember/mixins/base";
 import { module, test } from "qunit";
 
-module("Unit | Mixin | base", function() {
+module("Unit | Mixin | base", function () {
   // Replace this with your real tests.
-  test("it works", function(assert) {
+  test("it works", function (assert) {
     let BaseObject = EmberObject.extend(BaseMixin, {
-      module: "test"
+      module: "test",
     });
     let subject = BaseObject.create();
     assert.ok(subject);
   });
 
-  test("values are equal", function(assert) {
+  test("values are equal", function (assert) {
     assert.expect(13);
 
     let BaseObject = EmberObject.extend(BaseMixin, {
-      module: "test"
+      module: "test",
     });
     let subject = BaseObject.create();
 
@@ -40,7 +41,7 @@ module("Unit | Mixin | base", function() {
     assert.notOk(subject.areAttrValuesEqual("", true, false));
   });
 
-  test("setting attr unwraps html safe string", function(assert) {
+  test("setting attr unwraps html safe string", function (assert) {
     assert.expect(2);
 
     let BaseObject = EmberObject.extend(BaseMixin, {
@@ -48,7 +49,7 @@ module("Unit | Mixin | base", function() {
 
       execute(command, value) {
         assert.equal(value, "unwrapped");
-      }
+      },
     });
     let subject = BaseObject.create();
 

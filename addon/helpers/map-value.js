@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-mixins */
 import Helper from "@ember/component/helper";
 import PromiseResolver from "ember-promise-utils/mixins/promise-resolver";
 
@@ -5,7 +6,7 @@ export default class MapValueHelper extends Helper.extend(PromiseResolver) {
   compute([action, maybePromise]) {
     return this.resolvePromise(
       maybePromise,
-      value => {
+      (value) => {
         return action(value);
       },
       () => {
