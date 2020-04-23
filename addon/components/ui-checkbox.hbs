@@ -1,11 +1,18 @@
-<input
-  type={{this.type}}
-  name={{@name}}
-  tabindex={{@tabindex}}
-  checked={{unbound this.checked}}
-  disabled={{unbound this.disabled}}
-/>
-<label>
-  {{@label}}
-</label>
-{{yield (fn this.exec)}}
+<div
+  class="ui checkbox"
+  ...attributes
+  {{did-insert this.initModule}}
+  {{did-update this.updateModule @readonly @disabled}}
+>
+  <input
+    type="checkbox"
+    name={{@name}}
+    tabindex={{@tabindex}}
+    checked={{unbound this.checked}}
+    disabled={{unbound this.disabled}}
+  />
+  <label>
+    {{@label}}
+  </label>
+  {{yield (fn this.execute)}}
+</div>
