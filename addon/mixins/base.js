@@ -1,12 +1,12 @@
-/* eslint-disable ember/no-jquery */
 /* eslint-disable ember/no-attrs-in-components */
+/* eslint-disable no-irregular-whitespace */
+/* eslint-disable ember/no-jquery */
 /* eslint-disable ember/no-new-mixins */
 /* eslint-disable no-console */
 import { getOwner } from "@ember/application";
 import { isHTMLSafe } from "@ember/template";
 import { bind } from "@ember/runloop";
 import { camelize } from "@ember/string";
-import { get } from "@ember/object";
 import { A } from "@ember/array";
 import { isBlank, isPresent, isEqual } from "@ember/utils";
 import Mixin from "@ember/object/mixin";
@@ -187,7 +187,7 @@ Semantic.BaseMixin = Mixin.create({
   actions: {
     execute() {
       return this.execute(...arguments);
-    }
+    },
   },
 
   // Private Methods
@@ -200,9 +200,11 @@ Semantic.BaseMixin = Mixin.create({
 
     // if its a mutable object, get the actual value
     if (typeof value === "object") {
-      let objectKeys = A(Object.keys(value));
-      if (objectKeys.any(objectkey => objectkey.indexOf("MUTABLE_CELL") >= 0)) {
-        value = get(value, "value");
+      let objectKeys = Object.keys(value);
+      if (
+        objectKeys.filter((objectkey) => objectkey.indexOf("MUTABLE_CELL") >= 0)
+      ) {
+        value = value.value;
       }
     }
 
@@ -221,7 +223,7 @@ Semantic.BaseMixin = Mixin.create({
     let custom = {
       debug: Semantic.UI_DEBUG,
       performance: Semantic.UI_PERFORMANCE,
-      verbose: Semantic.UI_VERBOSE
+      verbose: Semantic.UI_VERBOSE,
     };
 
     for (let key in this.attrs) {
@@ -233,7 +235,9 @@ Semantic.BaseMixin = Mixin.create({
           !this._ignorableAttrs.includes(camelize(key))
         ) {
           // TODO: Add better ember keys here
-          // Ember.Logger.debug(`You passed in the property '${key}', but a setting doesn't exist on the Semantic UI module: ${moduleName}`);
+          console.log(
+            `You passed in the property '${key}', but a setting doesn't exist on the Semantic UI module: ${moduleName}`
+          );
         }
         continue;
       }
@@ -266,7 +270,7 @@ Semantic.BaseMixin = Mixin.create({
   },
 
   _updateFunctionWithParameters(key, fn) {
-    return function() {
+    return function () {
       var args = [].splice.call(arguments, 0);
       // always add component instance as the last parameter incase they need access to it
       args.push(this);
@@ -330,7 +334,7 @@ Semantic.BaseMixin = Mixin.create({
     let owner = getOwner(this);
     let fastboot = owner.lookup("service:fastboot");
     return fastboot && fastboot.get("isFastBoot");
-  }
+  },
 });
 
 export default Semantic.BaseMixin;

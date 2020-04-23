@@ -1,19 +1,14 @@
-/* eslint-disable ember/no-component-lifecycle-hooks */
-/* eslint-disable ember/no-attrs-in-components */
-/* eslint-disable ember/require-tagless-components */
-/* eslint-disable ember/no-classic-components */
+import BaseComponent from "./base";
 import { isArray } from "@ember/array";
 import { isEmpty, isBlank } from "@ember/utils";
 import { action } from "@ember/object";
 import { scheduleOnce } from "@ember/runloop";
 import { guidFor } from "@ember/object/internals";
-import Component from "@ember/component";
-import Base from "../mixins/base";
-import PromiseResolver from "ember-promise-utils/mixins/promise-resolver";
+import { resolve } from "rsvp";
 
-const _proxyCallback = function(callbackName) {
-  return function(value, text, $element) {
-    return this.attrs[callbackName](
+const _proxyCallback = function (callbackName) {
+  return function (value, text, $element) {
+    return this.args[callbackName](
       this._getObjectOrValue(value),
       text,
       $element,
@@ -22,19 +17,10 @@ const _proxyCallback = function(callbackName) {
   };
 };
 
-export default class UiDropdownComponent extends Component.extend(
-  Base,
-  PromiseResolver
-) {
+export default class UiDropdownComponent extends BaseComponent {
   module = "dropdown";
-  classNames = ["ui", "dropdown"];
   ignorableAttrs = ["selected"];
-  objectMap = null;
-
-  constructor() {
-    super(...arguments);
-    this.objectMap = {};
-  }
+  objectMap = {};
 
   willDestroyElement() {
     super.willDestroyElement(...arguments);
@@ -58,15 +44,18 @@ export default class UiDropdownComponent extends Component.extend(
   didInitSemantic() {
     super.didInitSemantic(...arguments);
     // We want to handle this outside of the standard process
-    this._settableAttrs.removeObject("selected");
+    let arr = this.settableAttrs;
+    arr.splice(arr.indexOf("selected"), 1);
     // We need to ensure the internal value is set to '',
     // otherwise when we get the value later it is undefined
     // and semantic returns the module instead of the actual value
     this.execute("clear");
     this._inspectSelected();
   }
-  didUpdateAttrs() {
-    super.didUpdateAttrs(...arguments);
+
+  @action
+  updateModule() {
+    super.updateModule(...arguments);
     this._inspectSelected();
   }
 
@@ -100,7 +89,7 @@ export default class UiDropdownComponent extends Component.extend(
       returnValue = this._getObjectOrValue(value);
     }
 
-    return this.attrs.onChange(returnValue, text, $element, this);
+    return this.args.onChange(returnValue, text, $element, this);
   }
   _onAdd = _proxyCallback("onAdd");
   _onRemove = _proxyCallback("onRemove");
@@ -124,8 +113,9 @@ export default class UiDropdownComponent extends Component.extend(
   }
 
   _inspectSelected() {
-    let selected = this.selected;
-    return this.resolvePromise(selected, this._checkSelected);
+    let selected = this.args.selected;
+
+    return resolve(selected).then((value) => this._checkSelected(value));
   }
 
   _checkSelected(selectedValue) {
@@ -230,6 +220,7 @@ export default class UiDropdownComponent extends Component.extend(
         return false;
       }
     }
+
     return this.areAttrValuesEqual("selected", selectedValue, moduleValue);
   }
 

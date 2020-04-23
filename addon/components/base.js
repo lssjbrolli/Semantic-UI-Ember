@@ -1,10 +1,8 @@
 /* eslint-disable ember/no-jquery */
-/* eslint-disable no-console */
 import Component from "@glimmer/component";
-import { A } from "@ember/array";
 import { action } from "@ember/object";
 import { isEqual, isPresent } from "@ember/utils";
-// import { camelize } from "@ember/string";
+import { camelize } from "@ember/string";
 import { isHTMLSafe } from "@ember/template";
 import { bind } from "@ember/runloop";
 import $ from "jquery";
@@ -12,8 +10,10 @@ import Semantic from "../semantic";
 
 export default class BaseComponent extends Component {
   component;
-  _bindableAttrs = A();
-  _settableAttrs = A();
+  ignorableAttrs = [];
+  bindableAttrs = [];
+  settableAttrs = [];
+  initialized = false;
 
   @action
   initModule(e) {
@@ -21,8 +21,8 @@ export default class BaseComponent extends Component {
     this.initSemanticModule();
 
     // Get the modules settable and gettable properties.
-    let settableProperties = A(Object.keys(this.execute("internal", "set")));
-    let gettableProperties = A(Object.keys(this.execute("internal", "get")));
+    let settableProperties = Object.keys(this.execute("internal", "set"));
+    let gettableProperties = Object.keys(this.execute("internal", "get"));
 
     // get all bindable args
     // console.log(
@@ -35,30 +35,29 @@ export default class BaseComponent extends Component {
         settableProperties.includes(key) &&
         gettableProperties.includes(key)
       ) {
-        this._bindableAttrs.addObject(key);
+        this.bindableAttrs.push(key);
       } else if (settableProperties.includes(key)) {
         // otherwise, its settable only
-        this._settableAttrs.addObject(key);
+        this.settableAttrs.push(key);
       }
     }
 
     this.didInitSemantic();
+    this.initialized = true;
   }
 
   @action
   updateModule() {
-    console.log("update");
-
-    for (let i = 0; i < this._bindableAttrs.length; i++) {
-      let bindableAttr = this._bindableAttrs[i];
+    for (let i = 0; i < this.bindableAttrs.length; i++) {
+      let bindableAttr = this.bindableAttrs[i];
       let attrValue = this.args[bindableAttr];
       let moduleValue = this.getSemanticAttr(bindableAttr);
       if (!this.areAttrValuesEqual(bindableAttr, attrValue, moduleValue)) {
         this.setSemanticAttr(bindableAttr, attrValue);
       }
     }
-    for (let i = 0; i < this._settableAttrs.length; i++) {
-      let settableAttr = this._settableAttrs[i];
+    for (let i = 0; i < this.settableAttrs.length; i++) {
+      let settableAttr = this.settableAttrs[i];
       let attrValue = this.args[settableAttr];
       this.setSemanticAttr(settableAttr, attrValue);
     }
@@ -70,6 +69,7 @@ export default class BaseComponent extends Component {
     if (module) {
       return module.apply(this.getSemanticScope(), arguments);
     }
+    // eslint-disable-next-line no-console
     console.log(
       "The execute method was called, but the Semantic-UI module didn't exist."
     );
@@ -80,6 +80,7 @@ export default class BaseComponent extends Component {
     if (module) {
       module.call(this.getSemanticScope(), this.settings());
     } else {
+      // eslint-disable-next-line no-console
       console.log(
         `The Semantic UI module ${this.module} was not found and did not initialize`
       );
@@ -122,6 +123,7 @@ export default class BaseComponent extends Component {
     let moduleGlobal = this.getSemanticModuleGlobal();
 
     if (!moduleGlobal) {
+      // eslint-disable-next-line no-console
       console.log(`Unable to find jQuery Semantic UI module: ${this.module}`);
       return;
     }
@@ -136,9 +138,16 @@ export default class BaseComponent extends Component {
       let value = this.args[key];
 
       if (!this._hasOwnProperty(moduleGlobal.settings, key)) {
-        console.log(
-          `You passed in the property '${key}', but the setting doesn't exist on the Semantic UI module: ${this.module}`
-        );
+        if (
+          !this.ignorableAttrs.includes(key) &&
+          !this.ignorableAttrs.includes(camelize(key))
+        ) {
+          // TODO: Add better ember keys here
+          // eslint-disable-next-line no-console
+          console.log(
+            `You passed in the property '${key}', but a setting doesn't exist on the Semantic UI module: ${this.moduleName}`
+          );
+        }
         continue;
       }
 
@@ -172,7 +181,9 @@ export default class BaseComponent extends Component {
       // always add component instance as the last parameter in case they need access to it
       args.push(this);
 
-      return fn.apply(this, args);
+      if (this.initialized) {
+        return fn.apply(this, args);
+      }
     };
   }
 

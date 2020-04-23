@@ -1,1 +1,8 @@
-{{yield (fn this.execute) (fn this.mapping)}}
+<div
+  class="ui dropdown"
+  ...attributes
+  {{did-insert this.initModule}}
+  {{did-update this.updateModule @selected}}
+>
+  {{yield (fn this.execute) (fn this.mapping)}}
+</div>
