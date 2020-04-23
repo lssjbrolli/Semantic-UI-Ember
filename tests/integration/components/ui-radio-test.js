@@ -5,10 +5,10 @@ import { render, findAll, click } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 import afterRender from "dummy/tests/helpers/after-render";
 
-module("Integration | Component | ui radio", function(hooks) {
+module("Integration | Component | ui radio", function (hooks) {
   setupRenderingTest(hooks);
 
-  test("it renders", async function(assert) {
+  test("it renders", async function (assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -39,7 +39,7 @@ module("Integration | Component | ui radio", function(hooks) {
     assert.dom(".ui.radio").exists({ count: 3 });
   });
 
-  test("will start with selected current property", async function(assert) {
+  test("will start with selected current property", async function (assert) {
     assert.expect(3);
 
     let count = 0;
@@ -64,16 +64,18 @@ module("Integration | Component | ui radio", function(hooks) {
       </div>
     `);
 
+    // await this.pauseTest();
+
     assert.dom(".ui.radio").exists({ count: 3 });
     assert.dom(findAll(".ui.radio")[0]).hasClass("checked");
     assert.equal(count, 0, "onChange shouldnt have been called");
   });
 
-  test("selecting will update the bound property", async function(assert) {
-    assert.expect(3);
+  test("selecting will update the bound property", async function (assert) {
+    // assert.expect(3);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("frequency", value);
       count++;
     });
@@ -97,15 +99,15 @@ module("Integration | Component | ui radio", function(hooks) {
 
     assert.dom(".ui.radio").exists({ count: 3 });
     await click(findAll(".ui.radio")[2]);
-    assert.equal("daily", this.frequency);
+    assert.equal(this.frequency, "daily");
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("selecting twice will update the bound property to the latest", async function(assert) {
+  test("selecting twice will update the bound property to the latest", async function (assert) {
     assert.expect(8);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("frequency", value);
       count++;
     });
@@ -142,11 +144,11 @@ module("Integration | Component | ui radio", function(hooks) {
     assert.equal(count, 3, "onChange should have been called three times");
   });
 
-  test("setting disabled ignores click", async function(assert) {
+  test("setting disabled ignores click", async function (assert) {
     assert.expect(6);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("frequency", value);
       count++;
     });
@@ -171,9 +173,9 @@ module("Integration | Component | ui radio", function(hooks) {
     `);
 
     assert.dom(".ui.radio").exists({ count: 3 });
-    await click(findAll(".ui.radio")[1]);
 
-    assert.equal("weekly", this.frequency);
+    await click(findAll(".ui.radio")[1]);
+    assert.equal(this.frequency, "weekly");
     assert.dom(findAll(".ui.radio")[0]).hasClass("checked");
 
     this.set("disabled", false);
@@ -184,11 +186,11 @@ module("Integration | Component | ui radio", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("setting readonly ignores click", async function(assert) {
+  test("setting readonly ignores click", async function (assert) {
     assert.expect(6);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("frequency", value);
       count++;
     });
@@ -226,11 +228,11 @@ module("Integration | Component | ui radio", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("setting binded value updates to current", async function(assert) {
+  test("setting binded value updates to current", async function (assert) {
     assert.expect(7);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("frequency", value);
       count++;
     });
@@ -270,7 +272,7 @@ module("Integration | Component | ui radio", function(hooks) {
     assert.equal(count, 0, "onChange should not have been called");
   });
 
-  test("will selected when current promise resolves", async function(assert) {
+  test("will selected when current promise resolves", async function (assert) {
     assert.expect(5);
 
     let count = 0;
@@ -309,7 +311,7 @@ module("Integration | Component | ui radio", function(hooks) {
     });
   });
 
-  test("will selected when value promise resolves", async function(assert) {
+  test("will selected when value promise resolves", async function (assert) {
     assert.expect(5);
 
     let count = 0;
@@ -349,7 +351,7 @@ module("Integration | Component | ui radio", function(hooks) {
     });
   });
 
-  test("will selected when value promise resolves", async function(assert) {
+  test("will selected when value promise resolves", async function (assert) {
     assert.expect(5);
 
     let count = 0;
@@ -393,7 +395,7 @@ module("Integration | Component | ui radio", function(hooks) {
     });
   });
 
-  test("will update properly if a static value is replaced for a promise on value", async function(assert) {
+  test("will update properly if a static value is replaced for a promise on value", async function (assert) {
     assert.expect(7);
 
     let count = 0;
@@ -441,7 +443,7 @@ module("Integration | Component | ui radio", function(hooks) {
     });
   });
 
-  test("will update properly if a static value is replaced for a promise on current", async function(assert) {
+  test("will update properly if a static value is replaced for a promise on current", async function (assert) {
     assert.expect(8);
 
     let count = 0;

@@ -1,11 +1,18 @@
-<input
-  type={{this.type}}
-  name={{@name}}
-  tabindex={{this.tabindex}}
-  checked={{unbound this.checked}}
-  disabled={{unbound @disabled}}
-/>
-<label>
-  {{@label}}
-</label>
-{{yield (fn this.execute)}}
+<div
+  class="ui radio checkbox"
+  ...attributes
+  {{did-insert this.initModule}}
+  {{did-update this.updateModule @current @disabled @readonly @value}}
+>
+  <input
+    type="radio"
+    name={{@name}}
+    tabindex={{this.tabindex}}
+    checked={{unbound this.checked}}
+    disabled={{unbound @disabled}}
+  />
+  <label>
+    {{@label}}
+  </label>
+  {{yield (fn this.execute)}}
+</div>
