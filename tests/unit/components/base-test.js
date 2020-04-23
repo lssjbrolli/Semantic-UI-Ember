@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-mixins */
 /* eslint-disable ember/no-classic-components */
 import Component from "@ember/component";
 import BaseMixin from "semantic-ui-ember/mixins/base";
@@ -22,14 +23,14 @@ let baseComponent = class extends Component.extend(BaseMixin) {
   }
 };
 
-module("Unit | Component | base component", function(hooks) {
+module("Unit | Component | base component", function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.owner.register("component:base-component", baseComponent);
   });
 
-  test("it renders and has right properties", async function(assert) {
+  test("it renders and has right properties", async function (assert) {
     assert.expect(3);
 
     await render(hbs`
