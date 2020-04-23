@@ -145,7 +145,7 @@ export default class BaseComponent extends Component {
           // TODO: Add better ember keys here
           // eslint-disable-next-line no-console
           console.log(
-            `You passed in the property '${key}', but a setting doesn't exist on the Semantic UI module: ${this.moduleName}`
+            `You passed in the property '${key}', but a setting doesn't exist on the Semantic UI module: ${this.module}`
           );
         }
         continue;

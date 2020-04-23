@@ -1,12 +1,16 @@
-import { hash } from "rsvp";
-import isPromise from "ember-promise-utils/utils/is-promise";
-import isFulfilled from "ember-promise-utils/utils/is-fulfilled";
-import getPromiseContent from "ember-promise-utils/utils/get-promise-content";
-
 import BaseCheckboxComponent from "./base-checkbox";
+import { action } from "@ember/object";
+import { hash } from "rsvp";
 
 export default class UiRadioComponent extends BaseCheckboxComponent {
-  type = "radio";
+  ignorableAttrs = ["current", "disabled", "label", "readonly", "value"];
+
+  willInitSemantic(settings) {
+    super.willInitSemantic(...arguments);
+    if (settings.onChange) {
+      settings.onChange = this._onChange;
+    }
+  }
 
   // Internal wrapper for onchange, to pass through checked
   _onChange() {
@@ -14,11 +18,13 @@ export default class UiRadioComponent extends BaseCheckboxComponent {
     return this.args.onChange(value, this);
   }
 
+  @action
   initModule() {
     super.initModule(...arguments);
     this._inspectValueAndCurrent();
   }
 
+  @action
   updateModule() {
     super.updateModule(...arguments);
     this._inspectValueAndCurrent();
@@ -27,36 +33,10 @@ export default class UiRadioComponent extends BaseCheckboxComponent {
   _inspectValueAndCurrent() {
     let value = this.args.value;
     let current = this.args.current;
-    // If either are a promise, we need to make sure both are resolved
-    // Or wait for them to resolve
-    if (isPromise(value) || isPromise(current)) {
-      // This code is probably overkill, but i wanted to ensure that
-      // if the promises are resolved we render as soon as possible instead of waiting
-      // for the hash to resolve each time
-      if (isPromise(value)) {
-        if (!isFulfilled(value)) {
-          return this.resolvePromise(
-            hash({ value, current }),
-            this._checkValueAndCurrent
-          );
-        } else {
-          value = getPromiseContent(value);
-        }
-      }
 
-      if (isPromise(current)) {
-        if (!isFulfilled(current)) {
-          return this.resolvePromise(
-            hash({ value, current }),
-            this._checkValueAndCurrent
-          );
-        } else {
-          current = getPromiseContent(current);
-        }
-      }
-    }
-    // If we didn't return, the promises are either fulfilled or not promises
-    this._checkValueAndCurrent({ value, current });
+    return hash({ value, current }).then((hash) =>
+      this._checkValueAndCurrent(hash)
+    );
   }
 
   _checkValueAndCurrent(hash) {
