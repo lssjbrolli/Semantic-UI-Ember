@@ -9,11 +9,12 @@ export default class UiPopupComponent extends BaseComponent {
     for (let i = 0; i < possibleAttrs.length; i++) {
       let possibleAttr = possibleAttrs[i];
       if (this.args[possibleAttr] || this.possibleAttr != null) {
-        this._settableAttrs.addObject(possibleAttr);
+        this.settableAttrs.push(possibleAttr);
       }
     }
     if (this.args.position) {
-      this._settableAttrs.removeObject("position");
+      let arr = this.settableAttrs;
+      arr.splice(arr.indexOf("position"), 1);
     }
   }
 

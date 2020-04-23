@@ -9,14 +9,14 @@ import { render, settled, click } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 import afterRender from "dummy/tests/helpers/after-render";
 
-module("Integration | Component | ui dropdown", function(hooks) {
+module("Integration | Component | ui dropdown", function (hooks) {
   setupRenderingTest(hooks);
 
-  test("it renders from an array", async function(assert) {
+  test("it renders from an array", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -40,18 +40,18 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it renders from an object array", async function(assert) {
+  test("it renders from an object array", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
 
     this.set("people", [
       { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
+      { id: 2, name: "Patrick Bateman" },
     ]);
 
     await render(hbs`
@@ -73,18 +73,18 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it renders with an option selected", async function(assert) {
+  test("it renders with an option selected", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
 
     this.set("people", [
       { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
+      { id: 2, name: "Patrick Bateman" },
     ]);
 
     this.set("selected", 2);
@@ -106,18 +106,18 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it renders multiple", async function(assert) {
+  test("it renders multiple", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
 
     this.set("people", [
       { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
+      { id: 2, name: "Patrick Bateman" },
     ]);
 
     await render(hbs`
@@ -139,11 +139,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 2, "onChange should have been called only once");
   });
 
-  test("it sets the value from the binding", async function(assert) {
+  test("it sets the value from the binding", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -151,7 +151,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("people_id", 2);
     this.set("people", [
       { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
+      { id: 2, name: "Patrick Bateman" },
     ]);
 
     await render(hbs`
@@ -166,17 +166,18 @@ module("Integration | Component | ui dropdown", function(hooks) {
       </UiDropdown>
     `);
 
+    // await this.pauseTest();
     assert.dom(".item").exists({ count: 2 });
     assert.dom(".item.selected").exists({ count: 1 });
     assert.dom(".item.selected").hasAttribute("data-value", "2");
     assert.equal(count, 0, "onChange should have not been called");
   });
 
-  test("it updates the value if updated from the binding", async function(assert) {
+  test("it updates the value if updated from the binding", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -184,7 +185,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("people_id", 2);
     this.set("people", [
       { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
+      { id: 2, name: "Patrick Bateman" },
     ]);
 
     await render(hbs`
@@ -209,11 +210,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it can set the selected value without binding for full DDAU", async function(assert) {
+  test("it can set the selected value without binding for full DDAU", async function (assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("people_id", value);
       count++;
     });
@@ -221,7 +222,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
     this.set("people_id", 2);
     this.set("people", [
       { id: 1, name: "Sherlock Homes" },
-      { id: 2, name: "Patrick Bateman" }
+      { id: 2, name: "Patrick Bateman" },
     ]);
 
     await render(hbs`
@@ -246,11 +247,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it renders and clears the value if it changes and isnt found", async function(assert) {
+  test("it renders and clears the value if it changes and isnt found", async function (assert) {
     assert.expect(11);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected.id", value);
       count++;
     });
@@ -259,7 +260,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       "people",
       A([
         { id: 1, name: "Sherlock Homes" },
-        { id: 2, name: "Patrick Bateman" }
+        { id: 2, name: "Patrick Bateman" },
       ])
     );
 
@@ -301,11 +302,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
   // ///
   // // Object mapping
   // ///
-  test("it renders from a mapper", async function(assert) {
+  test("it renders from a mapper", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -314,7 +315,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       "people",
       A([
         { id: 1, name: "Sherlock Homes" },
-        { id: 2, name: "Patrick Bateman" }
+        { id: 2, name: "Patrick Bateman" },
       ])
     );
 
@@ -336,11 +337,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it renders from a mapper and preselects the right value", async function(assert) {
+  test("it renders from a mapper and preselects the right value", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -349,7 +350,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       "people",
       A([
         { id: 1, name: "Sherlock Homes" },
-        { id: 2, name: "Patrick Bateman" }
+        { id: 2, name: "Patrick Bateman" },
       ])
     );
 
@@ -373,11 +374,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it renders from a mapper and selects the right value if late", async function(assert) {
+  test("it renders from a mapper and selects the right value if late", async function (assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -386,7 +387,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       "people",
       A([
         { id: 1, name: "Sherlock Homes" },
-        { id: 2, name: "Patrick Bateman" }
+        { id: 2, name: "Patrick Bateman" },
       ])
     );
 
@@ -411,11 +412,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it renders from a mapper and clears the value if it changes and isnt found", async function(assert) {
+  test("it renders from a mapper and clears the value if it changes and isnt found", async function (assert) {
     assert.expect(11);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -424,7 +425,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       "people",
       A([
         { id: 1, name: "Sherlock Homes" },
-        { id: 2, name: "Patrick Bateman" }
+        { id: 2, name: "Patrick Bateman" },
       ])
     );
 
@@ -463,11 +464,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it renders from a mapper and clears the value if it changes and isnt found on sub property", async function(assert) {
+  test("it renders from a mapper and clears the value if it changes and isnt found on sub property", async function (assert) {
     assert.expect(8);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected.sub", value);
       count++;
     });
@@ -476,7 +477,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       "people",
       A([
         { id: 1, name: "Sherlock Homes" },
-        { id: 2, name: "Patrick Bateman" }
+        { id: 2, name: "Patrick Bateman" },
       ])
     );
 
@@ -510,11 +511,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("it renders from a mapper and binds to value", async function(assert) {
+  test("it renders from a mapper and binds to value", async function (assert) {
     assert.expect(8);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -549,11 +550,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  test("The correct number of items are pre selected on selected array", async function(assert) {
+  test("The correct number of items are pre selected on selected array", async function (assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -579,11 +580,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 0, "onChange should not have been called");
   });
 
-  test("The correct number of items are pre selected on selected item", async function(assert) {
+  test("The correct number of items are pre selected on selected item", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -608,11 +609,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 0, "onChange should not have been called");
   });
 
-  test("The correct number of items are pre selected on selected object array", async function(assert) {
+  test("The correct number of items are pre selected on selected object array", async function (assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -622,7 +623,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       { item: 2, name: "Two" },
       { item: 3, name: "Three" },
       { item: 4, name: "Four" },
-      { item: 5, name: "Five" }
+      { item: 5, name: "Five" },
     ]);
 
     this.set("numbers", numbers);
@@ -646,11 +647,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 0, "onChange should not have been called");
   });
 
-  test("The correct number of items are pre selected on selected object item", async function(assert) {
+  test("The correct number of items are pre selected on selected object item", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -660,7 +661,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       { item: 2, name: "Two" },
       { item: 3, name: "Three" },
       { item: 4, name: "Four" },
-      { item: 5, name: "Five" }
+      { item: 5, name: "Five" },
     ]);
 
     this.set("numbers", numbers);
@@ -683,11 +684,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     assert.equal(count, 0, "onChange should not have been called");
   });
 
-  test("The correct number of items get selected when clicked", async function(assert) {
+  test("The correct number of items get selected when clicked", async function (assert) {
     assert.expect(7);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -719,11 +720,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
   });
 
   // clicking binded items updates collection
-  test("The correct number of items get selected when clicked", async function(assert) {
+  test("The correct number of items get selected when clicked", async function (assert) {
     assert.expect(7);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -733,7 +734,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       { item: 2, name: "Two" },
       { item: 3, name: "Three" },
       { item: 4, name: "Four" },
-      { item: 5, name: "Five" }
+      { item: 5, name: "Five" },
     ]);
 
     this.set("numbers", numbers);
@@ -763,11 +764,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
   });
   // // setting binded items, updates collection
 
-  test("The correct number of items get selected when array is modified", async function(assert) {
+  test("The correct number of items get selected when array is modified", async function (assert) {
     assert.expect(7);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -805,11 +806,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
   });
 
   // // clicking binded items updates collection
-  test("The correct number of items get selected when array bindings is modified", async function(assert) {
+  test("The correct number of items get selected when array bindings is modified", async function (assert) {
     assert.expect(7);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -819,7 +820,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
       { item: 2, name: "Two" },
       { item: 3, name: "Three" },
       { item: 4, name: "Four" },
-      { item: 5, name: "Five" }
+      { item: 5, name: "Five" },
     ]);
 
     this.set("numbers", numbers);
@@ -849,11 +850,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
   });
 
   // // Add selected deferred test
-  test("it renders and selects the correct item after promise resolves", async function(assert) {
+  test("it renders and selects the correct item after promise resolves", async function (assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -886,11 +887,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
   });
 
   // // Add selected deferred test
-  test("it renders and selects the correct item from resolved promise", async function(assert) {
+  test("it renders and selects the correct item from resolved promise", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -919,11 +920,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
   });
 
   // // Add map-value promise deferred binding test
-  test("it renders from a mapper with a promise", async function(assert) {
+  test("it renders from a mapper with a promise", async function (assert) {
     assert.expect(5);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -932,7 +933,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
 
     let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
     let proxy = ObjectPromiseProxy.create({
-      promise: deferred.promise
+      promise: deferred.promise,
     });
 
     this.set("people", A([{ id: 1, name: "Sherlock Homes" }, proxy]));
@@ -962,11 +963,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     });
   });
 
-  test("it renders from a mapper with a promise already completed", async function(assert) {
+  test("it renders from a mapper with a promise already completed", async function (assert) {
     assert.expect(4);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -975,7 +976,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
 
     let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
     let proxy = ObjectPromiseProxy.create({
-      promise: deferred.promise
+      promise: deferred.promise,
     });
 
     let deferredValue = { id: 2, name: "Patrick Bateman" };
@@ -1007,11 +1008,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
     });
   });
 
-  test("it renders from a mapper with a promise and select with a promise, select resolving first", async function(assert) {
+  test("it renders from a mapper with a promise and select with a promise, select resolving first", async function (assert) {
     assert.expect(6);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -1021,7 +1022,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
 
     let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
     let proxy = ObjectPromiseProxy.create({
-      promise: deferredMap.promise
+      promise: deferredMap.promise,
     });
 
     this.set("people", A([{ id: 1, name: "Sherlock Homes" }, proxy]));
@@ -1067,11 +1068,11 @@ module("Integration | Component | ui dropdown", function(hooks) {
       });
   });
 
-  test("it renders from a mapper with a promise and select with a promise, mapper resolving first", async function(assert) {
+  test("it renders from a mapper with a promise and select with a promise, mapper resolving first", async function (assert) {
     assert.expect(6);
 
     let count = 0;
-    this.set("changed", value => {
+    this.set("changed", (value) => {
       this.set("selected", value);
       count++;
     });
@@ -1081,7 +1082,7 @@ module("Integration | Component | ui dropdown", function(hooks) {
 
     let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
     let proxy = ObjectPromiseProxy.create({
-      promise: deferredMap.promise
+      promise: deferredMap.promise,
     });
 
     this.set("people", A([{ id: 1, name: "Sherlock Homes" }, proxy]));
