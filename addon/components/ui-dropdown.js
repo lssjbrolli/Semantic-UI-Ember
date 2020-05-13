@@ -66,6 +66,7 @@ export default class UiDropdownComponent extends BaseComponent {
       this.objectMap[guid] = object;
     }
     scheduleOnce("afterRender", this, this._inspectSelected);
+
     return guid;
   }
 

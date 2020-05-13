@@ -299,9 +299,9 @@ module("Integration | Component | ui dropdown", function (hooks) {
     assert.equal(count, 1, "onChange should have been called only once");
   });
 
-  // ///
-  // // Object mapping
-  // ///
+  ///
+  // Object mapping
+  ///
   test("it renders from a mapper", async function (assert) {
     assert.expect(4);
 
@@ -311,13 +311,10 @@ module("Integration | Component | ui dropdown", function (hooks) {
       count++;
     });
 
-    this.set(
-      "people",
-      A([
-        { id: 1, name: "Sherlock Homes" },
-        { id: 2, name: "Patrick Bateman" },
-      ])
-    );
+    this.set("people", [
+      { id: 1, name: "Sherlock Homes" },
+      { id: 2, name: "Patrick Bateman" },
+    ]);
 
     await render(hbs`
       <UiDropdown @selected={{this.selected}} @onChange={{fn this.changed}} as |execute mapper| >
@@ -762,7 +759,7 @@ module("Integration | Component | ui dropdown", function (hooks) {
     assert.equal(this.selected.join(","), [numbers[1], numbers[3]].join(","));
     assert.equal(count, 2, "onChange should not have been called");
   });
-  // // setting binded items, updates collection
+  // setting binded items, updates collection
 
   test("The correct number of items get selected when array is modified", async function (assert) {
     assert.expect(7);
@@ -805,7 +802,7 @@ module("Integration | Component | ui dropdown", function (hooks) {
     assert.equal(count, 0, "onChange should not have been called");
   });
 
-  // // clicking binded items updates collection
+  // clicking binded items updates collection
   test("The correct number of items get selected when array bindings is modified", async function (assert) {
     assert.expect(7);
 
@@ -849,7 +846,7 @@ module("Integration | Component | ui dropdown", function (hooks) {
     assert.equal(count, 0, "onChange should not have been called");
   });
 
-  // // Add selected deferred test
+  // Add selected deferred test
   test("it renders and selects the correct item after promise resolves", async function (assert) {
     assert.expect(5);
 
@@ -886,7 +883,7 @@ module("Integration | Component | ui dropdown", function (hooks) {
     });
   });
 
-  // // Add selected deferred test
+  // Add selected deferred test
   test("it renders and selects the correct item from resolved promise", async function (assert) {
     assert.expect(4);
 
@@ -919,7 +916,7 @@ module("Integration | Component | ui dropdown", function (hooks) {
     assert.equal(count, 0, "onChange should not have been called");
   });
 
-  // // Add map-value promise deferred binding test
+  // Add map-value promise deferred binding test
   test("it renders from a mapper with a promise", async function (assert) {
     assert.expect(5);
 

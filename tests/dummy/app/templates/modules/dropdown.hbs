@@ -57,7 +57,7 @@
   Modified: onChange(value [binded])
 
   Description:
-    The onChange event has been modify to include the bound value if you use the
+    The onChange event has been modified to include the bound value if you use the
     map-value mapper helper. If you don't it will return the data-value string 
   END-SNIPPET }}
   <UiAnnotation
@@ -74,7 +74,7 @@
     accomplish this.
   </div>
   <div class="ui divider"></div>
-  <UiExample
+  {{!-- <UiExample
     @header="String Bound Dropdown Example"
     @subHeader="A dropdown can be used to select between choices in a form" as |showing|
   >
@@ -114,7 +114,7 @@
       </div>
     </UiHtml>
     <UiAnnotation @showing={{showing}} @snippet="dropdown.string.hbs" />
-  </UiExample>
+  </UiExample> --}}
   <UiExample
     @header="Value Bound Dropdown Example"
     @subHeader="Using the map-value helper and mapper action" as |showing|
@@ -133,7 +133,7 @@
             </div>
             <i class="dropdown icon"></i>
             <div class="menu">
-              <div class="item" data-value>
+              <div class="item">
                 All Items
               </div>
               {{#each this.types as |type|}}
