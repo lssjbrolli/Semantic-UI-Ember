@@ -4,6 +4,7 @@ import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 import { render, find } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
+import $ from 'jquery'
 
 module("Integration | Component | ui popup", function (hooks) {
   setupRenderingTest(hooks);
@@ -20,7 +21,7 @@ module("Integration | Component | ui popup", function (hooks) {
     `);
 
     assert.equal(
-      this.$("div").popup("get content")[0],
+      $("div").popup("get content")[0],
       "Add users to your feed"
     );
   });
@@ -38,14 +39,14 @@ module("Integration | Component | ui popup", function (hooks) {
     `);
 
     assert.equal(
-      this.$("div").popup("get content")[0],
+      $("div").popup("get content")[0],
       "This is dynamic content"
     );
 
     this.set("content", "Now it magically changed!");
 
     assert.equal(
-      this.$("div").popup("get content")[0],
+      $("div").popup("get content")[0],
       "Now it magically changed!"
     );
   });
@@ -61,7 +62,7 @@ module("Integration | Component | ui popup", function (hooks) {
       </UiPopup >
     `);
 
-    this.$("div").popup("show");
+    $("div").popup("show");
     let done = assert.async();
 
     setTimeout(() => {
@@ -91,7 +92,7 @@ module("Integration | Component | ui popup", function (hooks) {
       </UiPopup >
     `);
 
-    this.$("div").popup("show");
+    $("div").popup("show");
 
     let done = assert.async();
 
@@ -120,7 +121,7 @@ module("Integration | Component | ui popup", function (hooks) {
       </UiPopup >
     `);
 
-    this.$("div").popup("show");
+    $("div").popup("show");
 
     let done = assert.async();
 
@@ -153,7 +154,7 @@ module("Integration | Component | ui popup", function (hooks) {
       </UiPopup >
     `);
 
-    this.$("div").popup("show");
+    $("div").popup("show");
 
     let done = assert.async();
 

@@ -3,7 +3,7 @@
 const EmberAddon = require("ember-cli/lib/broccoli/ember-addon");
 
 module.exports = function (defaults) {
-  const app = new EmberAddon(defaults, {
+  let app = new EmberAddon(defaults, {
     // Add options here
     "ember-cli-babel": {
       includePolyfill: false,
@@ -22,5 +22,6 @@ module.exports = function (defaults) {
   */
   app.import("node_modules/highlightjs/styles/github-gist.css");
 
-  return app.toTree();
+  const { maybeEmbroider } = require('@embroider/test-setup');
+  return maybeEmbroider(app);
 };

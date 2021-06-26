@@ -3,6 +3,7 @@ import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 import { render, click } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
+import $ from 'jquery'
 
 module("Integration | Component | ui nag", function (hooks) {
   setupRenderingTest(hooks);
@@ -35,8 +36,8 @@ module("Integration | Component | ui nag", function (hooks) {
     `);
 
     assert.dom(".ui.nag").exists({ count: 1 });
-    this.$(".ui.nag").nag("clear");
-    this.$(".ui.nag").nag("show");
+    $(".ui.nag").nag("clear");
+    $(".ui.nag").nag("show");
     assert.dom(".ui.nag").hasStyle({
       display: "block",
     });
@@ -48,7 +49,7 @@ module("Integration | Component | ui nag", function (hooks) {
       assert.dom(".ui.nag").hasStyle({
         display: "none",
       });
-      this.$(".ui.nag").nag("show");
+      $(".ui.nag").nag("show");
       assert.dom(".ui.nag").hasStyle({
         display: "block",
       });
